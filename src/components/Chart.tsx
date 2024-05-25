@@ -37,8 +37,6 @@ const Chart: React.FC = () => {
           },
         });
 
-        console.log('API response:', response.data);
-
         const data = response.data.results.map((result: any) => ({
           x: new Date(result.t),
           y: result.c,

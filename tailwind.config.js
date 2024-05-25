@@ -1,9 +1,11 @@
-export const purge = ['./src/**/*.{js,jsx,ts,tsx}', './index.html'];
-export const darkMode = false;
-export const theme = {
-  extend: {},
-};
-export const variants = {
-  extend: {},
-};
-export const plugins = [];
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}

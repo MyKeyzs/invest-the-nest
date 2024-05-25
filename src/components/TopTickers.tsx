@@ -20,16 +20,22 @@ const TopTickers: React.FC = () => {
           },
         });
 
-        console.log('API response:', response.data);
+        // Check if response data and tickers are available
+        if (response.data && response.data.tickers) {
+          const data = response.data.tickers.slice(0, 6).map((ticker: any) => ({
+            ticker: ticker.ticker,
+            // Use optional chaining to safely access nested properties and provide a default value
+            close: ticker.lastTrade?.p ?? 0,
+            // Provide a default value for percent_change
+            percent_change: ticker.todaysChangePerc ?? 0,
+          }));
 
-        const data = response.data.tickers.slice(0, 6).map((ticker: any) => ({
-          ticker: ticker.ticker,
-          close: ticker.lastTrade.p,
-          percent_change: ticker.todaysChangePerc,
-        }));
-
-        setTickers(data);
-        setError(null); // Clear any previous errors
+          setTickers(data);
+          setError(null); // Clear any previous errors
+        } else {
+          // Set an error message if the expected structure is not present
+          setError('Unexpected API response structure');
+        }
       } catch (error) {
         console.error('Error fetching ticker data:', error);
         setError('Error fetching ticker data. Please try again later.');

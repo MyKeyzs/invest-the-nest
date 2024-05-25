@@ -1,21 +1,28 @@
 import React from 'react';
-import Sidebar from './Sidebar';
 import TopTickers from './TopTickers';
 import Chart from './Chart';
 import Positions from './Positions';
-import './Dashboard.css'; // Ensure this path matches your project's structure
+import Sidebar from './Sidebar';
+import GroupedBars from './GroupedBars';
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar />
-      <div className="flex-grow p-6 space-y-6 transition-all duration-500">
-        <div className="space-y-6">
-          <div className="w-full"><TopTickers /></div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2"><Chart /></div>
-            <div><Positions /></div>
+      <div className="flex-grow p-6 bg-gray-900 text-white">
+        <div className="top-tickers-container mb-4">
+          <TopTickers />
+        </div>
+        <div className="flex mb-4">
+          <div className="flex-grow">
+            <Chart />
           </div>
+          <div className="ml-4 w-1/4">
+            <Positions />
+          </div>
+        </div>
+        <div className="grouped-bars-container mt-4">
+          <GroupedBars />
         </div>
       </div>
     </div>
