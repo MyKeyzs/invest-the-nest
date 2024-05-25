@@ -1,0 +1,14 @@
+.dashboard {
+    background-color: #1f2937; /* Dark background */
+    color: #d1d5db; /* Light text */
+    padding: 16px;
+  }
+  
+  .widget {
+    background-color: #273444; /* Slightly lighter dark background */
+    color: #d1d5db; /* Light text */
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  

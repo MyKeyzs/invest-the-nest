@@ -1,36 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import BaseModalWrapper from './AuthModal/BaseModalWrapper'
+import React from 'react';
+import './tailwind.css'; // Ensure this path matches your project's structure
+import './components/Sidebar.css'; // Ensure this path matches your project's structure
+import './components/Dashboard.css'; // Ensure this path matches your project's structure
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import Navbar from './components/Navbar';
+import Watchlist from './components/Watchlist';
+import Portfolio from './components/Portfolio';
+import MarketCalendar from './components/MarketCalendar';
+import Transactions from './components/Transactions';
+import Sectors from './components/Sectors';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  const [isModalVisible, setIsModeVisable] = useState(false)
-
-  const toggleModal = () => {
-    setIsModeVisable(wasModeVisable => !wasModeVisable)
-  }
-
+const App: React.FC = () => {
   return (
-    <>
-      <div className="header">
-        <a href='#default' className='logo'>Company Logo</a>
-        <div className='header-right'>          
-          <a className='active' href='#home'>Home</a>
-          <a href='#Calendar'> My Calendar</a>
-          <a href='#Watchlist'>Watchlist</a>
-          <a href='#News'>News</a>
-          <div className="header-wrap">
-            <button onClick={toggleModal}>Logout</button>
-            <BaseModalWrapper isModalVisible={isModalVisible} onBackdropClick={toggleModal}/>
-          </div>
-        </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/market-calendar" element={<MarketCalendar />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/sectors" element={<Sectors />} />
+        </Routes>
       </div>
-      
-    </>
-  )
-}
+    </Router>
+  );
+};
 
-export default App
+export default App;
