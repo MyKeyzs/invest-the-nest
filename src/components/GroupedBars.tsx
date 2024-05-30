@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './GroupedBars.css'; // Import the CSS file for animations
 import {
   Chart as ChartJS,
   CategoryScale,

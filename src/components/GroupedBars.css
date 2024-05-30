@@ -1,0 +1,6 @@
+.grouped-bars-container {
+    width: 100%;
+    max-width: 600px; /* Adjust the maximum width as needed */
+    margin: 0 auto;
+    padding: 20px;
+  }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TickerSection from './TickerSection'; // Import the TickerSection component
 
 const Navbar: React.FC = () => {
   return (
@@ -12,23 +13,16 @@ const Navbar: React.FC = () => {
         </button>
         <Link to="/" className="text-xl font-bold text-white ml-2">Invest the Nest</Link>
       </div>
-      <div className="flex-grow hidden md:flex items-center space-x-6">
+      <div className="flex-grow flex items-center space-x-6">
         <input 
           type="text" 
           placeholder="Search" 
-          className="px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none w-full"
+          className="px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none w-full md:max-w-md"
         />
       </div>
-      <div className="hidden md:flex space-x-6">
-        <Link to="/watchlist" className="text-white hover:text-gray-400">Watchlist</Link>
-
-        <Link to="/market-calendar" className="text-white hover:text-gray-400">Market Calendar</Link>
-        <Link to="/transactions" className="text-white hover:text-gray-400">Transactions</Link>
-        <Link to="/sectors" className="text-white hover:text-gray-400">Sectors</Link>
-    
-      </div>
       <div className="flex items-center space-x-4">
-        <Link to="/login" className="text-white hover:text-gray-400">Login</Link>
+        <TickerSection /> {/* Add the TickerSection component here */}
+        <Link to="/login" className="text-white border-2 border-white px-4 py-2 rounded hover:bg-gray-700">Login</Link>
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Sign Up</button>
       </div>
     </nav>

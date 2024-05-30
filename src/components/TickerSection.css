@@ -1,0 +1,31 @@
+.ticker-container {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 600px; /* Adjust this value to fit the desired width */
+    position: relative;
+  }
+  
+  .ticker-wrapper {
+    display: flex;
+    animation: ticker 20s linear infinite;
+  }
+  
+  .ticker-content {
+    display: flex;
+  }
+  
+  .ticker-item {
+    display: inline-block;
+    margin-right: 40px; /* Adjust the spacing between items */
+    color: white; /* Set the text color to white */
+  }
+  
+  @keyframes ticker {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

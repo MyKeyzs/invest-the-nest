@@ -10,18 +10,18 @@ const Dashboard: React.FC = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-grow p-6 bg-gray-900 text-white">
-        <div className="top-tickers-container mb-4">
+        <div className="mb-6">
           <TopTickers />
         </div>
-        <div className="flex mb-4">
+        <div className="flex mb-6">
           <div className="flex-grow">
             <Chart />
           </div>
-          <div className="ml-4 w-1/4">
+          <div className="ml-6 w-1/4">
             <Positions />
           </div>
         </div>
-        <div className="grouped-bars-container mt-4">
+        <div className="mt-6">
           <GroupedBars />
         </div>
       </div>

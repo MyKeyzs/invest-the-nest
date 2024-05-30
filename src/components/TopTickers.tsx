@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './TopTickers.css';
 
 interface TickerData {
   ticker: string;
-  close: number;
   percent_change: number;
 }
 
@@ -16,26 +16,20 @@ const TopTickers: React.FC = () => {
       try {
         const response = await axios.get('https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers', {
           params: {
-            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
+            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX',
           },
         });
 
-        // Check if response data and tickers are available
-        if (response.data && response.data.tickers) {
-          const data = response.data.tickers.slice(0, 6).map((ticker: any) => ({
+        const data = response.data.tickers
+          .sort((a: any, b: any) => b.todaysChangePerc - a.todaysChangePerc)
+          .slice(0, 20)
+          .map((ticker: any) => ({
             ticker: ticker.ticker,
-            // Use optional chaining to safely access nested properties and provide a default value
-            close: ticker.lastTrade?.p ?? 0,
-            // Provide a default value for percent_change
             percent_change: ticker.todaysChangePerc ?? 0,
           }));
 
-          setTickers(data);
-          setError(null); // Clear any previous errors
-        } else {
-          // Set an error message if the expected structure is not present
-          setError('Unexpected API response structure');
-        }
+        setTickers(data);
+        setError(null);
       } catch (error) {
         console.error('Error fetching ticker data:', error);
         setError('Error fetching ticker data. Please try again later.');
@@ -46,13 +40,13 @@ const TopTickers: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-gray-900 text-white p-4 rounded-md">
+    <div className="ticker-section">
       {error ? (
         <p>{error}</p>
       ) : (
-        <div className="flex justify-between">
+        <div className="ticker-wrapper">
           {tickers.map((ticker) => (
-            <div key={ticker.ticker} className="flex items-center space-x-2">
+            <div key={ticker.ticker} className="ticker-item">
               <span>{ticker.ticker}</span>
               <span className={ticker.percent_change >= 0 ? 'text-green-500' : 'text-red-500'}>
                 {ticker.percent_change.toFixed(2)}%
