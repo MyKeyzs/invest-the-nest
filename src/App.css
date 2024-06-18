@@ -1,12 +1,14 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .header {
   overflow: hidden;
   background-color: #f1f1f1;
   padding: 20px 10px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 .header a {

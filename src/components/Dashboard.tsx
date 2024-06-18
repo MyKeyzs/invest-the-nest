@@ -4,16 +4,17 @@ import Chart from './Chart';
 import Positions from './Positions';
 import Sidebar from './Sidebar';
 import GroupedBars from './GroupedBars';
+import './Dashboard.css'; // Ensure you have the CSS file imported
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="flex">
+    <div className="dashboard">
       <Sidebar />
-      <div className="flex-grow p-6 bg-gray-900 text-white">
-        <div className="mb-6">
+      <div className="main-content">
+        <div className="widget ticker-container">
           <TopTickers />
         </div>
-        <div className="flex mb-6">
+        <div className="widget flex">
           <div className="flex-grow">
             <Chart />
           </div>
@@ -21,7 +22,7 @@ const Dashboard: React.FC = () => {
             <Positions />
           </div>
         </div>
-        <div className="mt-6">
+        <div className="widget mt-6">
           <GroupedBars />
         </div>
       </div>

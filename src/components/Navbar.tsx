@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
         />
       </div>
       <div className="flex items-center space-x-4">
-        <TickerSection /> {/* Add the TickerSection component here */}
+       
         <Link to="/login" className="text-white border-2 border-white px-4 py-2 rounded hover:bg-gray-700">Login</Link>
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Sign Up</button>
       </div>

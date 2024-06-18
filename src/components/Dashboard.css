@@ -1,14 +1,79 @@
+/* Dashboard container styles */
 .dashboard {
-    background-color: #1f2937; /* Dark background */
-    color: #d1d5db; /* Light text */
-    padding: 16px;
-  }
-  
-  .widget {
-    background-color: #273444; /* Slightly lighter dark background */
-    color: #d1d5db; /* Light text */
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-  
+  background-color: #1f2937; /* Dark background */
+  color: #d1d5db; /* Light text */
+  padding: 16px; /* Padding around the dashboard */
+  display: flex; /* Use flexbox for layout */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Main content area styles */
+.main-content {
+  margin-left: 260px; /* Ensure there's enough space for the sidebar */
+  flex-grow: 1; /* Allow the main content to grow and fill available space */
+  width: calc(100% - 260px); /* Ensure the main content fits within the remaining width */
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Widget container styles */
+.widget {
+  background-color: #273444; /* Slightly lighter dark background */
+  color: #d1d5db; /* Light text */
+  padding: 16px; /* Padding inside the widget */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 16px; /* Space below each widget */
+  width: 100%; /* Full width of the container */
+  max-width: 100%; /* Ensure widgets do not exceed the container width */
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Flexbox utility classes */
+.flex {
+  display: flex; /* Use flexbox for layout */
+}
+
+.flex-grow {
+  flex-grow: 1; /* Allow the element to grow and fill available space */
+}
+
+/* Margin utility classes */
+.ml-6 {
+  margin-left: 1.5rem; /* Margin left of 1.5rem */
+}
+
+/* Width utility class */
+.w-1-4 {
+  width: 25%; /* Width of 25% */
+}
+
+/* Margin-top utility class */
+.mt-6 {
+  margin-top: 1.5rem; /* Margin top of 1.5rem */
+}
+
+/* Padding utility class */
+.p-6 {
+  padding: 1.5rem; /* Padding of 1.5rem */
+}
+
+/* Background color utility class */
+.bg-gray-900 {
+  background-color: #1a202c; /* Dark gray background color */
+}
+
+/* Text color utility class */
+.text-white {
+  color: #ffffff; /* White text color */
+}
+
+/* Margin-bottom utility class */
+.mb-6 {
+  margin-bottom: 1.5rem; /* Margin bottom of 1.5rem */
+}
+
+/* Ticker container styles */
+.ticker-container {
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center content horizontally */
+}
