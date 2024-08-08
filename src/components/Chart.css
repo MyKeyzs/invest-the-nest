@@ -5,3 +5,16 @@
   padding: 20px;
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
+
+.chart-title {
+  font-size: 1.5rem; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.5rem; /* Space between title and ticker section */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+  text-align: center;
+}
+
+.chart-title:hover {
+  color: #00ff00; /* Change to green on hover */
+}

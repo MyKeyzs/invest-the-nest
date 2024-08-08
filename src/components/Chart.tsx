@@ -88,6 +88,7 @@ const Chart: React.FC = () => {
 
   return (
     <div className="bg-gray-900 text-white p-4 rounded-md">
+      <div className="chart-title">Test!</div>
       <div className="flex justify-between mb-4">
         {['1D', '1W', '1M', '6M', '1Y'].map((tf) => (
           <button

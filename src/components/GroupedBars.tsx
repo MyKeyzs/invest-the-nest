@@ -38,7 +38,7 @@ const GroupedBars: React.FC = () => {
   useEffect(() => {
     const fetchBars = async () => {
       try {
-        const response = await axios.get('https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/2023-05-23', {
+        const response = await axios.get('https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/2024-08-07?resultsCount=20&', {
           params: {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
           },
@@ -91,7 +91,7 @@ const GroupedBars: React.FC = () => {
 
   return (
     <div className="bg-gray-900 text-white p-4 rounded-md">
-      <h2 className="text-xl mb-4">Top 20 Stocks by Volume</h2>
+      <div className="ticker-title">Top 20 Stocks by Volume</div>
       {error ? (
         <p>{error}</p>
       ) : (

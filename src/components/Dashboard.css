@@ -2,18 +2,26 @@
 .dashboard {
   background-color: #1f2937; /* Dark background */
   color: #d1d5db; /* Light text */
-  padding: 16px; /* Padding around the dashboard */
   display: flex; /* Use flexbox for layout */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
 /* Main content area styles */
 .main-content {
-  margin-left: 260px; /* Ensure there's enough space for the sidebar */
   flex-grow: 1; /* Allow the main content to grow and fill available space */
-  width: calc(100% - 260px); /* Ensure the main content fits within the remaining width */
+  width: calc(100% - 250px); /* Default width assuming sidebar is closed */
+  transition: margin-left 0.3s; /* Smooth transition for margin change */
   box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.main-content.sidebar-open {
+  width: calc(100% - 250px); /* Adjust width for when the sidebar is open */
+  margin-left: 250px; /* Shift content to the right when the sidebar is open */
+}
+
+.main-content.sidebar-closed {
+  width: calc(100% - 60px); /* Adjust width for when the sidebar is closed */
+  margin-left: 60px; /* Default margin-left */
 }
 
 /* Widget container styles */

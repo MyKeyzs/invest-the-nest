@@ -2,6 +2,7 @@
   --c-border: #9F2042;
   --c-background: #E3E4DB;
   --c-text: #441151;
+  --c-hover-border: #00ff00; /* Green color for hover border */
 }
 
 body {
@@ -44,18 +45,46 @@ body {
   font-size: 1.25rem;
   color: var(--c-text);
   display: block;
-  transition: 0.3s;
+  position: relative; /* Required for pseudo-element positioning */
+  transition: color 0.3s;
 }
 
 .sidebar a:hover {
   color: var(--c-border);
 }
 
+/* Green line effect on top and bottom of the sidebar options on hover */
+.sidebar a::before,
+.sidebar a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Thickness of the green line */
+  background-color: var(--c-hover-border); /* Green color */
+  transition: opacity 0.3s;
+}
+
+.sidebar a::before {
+  top: 0;
+  opacity: 0; /* Hide by default */
+}
+
+.sidebar a::after {
+  bottom: 0;
+  opacity: 0; /* Hide by default */
+}
+
+.sidebar a:hover::before,
+.sidebar a:hover::after {
+  opacity: 1; /* Show the green line on hover */
+}
+
 .sparkle {
   max-width: 10em;
   color: var(--c-text);
   &:hover {
-      cursor: pointer;
+    cursor: pointer;
   }
 }
 

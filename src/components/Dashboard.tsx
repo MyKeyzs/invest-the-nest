@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TopTickers from './TopTickers';
 import Chart from './Chart';
 import Positions from './Positions';
@@ -7,10 +7,19 @@ import GroupedBars from './GroupedBars';
 import './Dashboard.css'; // Ensure you have the CSS file imported
 
 const Dashboard: React.FC = () => {
+  // State to track sidebar open/closed status
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className="dashboard">
-      <Sidebar />
-      <div className="main-content">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <div
+        className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}
+      >
         <div className="widget ticker-container">
           <TopTickers />
         </div>
