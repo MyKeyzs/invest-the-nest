@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TickerSection from './TickerSection'; // Import the TickerSection component
+//import TickerSection from './TickerSection'; // Import the TickerSection component
 
 const Navbar: React.FC = () => {
   return (

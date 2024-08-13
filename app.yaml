@@ -1,0 +1,12 @@
+runtime: nodejs16
+
+handlers:
+  - url: /
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /
+    static_dir: public
+
+  - url: /(.*)
+    script: auto
