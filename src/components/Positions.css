@@ -1,0 +1,64 @@
+.positions-container {
+    background-color: #1f2937; /* bg-gray-900 */
+    color: white;
+    padding: 1rem; /* p-4 */
+    border-radius: 0.375rem; /* rounded-md */
+  }
+  
+  .positions-title {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: bold; /* font-bold */
+    text-align: center;
+  }
+  
+  .positions-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+  
+  .header-item {
+    width: 25%; /* w-1/4 */
+    text-align: center;
+  }
+  
+  .positions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .positions-item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem; /* Optional spacing between items */
+  }
+  
+  .item-symbol {
+    width: 25%; /* w-1/4 */
+    text-align: center;
+    font-family: monospace; /* font-mono */
+  }
+  
+  .item-input {
+    width: 25%; /* w-1/4 */
+    text-align: center;
+    background-color: #374151; /* bg-gray-800 */
+    color: white;
+    padding: 0.25rem; /* p-1 */
+    border-radius: 0.375rem; /* rounded */
+  }
+  
+  .item-price, .item-total {
+    width: 25%; /* w-1/4 */
+    text-align: center;
+  }
+  
+  .item-total.positive {
+    color: #10b981; /* text-green-500 */
+  }
+  
+  .item-total.negative {
+    color: #ef4444; /* red color for negative values */
+  }
+  
