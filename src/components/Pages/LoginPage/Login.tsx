@@ -26,8 +26,8 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
     onSuccess(); // Handle successful login
   };
 
-  const handleGoogleFailure = (error: any) => {
-    console.error('Google login failed:', error);
+  const handleGoogleFailure = () => {
+    console.error('Google login failed.');
     setErrorMessage('Google login failed. Please try again.');
   };
 
@@ -75,9 +75,8 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
           <div className="form-group">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
-              onFailure={handleGoogleFailure}
+              onError={() => handleGoogleFailure()} // Anonymous function wrapper to satisfy the expected type
               ux_mode="popup"
-              prompt="select_account"
             />
           </div>
         </form>
