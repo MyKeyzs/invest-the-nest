@@ -24,7 +24,11 @@ ChartJS.register(
   Legend
 );
 
-const Chart: React.FC = () => {
+interface ChartProps {
+  ticker: string;
+}
+
+const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const [timeframe, setTimeframe] = useState('1M');
   const [chartData, setChartData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +36,7 @@ const Chart: React.FC = () => {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/${getStartDate(timeframe)}/${getEndDate()}`, {
+        const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${getStartDate(timeframe)}/${getEndDate()}`, {
           params: {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
           },
@@ -46,7 +50,7 @@ const Chart: React.FC = () => {
         setChartData({
           datasets: [
             {
-              label: `AAPL ${timeframe} Data`,
+              label: `${ticker} ${timeframe} Data`,
               data,
               fill: false,
               backgroundColor: 'rgba(75,192,192,0.4)',
@@ -62,7 +66,7 @@ const Chart: React.FC = () => {
     };
 
     fetchChartData();
-  }, [timeframe]);
+  }, [ticker, timeframe]); // Re-fetch data when the ticker or timeframe changes
 
   const getStartDate = (timeframe: string) => {
     const now = new Date();
@@ -88,7 +92,7 @@ const Chart: React.FC = () => {
 
   return (
     <div className="bg-gray-900 text-white p-4 rounded-md">
-      <div className="chart-title">Test!</div>
+      <div className="chart-title">{ticker} Chart</div>
       <div className="flex justify-between mb-4">
         {['1D', '1W', '1M', '6M', '1Y'].map((tf) => (
           <button

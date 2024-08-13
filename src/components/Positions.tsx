@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Positions.css'; // Import the CSS file
+import './Positions.css';
 
 interface PositionData {
   symbol: string;
@@ -9,15 +9,24 @@ interface PositionData {
   total?: number;
 }
 
-const Positions: React.FC = () => {
-  const [positions, setPositions] = useState<PositionData[]>([
-    { symbol: 'AAPL', shares: 10 },
-    { symbol: 'GOOGL', shares: 5 },
-    { symbol: 'MSFT', shares: 20 },
-    { symbol: 'AMZN', shares: 2 },
-    { symbol: 'TSLA', shares: 7 },
-  ]);
+interface PositionsProps {
+  onSelectTicker: (symbol: string) => void; // Correctly type the onSelectTicker prop
+}
+
+const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
+  const [positions, setPositions] = useState<PositionData[]>(() => {
+    const savedPositions = localStorage.getItem('positions');
+    return savedPositions ? JSON.parse(savedPositions) : [
+      { symbol: 'AAPL', shares: 10 },
+      { symbol: 'GOOGL', shares: 5 },
+      { symbol: 'MSFT', shares: 20 },
+      { symbol: 'AMZN', shares: 2 },
+      { symbol: 'TSLA', shares: 7 },
+    ];
+  });
+
   const [error, setError] = useState<string | null>(null);
+  const [newTicker, setNewTicker] = useState<string>(''); // State to handle new ticker input
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -51,12 +60,17 @@ const Positions: React.FC = () => {
           setError('Invalid data format received from API.');
         }
       } catch (error) {
+        console.error('Error fetching stock prices:', error);
         setError('Error fetching stock prices. Please try again later.');
       }
     };
 
     fetchPrices();
-  }, []);
+  }, [positions]);
+
+  useEffect(() => {
+    localStorage.setItem('positions', JSON.stringify(positions));
+  }, [positions]);
 
   const handleSharesChange = (symbol: string, shares: number) => {
     setPositions(prevPositions =>
@@ -66,6 +80,21 @@ const Positions: React.FC = () => {
           : position
       )
     );
+  };
+
+  const handleAddTicker = () => {
+    if (newTicker && !positions.some(position => position.symbol === newTicker.toUpperCase())) {
+      setPositions([...positions, { symbol: newTicker.toUpperCase(), shares: 0 }]);
+      setNewTicker(''); // Clear the input after adding
+    }
+  };
+
+  const handleDeleteTicker = (symbol: string) => {
+    setPositions(prevPositions => prevPositions.filter(position => position.symbol !== symbol));
+  };
+
+  const calculateTotalValue = () => {
+    return positions.reduce((sum, position) => sum + (position.total || 0), 0).toFixed(2);
   };
 
   return (
@@ -84,7 +113,14 @@ const Positions: React.FC = () => {
           <ul className="positions-list">
             {positions.map((position) => (
               <li key={position.symbol} className="positions-item">
-                <span className="item-symbol">{position.symbol}</span>
+                <span className="item-remove" onClick={() => handleDeleteTicker(position.symbol)}>x</span>
+                <span
+                  className="item-symbol"
+                  onClick={() => onSelectTicker(position.symbol)} // Properly handle the click event
+                  style={{ cursor: 'pointer', color: 'lightblue' }} // Styling for clickable items
+                >
+                  {position.symbol}
+                </span>
                 <input
                   type="number"
                   value={position.shares}
@@ -100,6 +136,22 @@ const Positions: React.FC = () => {
               </li>
             ))}
           </ul>
+          <div className="total-value">
+            <span>Total Value: </span>
+            <span className="total-value-amount">{calculateTotalValue()}</span>
+          </div>
+          <div className="add-ticker">
+            <input
+              type="text"
+              value={newTicker}
+              onChange={(e) => setNewTicker(e.target.value)}
+              placeholder="Enter ticker symbol"
+              className="ticker-input"
+            />
+            <button onClick={handleAddTicker} className="add-ticker-button">
+              + Add Ticker
+            </button>
+          </div>
         </div>
       )}
     </div>

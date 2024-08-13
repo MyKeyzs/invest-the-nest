@@ -52,3 +52,28 @@ body {
     float: none;
   }
 }
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the page takes up the full viewport height */
+}
+
+.navbar {
+  height: 60px; /* Adjust the height according to your navbar */
+  background-color: #1f2937; /* Example navbar color */
+  position: sticky; /* Stick to the top of the page */
+  top: 0;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.content-container {
+  padding-top: 60px; /* Ensure content starts below the navbar */
+  flex-grow: 1; /* Allow the content area to grow and fill available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 20px; /* Add margin to separate components from the navbar */
+  overflow: auto;
+}

@@ -6,7 +6,13 @@ import Sidebar from './Sidebar';
 import GroupedBars from './GroupedBars';
 import './Dashboard.css'; // Ensure you have the CSS file imported
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onSelectTicker: (symbol: string) => void;
+  selectedTicker: string;
+  isLoggedIn: boolean;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onSelectTicker, selectedTicker, isLoggedIn }) => {
   // State to track sidebar open/closed status
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -23,17 +29,23 @@ const Dashboard: React.FC = () => {
         <div className="widget ticker-container">
           <TopTickers />
         </div>
-        <div className="widget flex">
-          <div className="flex-grow">
-            <Chart />
-          </div>
-          <div className="ml-6 w-1/4">
-            <Positions />
-          </div>
-        </div>
-        <div className="widget mt-6">
-          <GroupedBars />
-        </div>
+        {isLoggedIn ? (
+          <>
+            <div className="widget flex">
+              <div className="flex-grow">
+                <Chart ticker={selectedTicker} />
+              </div>
+              <div className="ml-6 w-1/4">
+                <Positions onSelectTicker={onSelectTicker} />
+              </div>
+            </div>
+            <div className="widget mt-6">
+              <GroupedBars />
+            </div>
+          </>
+        ) : (
+          <p>Please log in to view your dashboard.</p>
+        )}
       </div>
     </div>
   );

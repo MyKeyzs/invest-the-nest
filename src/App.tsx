@@ -15,6 +15,7 @@ const clientId = "840424813504-76is67v0uhsb2r92g91kltdd765416p9.apps.googleuserc
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [selectedTicker, setSelectedTicker] = useState('AAPL'); // Default ticker
 
   useEffect(() => {
     function start() {
@@ -37,17 +38,21 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="App">
-        <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-        <Routes>
-          <Route path="/" element={<Login onSuccess={handleLogin} />} />
-          <Route path="/home" element={<Dashboard />} />
-          <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/market-calendar" element={<MarketCalendar />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/sectors" element={<Sectors />} />
-        </Routes>
+      <div className="main-container">
+        <header className="navbar">
+          <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+        </header>
+        <main className="content-container">
+          <Routes>
+            <Route path="/" element={<Login onSuccess={handleLogin} />} />
+            <Route path="/home" element={<Dashboard onSelectTicker={setSelectedTicker} selectedTicker={selectedTicker} isLoggedIn={isLoggedIn} />} />
+            <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/market-calendar" element={<MarketCalendar />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/sectors" element={<Sectors />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );
