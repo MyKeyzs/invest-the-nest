@@ -7,54 +7,95 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
+  ChartTypeRegistry,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Chart } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
 
+// Import the financial plugin (candlestick chart)
+import { CandlestickController, CandlestickElement } from 'chartjs-chart-financial';
+
+// Register the required components and plugins
 ChartJS.register(
   TimeScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  CandlestickController,
+  CandlestickElement
 );
 
 interface ChartProps {
   ticker: string;
 }
 
-const Chart: React.FC<ChartProps> = ({ ticker }) => {
+const ChartComponent: React.FC<ChartProps> = ({ ticker }) => {
   const [timeframe, setTimeframe] = useState('1M');
+  const [chartType, setChartType] = useState<keyof ChartTypeRegistry>('line');
   const [chartData, setChartData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${getStartDate(timeframe)}/${getEndDate()}`, {
+        const { timespan, multiplier, fromDate } = getTimeframeSettings(timeframe);
+        const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${fromDate}/${getEndDate()}`, {
           params: {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
           },
         });
 
-        const data = response.data.results.map((result: any) => ({
-          x: new Date(result.t),
-          y: result.c,
-        }));
+        let data;
+        if (chartType === 'line') {
+          data = response.data.results.map((result: any, index: number, array: any[]) => {
+            if (index === 0) {
+              return {
+                x: new Date(result.t),
+                y: result.c,
+                color: 'rgba(0, 255, 0, 1)', // Default to green for the first data point
+              };
+            }
+            const prevClose = array[index - 1].c;
+            return {
+              x: new Date(result.t),
+              y: result.c,
+              color: result.c >= prevClose ? 'rgba(0, 255, 0, 1)' : 'rgba(255, 0, 0, 1)',
+            };
+          });
+        } else {
+          data = response.data.results.map((result: any) => ({
+            x: new Date(result.t),
+            o: result.o,
+            h: result.h,
+            l: result.l,
+            c: result.c,
+          }));
+        }
 
         setChartData({
           datasets: [
             {
               label: `${ticker} ${timeframe} Data`,
               data,
+              type: chartType,
               fill: false,
-              backgroundColor: 'rgba(75,192,192,0.4)',
-              borderColor: 'rgba(75,192,192,1)',
+              segment: chartType === 'line' ? {
+                borderColor: (context: any) => {
+                  const index = context.p1DataIndex;
+                  return data[index].color;
+                },
+              } : undefined,
+              backgroundColor: chartType === 'candlestick' ? 'rgba(0, 0, 0, 0)' : undefined,
+              borderColor: chartType === 'candlestick' ? undefined : undefined,
+              borderWidth: chartType === 'candlestick' ? 1 : 2,
             },
           ],
         });
@@ -66,24 +107,57 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
     };
 
     fetchChartData();
-  }, [ticker, timeframe]); // Re-fetch data when the ticker or timeframe changes
+  }, [ticker, timeframe, chartType]); // Re-fetch data when the ticker, timeframe, or chart type changes
 
-  const getStartDate = (timeframe: string) => {
+  const getTimeframeSettings = (timeframe: string) => {
     const now = new Date();
+    let timespan = 'day';
+    let multiplier = 1;
+    let fromDate = '';
+
     switch (timeframe) {
       case '1D':
-        return new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
+        timespan = 'minute';
+        fromDate = new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
+        break;
       case '1W':
-        return new Date(now.setDate(now.getDate() - 7)).toISOString().split('T')[0];
+        timespan = 'hour';
+        fromDate = new Date(now.setDate(now.getDate() - 7)).toISOString().split('T')[0];
+        break;
       case '1M':
-        return new Date(now.setMonth(now.getMonth() - 1)).toISOString().split('T')[0];
+        timespan = 'day';
+        fromDate = new Date(now.setMonth(now.getMonth() - 1)).toISOString().split('T')[0];
+        break;
+      case '3M':
+        timespan = 'day';
+        fromDate = new Date(now.setMonth(now.getMonth() - 3)).toISOString().split('T')[0];
+        break;
       case '6M':
-        return new Date(now.setMonth(now.getMonth() - 6)).toISOString().split('T')[0];
+        timespan = 'day';
+        fromDate = new Date(now.setMonth(now.getMonth() - 6)).toISOString().split('T')[0];
+        break;
       case '1Y':
-        return new Date(now.setFullYear(now.getFullYear() - 1)).toISOString().split('T')[0];
+        timespan = 'week';
+        fromDate = new Date(now.setFullYear(now.getFullYear() - 1)).toISOString().split('T')[0];
+        break;
+      case '5Y':
+        timespan = 'month';
+        fromDate = new Date(now.setFullYear(now.getFullYear() - 5)).toISOString().split('T')[0];
+        break;
+      case '10Y':
+        timespan = 'quarter';
+        fromDate = new Date(now.setFullYear(now.getFullYear() - 10)).toISOString().split('T')[0];
+        break;
+      case 'YTD':
+        timespan = 'day';
+        fromDate = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+        break;
       default:
-        return new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
+        fromDate = new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
+        break;
     }
+
+    return { timespan, multiplier, fromDate };
   };
 
   const getEndDate = () => {
@@ -93,21 +167,36 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   return (
     <div className="bg-gray-900 text-white p-4 rounded-md">
       <div className="chart-title">{ticker} Chart</div>
-      <div className="flex justify-between mb-4">
-        {['1D', '1W', '1M', '6M', '1Y'].map((tf) => (
+      <div className="timeframes-container">
+        {['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', '10Y', 'YTD'].map((tf) => (
           <button
             key={tf}
-            className={`px-4 py-2 rounded ${timeframe === tf ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-blue-600`}
+            className={`timeframe-button ${timeframe === tf ? 'active' : ''}`}
             onClick={() => setTimeframe(tf)}
           >
             {tf}
           </button>
         ))}
       </div>
+      <div className="chart-type-toggle">
+        <button
+          className={`toggle-button ${chartType === 'line' ? 'active' : ''}`}
+          onClick={() => setChartType('line')}
+        >
+          Line
+        </button>
+        <button
+          className={`toggle-button ${chartType === 'candlestick' ? 'active' : ''}`}
+          onClick={() => setChartType('candlestick')}
+        >
+          Candles
+        </button>
+      </div>
       {error ? (
         <p>{error}</p>
       ) : chartData ? (
-        <Line
+        <Chart
+          type={chartType}
           data={chartData}
           options={{
             responsive: true,
@@ -123,9 +212,24 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
                 },
               },
               y: {
+                position: 'right', // Move y-axis to the right side
                 title: {
                   display: true,
                   text: 'Price',
+                },
+              },
+            },
+            plugins: {
+              tooltip: {
+                mode: 'index',
+                intersect: false,
+              },
+            },
+            elements: {
+              candlestick: {
+                color: {
+                  up: 'rgba(0, 255, 0, 1)',
+                  down: 'rgba(255, 0, 0, 1)',
                 },
               },
             },
@@ -138,4 +242,4 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   );
 };
 
-export default Chart;
+export default ChartComponent;

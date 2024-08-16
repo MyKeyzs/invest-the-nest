@@ -5,6 +5,7 @@ import Positions from './Positions';
 import Sidebar from './Sidebar';
 import GroupedBars from './GroupedBars';
 import './Dashboard.css'; // Ensure you have the CSS file imported
+  
 
 interface DashboardProps {
   onSelectTicker: (symbol: string) => void;
@@ -15,6 +16,8 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ onSelectTicker, selectedTicker, isLoggedIn }) => {
   // State to track sidebar open/closed status
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

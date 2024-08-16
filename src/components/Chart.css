@@ -18,3 +18,54 @@
 .chart-title:hover {
   color: #00ff00; /* Change to green on hover */
 }
+
+.timeframes-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.timeframe-button {
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.4rem;
+  border-radius: 0.25rem;
+  background-color: #4a5568; /* Default gray color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem; /* Smaller font size */
+  transition: background-color 0.2s;
+}
+
+.timeframe-button.active {
+  background-color: #3182ce; /* Active blue color */
+}
+
+.timeframe-button:hover {
+  background-color: #2b6cb0; /* Hover color */
+}
+
+.chart-type-toggle {
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+.toggle-button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #4a5568; /* Default gray color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem; /* Smaller font size */
+  transition: background-color 0.2s;
+}
+
+.toggle-button.active {
+  background-color: #3182ce; /* Active blue color */
+}
+
+.toggle-button:hover {
+  background-color: #2b6cb0; /* Hover color */
+}

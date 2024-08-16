@@ -15,6 +15,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-chart-financial": "^0.2.1",
     "date-fns": "^3.6.0",
     "firebase": "^10.12.5",
     "gapi-script": "^1.2.0",

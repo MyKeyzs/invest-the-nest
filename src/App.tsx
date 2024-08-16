@@ -8,8 +8,10 @@ import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
 import Sectors from './components/Sectors';
 import Login from './components/Pages/LoginPage/Login';
+import { AuthProvider } from './components/Authentication/AuthContext';
 import Logout from './components/Logout';
 import { gapi } from 'gapi-script';
+
 
 const clientId = "840424813504-76is67v0uhsb2r92g91kltdd765416p9.apps.googleusercontent.com";
 
@@ -37,24 +39,26 @@ const App: React.FC = () => {
   };
 
   return (
-    <Router>
-      <div className="main-container">
-        <header className="navbar">
-          <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-        </header>
-        <main className="content-container">
-          <Routes>
-            <Route path="/" element={<Login onSuccess={handleLogin} />} />
-            <Route path="/home" element={<Dashboard onSelectTicker={setSelectedTicker} selectedTicker={selectedTicker} isLoggedIn={isLoggedIn} />} />
-            <Route path="/watchlist" element={<Watchlist />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/market-calendar" element={<MarketCalendar />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="/sectors" element={<Sectors />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+   
+      <Router>
+        <div className="main-container">
+          <header className="navbar">
+            <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+          </header>
+          <main className="content-container">
+            <Routes>
+              <Route path="/" element={<Login onSuccess={handleLogin} />} />
+              <Route path="/home" element={<Dashboard onSelectTicker={setSelectedTicker} selectedTicker={selectedTicker} isLoggedIn={isLoggedIn} />} />
+              <Route path="/watchlist" element={<Watchlist />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/market-calendar" element={<MarketCalendar />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/sectors" element={<Sectors />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+   
   );
 };
 
