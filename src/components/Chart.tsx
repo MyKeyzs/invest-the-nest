@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Chart.css';
 import {
@@ -32,6 +32,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const [timeframe, setTimeframe] = useState('1M');
   const [chartData, setChartData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const chartRef = useRef<any>(null);
+  const [crosshair, setCrosshair] = useState({ x: 0, y: 0, show: false });
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -43,39 +45,48 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
           },
         });
 
-        const data = response.data.results.map((result: any, index: number, array: any[]) => {
-          if (index === 0) {
+        // Log the response data to ensure it is what you expect
+        console.log("API Response:", response.data);
+
+        // Defensive check to ensure response.data.results is defined and an array
+        if (response.data && Array.isArray(response.data.results)) {
+          const data = response.data.results.map((result: any, index: number, array: any[]) => {
+            if (index === 0) {
+              return {
+                x: new Date(result.t),
+                y: result.c,
+                color: 'rgba(0, 255, 0, 1)', // Default to green for the first data point
+              };
+            }
+            const prevClose = array[index - 1].c;
             return {
               x: new Date(result.t),
               y: result.c,
-              color: 'rgba(0, 255, 0, 1)', // Default to green for the first data point
+              color: result.c >= prevClose ? 'rgba(0, 255, 0, 1)' : 'rgba(255, 0, 0, 1)',
             };
-          }
-          const prevClose = array[index - 1].c;
-          return {
-            x: new Date(result.t),
-            y: result.c,
-            color: result.c >= prevClose ? 'rgba(0, 255, 0, 1)' : 'rgba(255, 0, 0, 1)',
-          };
-        });
+          });
 
-        setChartData({
-          datasets: [
-            {
-              label: `${ticker} ${timeframe} Data`,
-              data: data.map((point: any) => ({ x: point.x, y: point.y })),
-              fill: false,
-              segment: {
-                borderColor: (context: any) => {
-                  const index = context.p1DataIndex;
-                  return data[index].color;
+          setChartData({
+            datasets: [
+              {
+                label: `${ticker} ${timeframe} Data`,
+                data: data.map((point: any) => ({ x: point.x, y: point.y })),
+                fill: false,
+                segment: {
+                  borderColor: (context: any) => {
+                    const index = context.p1DataIndex;
+                    return data[index].color;
+                  },
                 },
+                borderWidth: 2,
               },
-              borderWidth: 2,
-            },
-          ],
-        });
-        setError(null); // Clear any previous errors
+            ],
+          });
+          setError(null); // Clear any previous errors
+        } else {
+          console.error('Unexpected API response structure:', response.data);
+          setError('Unexpected data format. Please try again later.');
+        }
       } catch (error) {
         console.error('Error fetching chart data:', error);
         setError('Error fetching chart data. Please try again later.');
@@ -84,7 +95,6 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
 
     fetchChartData();
   }, [ticker, timeframe]); // Re-fetch data when the ticker or timeframe changes
-
   const getTimeframeSettings = (timeframe: string) => {
     const now = new Date();
     let timespan = 'day';
@@ -140,52 +150,111 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
     return new Date().toISOString().split('T')[0];
   };
 
+  const handleMouseMove = (event: React.MouseEvent) => {
+    const chart = chartRef.current;
+    if (chart && chart.chartArea) {
+      const chartArea = chart.chartArea;
+      const rect = chart.canvas.getBoundingClientRect();
+  
+      // Get the position of the timeframe container
+      const timeframeContainer = document.querySelector('.timeframes-container');
+      const timeframeHeight = timeframeContainer ? timeframeContainer.clientHeight : 0;
+  
+      // Calculate the mouse position relative to the chart area
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top - timeframeHeight;
+  
+      // Adjust the Y position of the horizontal crosshair
+      const offsetY = 125; // Change this value to whatever offset you need
+      const adjustedY = y + offsetY;
+  
+      if (
+        x >= chartArea.left &&
+        x <= chartArea.right &&
+        adjustedY >= chartArea.top &&
+        adjustedY <= chartArea.bottom
+      ) {
+        setCrosshair({ x, y: adjustedY, show: true });
+        console.log('rect.top:', rect.top);
+        console.log('timeframeHeight:', timeframeHeight);
+        console.log('final adjustedY:', adjustedY);
+      } else {
+        setCrosshair({ ...crosshair, show: false });
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCrosshair({ ...crosshair, show: false });
+  };
+
+
   return (
-    <div className="bg-gray-900 text-white p-4 rounded-md">
-  <div className="chart-title">{ticker} Chart</div> {/* Centered Title */}
-  <div className="timeframes-container">
-    {['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', '10Y', 'YTD'].map((tf) => (
-      <button
-        key={tf}
-        className={`timeframe-button ${timeframe === tf ? 'active' : ''}`}
-        onClick={() => setTimeframe(tf)}
-      >
-        {tf}
-      </button>
-    ))}
-  </div>
-  {error ? (
-    <p>{error}</p>
-  ) : chartData ? (
-    <Line
-      data={chartData}
-      options={{
-        responsive: true,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day',
-            },
-            title: {
-              display: true,
-              text: 'Date',
-            },
-          },
-          y: {
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Price',
-            },
-          },
-        },
-      }}
-    />
-  ) : (
-    <p>Loading chart data...</p>
-  )}
-</div>
+    <div
+      className="bg-gray-900 text-white p-4 rounded-md chart-container"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="chart-title">{ticker} Chart</div> {/* Centered Title */}
+      <div className="timeframes-container">
+        {['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', '10Y', 'YTD'].map((tf) => (
+          <button
+            key={tf}
+            className={`timeframe-button ${timeframe === tf ? 'active' : ''}`}
+            onClick={() => setTimeframe(tf)}
+          >
+            {tf}
+          </button>
+        ))}
+      </div>
+      {error ? (
+        <p>{error}</p>
+      ) : chartData ? (
+        <>
+          <Line
+            ref={chartRef}
+            data={chartData}
+            options={{
+              responsive: true,
+              scales: {
+                x: {
+                  type: 'time',
+                  time: {
+                    unit: 'day',
+                  },
+                  title: {
+                    display: true,
+                    text: 'Date',
+                  },
+                },
+                y: {
+                  position: 'right',
+                  title: {
+                    display: true,
+                    text: 'Price',
+                  },
+                },
+              },
+            }}
+          />
+          {/* Conditionally render the crosshair within the chart boundaries */}
+          {crosshair.show && (
+            <>
+              <div
+                className="chartjs-crosshair horizontal"
+                style={{ top: `${crosshair.y}px`, width: `${chartRef.current?.canvas.clientWidth}px` }}
+              />
+              <div
+                className="chartjs-crosshair vertical"
+                style={{ left: `${crosshair.x}px`, height: `${chartRef.current?.canvas.clientHeight}px` }}
+              />
+            </>
+          )}
+        </>
+      ) : (
+        <p>Loading chart data...</p>
+      )}
+    </div>
   );
 };
 

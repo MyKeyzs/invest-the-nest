@@ -1,8 +1,9 @@
 .chart-container {
+  position: relative;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0; /* No padding to prevent crosshair offset issues */
   box-sizing: border-box;
 }
 
@@ -12,14 +13,13 @@
   color: #fff;
   margin-bottom: 0.5rem;
   transition: color 0.3s ease;
-  text-align: center; /* Center the title itself */
-  display: block; /* Ensure it behaves like a block element */
-  width: 100%; /* Occupy full width to center itself */
+  text-align: center;
+  display: block;
+  width: 100%;
 }
 .chart-title:hover {
-  color: #00ff00; /* Change to green on hover */
+  color: #00ff00;
 }
-
 
 .timeframes-container {
   display: flex;
@@ -74,7 +74,22 @@
 
 /* Crosshair styling */
 .chartjs-crosshair {
+  position: absolute;
+  pointer-events: none;
   border-color: white !important;
   border-width: 1px !important;
   border-style: dashed !important;
+  z-index: 10;
+}
+
+.chartjs-crosshair.horizontal {
+  height: 1px;
+  top: 0;
+  left: 0;
+}
+
+.chartjs-crosshair.vertical {
+  width: 1px;
+  top: 0;
+  left: 0;
 }
