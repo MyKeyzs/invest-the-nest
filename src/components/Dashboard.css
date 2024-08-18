@@ -12,6 +12,7 @@
   width: calc(100% - 250px); /* Default width assuming sidebar is closed */
   transition: margin-left 0.3s; /* Smooth transition for margin change */
   box-sizing: border-box; /* Ensure padding is included in the width */
+  padding-top: 60px; /* Adjust the padding to match the height of the navbar */
 }
 
 .main-content.sidebar-open {

@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout }) => {
   };
 
   return (
-    <nav className="bg-gray-900 p-4 flex items-center justify-between">
+    <nav className="bg-gray-900 p-4 flex items-center justify-between fixed top-0 left-0 w-full z-50">
       <div className="flex items-center space-x-4">
         <button className="p-2 focus:outline-none">
           <svg
