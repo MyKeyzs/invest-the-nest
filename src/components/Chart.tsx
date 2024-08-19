@@ -33,6 +33,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const [chartData, setChartData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [ohlcData, setOhlcData] = useState<any>(null); // State to hold OHLC data
+  const [currentOHLC, setCurrentOHLC] = useState<any>(null); // State to hold the current OHLC data
+  const [showOHLC, setShowOHLC] = useState(true); // State to toggle OHLC visibility
   const chartRef = useRef<any>(null);
   const [crosshair, setCrosshair] = useState({ x: 0, y: 0, show: false });
 
@@ -81,6 +83,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
           });
 
           setOhlcData(data); // Store the OHLC data for the tooltip
+          setCurrentOHLC(data[data.length - 1]); // Initialize with the most recent data point
           setError(null); 
         } else {
           console.error('Unexpected API response structure:', response.data);
@@ -166,36 +169,64 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
         y <= chartArea.bottom
       ) {
         setCrosshair({ x, y, show: true });
+        updateCurrentOHLC(x); // Update OHLC based on crosshair position
       } else {
         setCrosshair({ ...crosshair, show: false });
+        setCurrentOHLC(ohlcData[ohlcData.length - 1]); // Reset to the latest data when outside the chart
       }
     }
   };
 
   const handleMouseLeave = () => {
     setCrosshair({ ...crosshair, show: false });
+    setCurrentOHLC(ohlcData[ohlcData.length - 1]); // Reset to the latest data when outside the chart
   };
 
-  const getCurrentOHLC = () => {
-    if (!chartRef.current || !ohlcData) return null;
+  const updateCurrentOHLC = (x: number) => {
+    if (!chartRef.current || !ohlcData) return;
     const xScale = chartRef.current.scales.x;
-    const index = xScale.getValueForPixel(crosshair.x);
-    if (index >= 0 && index < ohlcData.length) {
-      return ohlcData[index];
-    }
-    return ohlcData[ohlcData.length - 1]; // Return the last available OHLC data as default
-  };
+    const index = xScale.getValueForPixel(x);
+    
+    // Find the closest data point
+    const closestIndex = ohlcData.findIndex((d: any) => d.x.getTime() === index);
 
-  const currentOHLC = getCurrentOHLC();
+    if (closestIndex !== -1) {
+      setCurrentOHLC(ohlcData[closestIndex]);
+    } else {
+      const closestDataPoint = ohlcData.reduce((prev: any, curr: any) => {
+        return Math.abs(curr.x.getTime() - index) <
+          Math.abs(prev.x.getTime() - index)
+          ? curr
+          : prev;
+      });
+
+      setCurrentOHLC(closestDataPoint);
+    }
+  };
 
   return (
     <div
-      className="bg-gray-900 text-white p-4 rounded-md chart-container"
+      className="bg-gray-900 text-white p-4 rounded-md chart-container relative"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <div className={`chart-title`}>
         <span className="chart-text">{`${ticker} Chart`}</span>
+        <button
+          onClick={() => setShowOHLC(!showOHLC)}
+          style={{
+            marginLeft: '20px',
+            padding: '2px 5px',
+            backgroundColor: showOHLC ? '#1f2937' : '#6b7280',
+            color: 'white',
+            border: 'none',
+            borderRadius: '2px',
+            cursor: 'pointer',
+            fontSize: '10px',
+          }}
+        >
+          {showOHLC ? 'Hide OHLC' : 'Show OHLC'}
+        </button>
       </div>
       <div className="timeframes-container">
         {['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', '10Y', 'YTD'].map((tf) => (
@@ -297,19 +328,21 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
                 />
               </>
             )}
-            {currentOHLC && (
+            {showOHLC && currentOHLC && (
               <div
                 className="ohlc-tooltip"
                 style={{
                   position: "absolute",
                   top: "10px",
-                  right: "10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
                   backgroundColor: "rgba(0, 0, 0, 0.8)",
                   color: "white",
                   padding: "5px",
                   borderRadius: "3px",
                   fontSize: "12px",
                   pointerEvents: "none",
+                  zIndex: 1,
                 }}
               >
                 <div>O: {currentOHLC.open}</div>
