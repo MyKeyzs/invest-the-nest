@@ -4,9 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 interface NavbarProps {
   isLoggedIn: boolean;
   handleLogout: () => void;
+  handleLogoClick: () => void; // Add this line
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout, handleLogoClick }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,11 +45,13 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
-        {isLoggedIn && (
-          <Link to="/home" className="text-xl font-bold text-white ml-2">
-            Invest the Nest
-          </Link>
-        )}
+        <div onClick={handleLogoClick} className="cursor-pointer">
+          {isLoggedIn && (
+            <span className="text-xl font-bold text-white ml-2">
+              Invest the Nest
+            </span>
+          )}
+        </div>
       </div>
       <div className="flex-grow flex items-center space-x-6">
         <input

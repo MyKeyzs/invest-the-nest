@@ -16,13 +16,15 @@ interface PositionsProps {
 const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   const [positions, setPositions] = useState<PositionData[]>(() => {
     const savedPositions = localStorage.getItem('positions');
-    return savedPositions ? JSON.parse(savedPositions) : [
-      { symbol: 'AAPL', shares: 10 },
-      { symbol: 'GOOGL', shares: 5 },
-      { symbol: 'MSFT', shares: 20 },
-      { symbol: 'AMZN', shares: 2 },
-      { symbol: 'TSLA', shares: 7 },
-    ];
+    return savedPositions
+      ? JSON.parse(savedPositions)
+      : [
+          { symbol: 'AAPL', shares: 10 },
+          { symbol: 'GOOGL', shares: 5 },
+          { symbol: 'MSFT', shares: 20 },
+          { symbol: 'AMZN', shares: 2 },
+          { symbol: 'TSLA', shares: 7 },
+        ];
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -31,25 +33,25 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const symbols = positions.map(position => position.symbol).join(',');
+        const symbols = positions.map((position) => position.symbol).join(',');
 
         const response = await axios.get('https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers', {
           params: {
             tickers: symbols,
-            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX',
+            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
           },
         });
 
         if (response.data && response.data.tickers) {
-          const data = response.data.tickers.reduce((acc: any, ticker: any) => {
+          const data = response.data.tickers.reduce((acc: Record<string, number>, ticker: any) => {
             if (ticker && ticker.ticker && ticker.day && ticker.day.c) {
               acc[ticker.ticker] = ticker.day.c;
             }
             return acc;
           }, {});
 
-          setPositions(prevPositions =>
-            prevPositions.map(position => ({
+          setPositions((prevPositions) =>
+            prevPositions.map((position) => ({
               ...position,
               price: data[position.symbol] || 0,
               total: (data[position.symbol] || 0) * position.shares,
@@ -65,16 +67,21 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
       }
     };
 
-    fetchPrices();
-  }, [positions]);
+    fetchPrices(); // Fetch initial prices
 
+    const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []); // Empty dependency array means this useEffect runs only once on mount
+
+  // Save positions to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('positions', JSON.stringify(positions));
   }, [positions]);
 
   const handleSharesChange = (symbol: string, shares: number) => {
-    setPositions(prevPositions =>
-      prevPositions.map(position =>
+    setPositions((prevPositions) =>
+      prevPositions.map((position) =>
         position.symbol === symbol
           ? { ...position, shares, total: (position.price || 0) * shares }
           : position
@@ -83,18 +90,23 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   };
 
   const handleAddTicker = () => {
-    if (newTicker && !positions.some(position => position.symbol === newTicker.toUpperCase())) {
+    if (newTicker && !positions.some((position) => position.symbol === newTicker.toUpperCase())) {
       setPositions([...positions, { symbol: newTicker.toUpperCase(), shares: 0 }]);
       setNewTicker(''); // Clear the input after adding
     }
   };
 
   const handleDeleteTicker = (symbol: string) => {
-    setPositions(prevPositions => prevPositions.filter(position => position.symbol !== symbol));
+    setPositions((prevPositions) => prevPositions.filter((position) => position.symbol !== symbol));
   };
 
   const calculateTotalValue = () => {
     return positions.reduce((sum, position) => sum + (position.total || 0), 0).toFixed(2);
+  };
+
+  const handleClickTicker = (symbol: string) => {
+    console.log(`Ticker clicked: ${symbol}`); // Log when a ticker is clicked
+    onSelectTicker(symbol);
   };
 
   return (
@@ -113,10 +125,12 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
           <ul className="positions-list">
             {positions.map((position) => (
               <li key={position.symbol} className="positions-item">
-                <span className="item-remove" onClick={() => handleDeleteTicker(position.symbol)}>x</span>
+                <span className="item-remove" onClick={() => handleDeleteTicker(position.symbol)}>
+                  x
+                </span>
                 <span
                   className="item-symbol"
-                  onClick={() => onSelectTicker(position.symbol)} // Properly handle the click event
+                  onClick={() => handleClickTicker(position.symbol)} // Handle the click event
                   style={{ cursor: 'pointer', color: 'lightblue' }} // Styling for clickable items
                 >
                   {position.symbol}

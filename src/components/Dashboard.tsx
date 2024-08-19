@@ -7,12 +7,11 @@ import GroupedBars from './GroupedBars';
 import './Dashboard.css';
 
 interface DashboardProps {
-  onSelectTicker: (symbol: string) => void;
-  selectedTicker: string;
   isLoggedIn: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onSelectTicker, selectedTicker, isLoggedIn }) => {
+const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
+  const [selectedTicker, setSelectedTicker] = useState<string>('AAPL');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -30,10 +29,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTicker, selectedTicker, i
           <>
             <div className="widget flex">
               <div className="flex-grow">
-              <ChartComponentWrapped ticker={selectedTicker} />
+                <ChartComponentWrapped ticker={selectedTicker} />
               </div>
               <div className="ml-6 w-1/4">
-                <Positions onSelectTicker={onSelectTicker} />
+                <Positions onSelectTicker={setSelectedTicker} />
               </div>
             </div>
             <div className="widget mt-6">

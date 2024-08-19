@@ -86,3 +86,21 @@
   display: flex; /* Use flexbox for layout */
   justify-content: center; /* Center content horizontally */
 }
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.widget {
+  background-color: #1f2937;
+  border-radius: 8px;
+  padding: 20px;
+  overflow: hidden;
+}
+/*
+.ticker-container, .chart-container, .positions-container, .grouped-bars-container {
+  width: 100%;
+  height: 100%;
+}
+*/

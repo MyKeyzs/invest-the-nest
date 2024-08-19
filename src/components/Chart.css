@@ -1,30 +1,85 @@
-.chart-container {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0; /* No padding to prevent crosshair offset issues */
-  box-sizing: border-box;
-}
-
 .chart-title {
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
   margin-bottom: 0.5rem;
-  transition: color 0.3s ease;
   text-align: center;
-  display: block;
-  width: 100%;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
+
 .chart-title:hover {
   color: #00ff00;
+}
+
+.chart-title.editing {
+  text-align: left;
+}
+
+.chart-text {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.chart-input,
+.chart-save-button,
+.chart-cancel-button {
+  display: none;
+}
+
+.chart-title.editing .chart-text {
+  display: none;
+}
+
+.chart-title.editing .chart-input,
+.chart-title.editing .chart-save-button,
+.chart-title.editing .chart-cancel-button {
+  display: inline-block;
+}
+
+.chart-input {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-bottom: 2px solid #3182ce;
+  outline: none;
+  margin-right: 1rem;
+}
+
+.chart-save-button,
+.chart-cancel-button {
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.chart-save-button {
+  background-color: #3182ce;
+  color: #fff;
+}
+
+.chart-save-button::after {
+  visibility: hidden;
+}
+
+.chart-cancel-button {
+  background-color: #555;
+  color: #fff;
+  margin-left: 0.5rem;
+}
+.chart-cancel-button::after {
+  visibility: hidden;
 }
 
 .timeframes-container {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+  justify-content: center; /* This will center the buttons horizontally */
 }
 
 .timeframe-button {
@@ -37,6 +92,7 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.2s;
+  align-items: center;
 }
 
 .timeframe-button.active {

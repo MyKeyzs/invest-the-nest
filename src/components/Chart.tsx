@@ -45,10 +45,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
           },
         });
 
-        // Log the response data to ensure it is what you expect
         console.log("API Response:", response.data);
 
-        // Defensive check to ensure response.data.results is defined and an array
         if (response.data && Array.isArray(response.data.results)) {
           const data = response.data.results.map((result: any, index: number, array: any[]) => {
             if (index === 0) {
@@ -82,7 +80,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
               },
             ],
           });
-          setError(null); // Clear any previous errors
+          setError(null); 
         } else {
           console.error('Unexpected API response structure:', response.data);
           setError('Unexpected data format. Please try again later.');
@@ -93,8 +91,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
       }
     };
 
-    fetchChartData();
-  }, [ticker, timeframe]); // Re-fetch data when the ticker or timeframe changes
+    fetchChartData(); // Fetch chart data whenever ticker or timeframe changes
+  }, [ticker, timeframe]);
 
   const getTimeframeSettings = (timeframe: string) => {
     const now = new Date();
@@ -105,7 +103,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
     switch (timeframe) {
       case '1D':
         timespan = 'minute';
-        fromDate = new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
+        fromDate = new Date(now.setDate(now.getDate() - 3)).toISOString().split('T')[0];
         break;
       case '1W':
         timespan = 'hour';
@@ -157,11 +155,9 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
       const chartArea = chart.chartArea;
       const rect = chart.canvas.getBoundingClientRect();
 
-      // Calculate the mouse position relative to the chart area
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
-      // Constrain the crosshair within the chart area
       if (
         x >= chartArea.left &&
         x <= chartArea.right &&
@@ -185,7 +181,9 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="chart-title">{ticker} Chart</div> {/* Centered Title */}
+      <div className={`chart-title`}>
+        <span className="chart-text">{`${ticker} Chart`}</span>
+      </div>
       <div className="timeframes-container">
         {['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', '10Y', 'YTD'].map((tf) => (
           <button
@@ -216,6 +214,25 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
                     title: {
                       display: true,
                       text: 'Date',
+                      color: '#ffffff',
+                      font: {
+                        size: 16,
+                        weight: 'bold',
+                      },
+                    },
+                    ticks: {
+                      color: '#ffffff',
+                      font: {
+                        size: 14,
+                        weight: 'bold',
+                      },
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.2)',
+                    },
+                    border: {
+                      color: '#ffffff',
+                      width: 2,
                     },
                   },
                   y: {
@@ -223,12 +240,30 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
                     title: {
                       display: true,
                       text: 'Price',
+                      color: '#ffffff',
+                      font: {
+                        size: 16,
+                        weight: 'bold',
+                      },
+                    },
+                    ticks: {
+                      color: '#ffffff',
+                      font: {
+                        size: 14,
+                        weight: 'bold',
+                      },
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.2)',
+                    },
+                    border: {
+                      color: '#ffffff',
+                      width: 2,
                     },
                   },
                 },
               }}
             />
-            {/* Conditionally render the crosshair within the chart boundaries */}
             {crosshair.show && (
               <>
                 <div
