@@ -32,6 +32,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const [timeframe, setTimeframe] = useState('1M');
   const [chartData, setChartData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [ohlcData, setOhlcData] = useState<any>(null); // State to hold OHLC data
   const chartRef = useRef<any>(null);
   const [crosshair, setCrosshair] = useState({ x: 0, y: 0, show: false });
 
@@ -49,17 +50,15 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
 
         if (response.data && Array.isArray(response.data.results)) {
           const data = response.data.results.map((result: any, index: number, array: any[]) => {
-            if (index === 0) {
-              return {
-                x: new Date(result.t),
-                y: result.c,
-                color: 'rgba(0, 255, 0, 1)', // Default to green for the first data point
-              };
-            }
-            const prevClose = array[index - 1].c;
+            const prevClose = index > 0 ? array[index - 1].c : result.c;
             return {
               x: new Date(result.t),
               y: result.c,
+              open: result.o,  // Store the open value
+              high: result.h,  // Store the high value
+              low: result.l,   // Store the low value
+              close: result.c, // Store the close value
+              volume: result.v, // Store the volume value
               color: result.c >= prevClose ? 'rgba(0, 255, 0, 1)' : 'rgba(255, 0, 0, 1)',
             };
           });
@@ -80,6 +79,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
               },
             ],
           });
+
+          setOhlcData(data); // Store the OHLC data for the tooltip
           setError(null); 
         } else {
           console.error('Unexpected API response structure:', response.data);
@@ -103,7 +104,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
     switch (timeframe) {
       case '1D':
         timespan = 'minute';
-        fromDate = new Date(now.setDate(now.getDate() - 3)).toISOString().split('T')[0];
+        fromDate = new Date(now.setDate(now.getDate() - 1)).toISOString().split('T')[0];
         break;
       case '1W':
         timespan = 'hour';
@@ -174,6 +175,18 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const handleMouseLeave = () => {
     setCrosshair({ ...crosshair, show: false });
   };
+
+  const getCurrentOHLC = () => {
+    if (!chartRef.current || !ohlcData) return null;
+    const xScale = chartRef.current.scales.x;
+    const index = xScale.getValueForPixel(crosshair.x);
+    if (index >= 0 && index < ohlcData.length) {
+      return ohlcData[index];
+    }
+    return ohlcData[ohlcData.length - 1]; // Return the last available OHLC data as default
+  };
+
+  const currentOHLC = getCurrentOHLC();
 
   return (
     <div
@@ -283,6 +296,28 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
                   }}
                 />
               </>
+            )}
+            {currentOHLC && (
+              <div
+                className="ohlc-tooltip"
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  color: "white",
+                  padding: "5px",
+                  borderRadius: "3px",
+                  fontSize: "12px",
+                  pointerEvents: "none",
+                }}
+              >
+                <div>O: {currentOHLC.open}</div>
+                <div>H: {currentOHLC.high}</div>
+                <div>L: {currentOHLC.low}</div>
+                <div>C: {currentOHLC.close}</div>
+                <div>V: {currentOHLC.volume}</div>
+              </div>
             )}
           </>
         ) : (
