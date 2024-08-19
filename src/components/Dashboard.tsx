@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TopTickers from './TopTickers';
 import Positions from './Positions';
 import Sidebar from './Sidebar';
-import ChartComponentWrapped from './Chart';  // Adjust import path if necessary
+import ChartComponentWrapped from './Chart'; 
 import GroupedBars from './GroupedBars';
 import './Dashboard.css';
 
@@ -30,7 +30,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onSelectTicker, selectedTicker, i
           <>
             <div className="widget flex">
               <div className="flex-grow">
-                <ChartComponentWrapped ticker={selectedTicker} />
+              <ChartComponentWrapped ticker={selectedTicker} />
               </div>
               <div className="ml-6 w-1/4">
                 <Positions onSelectTicker={onSelectTicker} />

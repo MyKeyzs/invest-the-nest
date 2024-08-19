@@ -95,6 +95,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
 
     fetchChartData();
   }, [ticker, timeframe]); // Re-fetch data when the ticker or timeframe changes
+
   const getTimeframeSettings = (timeframe: string) => {
     const now = new Date();
     let timespan = 'day';
@@ -155,29 +156,19 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
     if (chart && chart.chartArea) {
       const chartArea = chart.chartArea;
       const rect = chart.canvas.getBoundingClientRect();
-  
-      // Get the position of the timeframe container
-      const timeframeContainer = document.querySelector('.timeframes-container');
-      const timeframeHeight = timeframeContainer ? timeframeContainer.clientHeight : 0;
-  
+
       // Calculate the mouse position relative to the chart area
       const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top - timeframeHeight;
-  
-      // Adjust the Y position of the horizontal crosshair
-      const offsetY = 125; // Change this value to whatever offset you need
-      const adjustedY = y + offsetY;
-  
+      const y = event.clientY - rect.top;
+
+      // Constrain the crosshair within the chart area
       if (
         x >= chartArea.left &&
         x <= chartArea.right &&
-        adjustedY >= chartArea.top &&
-        adjustedY <= chartArea.bottom
+        y >= chartArea.top &&
+        y <= chartArea.bottom
       ) {
-        setCrosshair({ x, y: adjustedY, show: true });
-        console.log('rect.top:', rect.top);
-        console.log('timeframeHeight:', timeframeHeight);
-        console.log('final adjustedY:', adjustedY);
+        setCrosshair({ x, y, show: true });
       } else {
         setCrosshair({ ...crosshair, show: false });
       }
@@ -187,7 +178,6 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const handleMouseLeave = () => {
     setCrosshair({ ...crosshair, show: false });
   };
-
 
   return (
     <div
@@ -207,53 +197,63 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
           </button>
         ))}
       </div>
-      {error ? (
-        <p>{error}</p>
-      ) : chartData ? (
-        <>
-          <Line
-            ref={chartRef}
-            data={chartData}
-            options={{
-              responsive: true,
-              scales: {
-                x: {
-                  type: 'time',
-                  time: {
-                    unit: 'day',
+      <div className="graph-area">
+        {error ? (
+          <p>{error}</p>
+        ) : chartData ? (
+          <>
+            <Line
+              ref={chartRef}
+              data={chartData}
+              options={{
+                responsive: true,
+                scales: {
+                  x: {
+                    type: 'time',
+                    time: {
+                      unit: 'day',
+                    },
+                    title: {
+                      display: true,
+                      text: 'Date',
+                    },
                   },
-                  title: {
-                    display: true,
-                    text: 'Date',
+                  y: {
+                    position: 'right',
+                    title: {
+                      display: true,
+                      text: 'Price',
+                    },
                   },
                 },
-                y: {
-                  position: 'right',
-                  title: {
-                    display: true,
-                    text: 'Price',
-                  },
-                },
-              },
-            }}
-          />
-          {/* Conditionally render the crosshair within the chart boundaries */}
-          {crosshair.show && (
-            <>
-              <div
-                className="chartjs-crosshair horizontal"
-                style={{ top: `${crosshair.y}px`, width: `${chartRef.current?.canvas.clientWidth}px` }}
-              />
-              <div
-                className="chartjs-crosshair vertical"
-                style={{ left: `${crosshair.x}px`, height: `${chartRef.current?.canvas.clientHeight}px` }}
-              />
-            </>
-          )}
-        </>
-      ) : (
-        <p>Loading chart data...</p>
-      )}
+              }}
+            />
+            {/* Conditionally render the crosshair within the chart boundaries */}
+            {crosshair.show && (
+              <>
+                <div
+                  className="chartjs-crosshair horizontal"
+                  style={{
+                    top: `${crosshair.y}px`,
+                    width: `${chartRef.current.chartArea.width}px`,
+                    left: `${chartRef.current.chartArea.left}px`,
+                  }}
+                />
+                <div
+                  className="chartjs-crosshair vertical"
+                  style={{
+                    left: `${crosshair.x}px`,
+                    height: `${chartRef.current.chartArea.height}px`,
+                    top: `${chartRef.current.chartArea.top}px`,
+                  }}
+                />
+              </>
+            )}
+          </>
+        ) : (
+          <p>Loading chart data...</p>
+        )}
+      </div>
     </div>
   );
 };

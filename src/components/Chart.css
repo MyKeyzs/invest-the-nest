@@ -73,6 +73,13 @@
 }
 
 /* Crosshair styling */
+.graph-area {
+  position: relative;
+  width: 100%;
+  height: auto; /* Let the content dictate the height */
+  margin-bottom: 1rem;
+}
+
 .chartjs-crosshair {
   position: absolute;
   pointer-events: none;
@@ -84,12 +91,10 @@
 
 .chartjs-crosshair.horizontal {
   height: 1px;
-  top: 0;
-  left: 0;
+  width: 100%;
 }
 
 .chartjs-crosshair.vertical {
   width: 1px;
-  top: 0;
-  left: 0;
+  height: 100%;
 }
