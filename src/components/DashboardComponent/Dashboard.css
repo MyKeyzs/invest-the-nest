@@ -4,6 +4,7 @@
   color: #d1d5db; /* Light text */
   display: flex; /* Use flexbox for layout */
   box-sizing: border-box; /* Ensure padding is included in the width */
+  flex-direction: column; /* Arrange items vertically */
 }
 
 /* Main content area styles */
@@ -13,6 +14,8 @@
   transition: margin-left 0.3s; /* Smooth transition for margin change */
   box-sizing: border-box; /* Ensure padding is included in the width */
   padding-top: 60px; /* Adjust the padding to match the height of the navbar */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack widgets vertically */
 }
 
 .main-content.sidebar-open {
@@ -32,8 +35,6 @@
   padding: 16px; /* Padding inside the widget */
   border-radius: 8px; /* Rounded corners */
   margin-bottom: 16px; /* Space below each widget */
-  width: 100%; /* Full width of the container */
-  max-width: 100%; /* Ensure widgets do not exceed the container width */
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
@@ -51,9 +52,17 @@
   margin-left: 1.5rem; /* Margin left of 1.5rem */
 }
 
-/* Width utility class */
+/* Width utility classes */
 .w-1-4 {
   width: 25%; /* Width of 25% */
+}
+
+.w-2-3 {
+  width: 66.67%; /* Width of 66.67% */
+}
+
+.w-1-3 {
+  width: 33.33%; /* Width of 33.33% */
 }
 
 /* Margin-top utility class */
@@ -98,9 +107,3 @@
   padding: 20px;
   overflow: hidden;
 }
-/*
-.ticker-container, .chart-container, .positions-container, .grouped-bars-container {
-  width: 100%;
-  height: 100%;
-}
-*/

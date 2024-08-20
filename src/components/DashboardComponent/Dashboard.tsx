@@ -16,15 +16,16 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
 
-  
   const handleSelectTicker = (ticker: string) => {
     setSelectedTicker(ticker);
     // Scroll to the chart component
     if (chartRef.current) {
-      chartRef.current.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({
+        top: chartRef.current.offsetTop - 100, // Scroll a bit higher than the chart
+        behavior: 'smooth',
+      });
     }
   };
-
 
   const handleBarClick = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -50,22 +51,22 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
         {isLoggedIn ? (
           <>
             <div className="widget flex">
-              <div className="flex-grow">
-                <ChartComponentWrapped ticker={selectedTicker} />
+              <div className="w-2-3"> {/* 2/3 width for the chart */}
+                <div ref={chartRef}>
+                  <ChartComponentWrapped ticker={selectedTicker} />
+                </div>
               </div>
-              <div className="ml-6 w-1/4">
+              <div className="ml-6 w-1-3"> {/* 1/3 width for positions */}
                 <Positions onSelectTicker={setSelectedTicker} />
               </div>
             </div>
-            <div className="widget  flex">
-              <div className="w-1/3 ">
-              <GroupedBars onBarClick={handleBarClick} />
-                <GainersAndLosers onSelectTicker={handleSelectTicker} />
-                <div ref={chartRef}>
-                  </div>
-                
+            <div className="widget mt-6 flex">
+              <div className="w-1-3 mr-6"> {/* 1/3 width for GroupedBars */}
+                <GroupedBars onBarClick={handleBarClick} />
               </div>
-             
+              <div className="w-2-3"> {/* 2/3 width for Gainers and Losers */}
+                <GainersAndLosers onSelectTicker={handleSelectTicker} />
+              </div>
             </div>
           </>
         ) : (
