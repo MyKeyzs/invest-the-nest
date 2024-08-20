@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-// Register the necessary components and scales
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -31,20 +30,27 @@ interface GroupedBarData {
   low: number;
 }
 
-const GroupedBars: React.FC = () => {
+interface GroupedBarsProps {
+  onBarClick: (ticker: string) => void;
+}
+
+const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
   const [bars, setBars] = useState<GroupedBarData[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBars = async () => {
       try {
-        const response = await axios.get('https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/2024-08-07?resultsCount=20&', {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1); // Subtract one day from the current date
+        const formattedDate = yesterday.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
+
+        const response = await axios.get(`https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/${formattedDate}`, {
           params: {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
           },
         });
 
-        // Sort the data by volume in descending order and take the top 20
         const data = response.data.results
           .map((bar: any) => ({
             ticker: bar.T,
@@ -82,6 +88,13 @@ const GroupedBars: React.FC = () => {
   };
 
   const options = {
+    onClick: (event: any, elements: any) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const selectedTicker = bars[index].ticker;
+        onBarClick(selectedTicker); // Call the callback function with the selected ticker
+      }
+    },
     scales: {
       y: {
         beginAtZero: true,
@@ -90,7 +103,7 @@ const GroupedBars: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-white p-4 rounded-md">
+    <div className="bg-gray-900 text-white p-4 rounded-md grouped-bars-container">
       <div className="ticker-title">Top 20 Stocks by Volume</div>
       {error ? (
         <p>{error}</p>

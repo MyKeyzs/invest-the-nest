@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './components/Pages/LoginPage/Login';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/DashboardComponent/Dashboard';
 import Watchlist from './components/Watchlist';
 import Portfolio from './components/Portfolio';
 import MarketCalendar from './components/MarketCalendar';

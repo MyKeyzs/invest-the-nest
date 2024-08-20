@@ -1,0 +1,93 @@
+.gainers-losers-container {
+  width: 50%; /* Ensure full width */
+  margin-right: 1rem; /* Space between gainers/losers and grouped bars */
+  background-color: #1f2937; /* Match the dark background */
+  padding: 1rem; /* Add some padding */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.gainers-losers-tables {
+  display: flex; /* Side by side tables */
+  justify-content: space-between;
+}
+
+.losers, .gainers {
+  width: 48%; /* Each table takes up 48% width to allow space in between */
+}
+
+h3 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+h3:hover {
+  color: rgba(255, 0, 0, 0.8)
+}
+
+h4 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+h4:hover {
+  color: rgba(20, 155, 20, 0.8)
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensures that table columns have a fixed width */
+}
+
+th, td {
+  padding: 8px; /* Adjust padding */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #444;
+  color: #ffffff;
+  font-size: 0.9rem; /* Adjust font size */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
+}
+th:hover {
+  color: rgba(255, 0, 0, 0.8)
+}
+
+.symbol-column {
+  width: 10%; /* Ensure the symbol column is wider */
+}
+
+.price-column {
+  width: 10%; /* Adjust width for price column */
+  text-align: right; /* Right-align the text in the price column */
+}
+
+.change-column {
+  width: 10%; /* Adjust width for change column */
+  text-align: right; /* Right-align the text in the change column */
+}
+
+.loser-row {
+  background-color: rgba(255, 0, 0, 0.8); /* Slightly darker red background for better contrast */
+}
+
+.loser-row:hover{
+  background-color: rgba(255, 0, 0, 0.342)
+}
+.gainer-row {
+  background-color: rgba(20, 155, 20, 0.8); /* Slightly darker green background for better contrast */
+}
+
+.gainer-row:hover {
+  background-color: rgba(12, 156, 12, 0.336); /* Lighten on hover */
+}
+
+.loser-row:hover, .gainer-row:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1); /* Lighten on hover */
+}

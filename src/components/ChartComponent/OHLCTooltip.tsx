@@ -60,14 +60,13 @@ export const OHLCTooltip: React.FC<OHLCTooltipProps> = (props) => {
       textFill,
       volumeFormat,
     } = props;
-
+  
     const {
-      chartConfig: { width, height },
+      chartConfig, // Removed width and height destructuring
       fullData
     } = moreProps;
-
+  
     const currentItem = displayValuesFor(props, moreProps) || last(fullData);
-
     console.log("Current Item:", currentItem);  // Debugging: Log the current item data
 
     let open = displayTexts.na;

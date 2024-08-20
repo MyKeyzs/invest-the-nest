@@ -6,6 +6,9 @@
   text-align: center;
   cursor: pointer;
   transition: color 0.3s ease;
+  width: 90%; /* Reduce width to 90% */
+  margin: 0 auto; /* Center the component */
+  max-width: 800px; /* Limit the maximum width */
 }
 
 .chart-title:hover {

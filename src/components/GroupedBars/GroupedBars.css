@@ -1,17 +1,19 @@
 .grouped-bars-container {
-    width: 100%;
-    max-width: 600px; /* Adjust the maximum width as needed */
-    margin: 0 auto;
-    padding: 20px;
-  }
-
+  display: flex;
+  flex-direction: column; /* Align children vertically */
+  align-items: center; /* Center children horizontally */
+  width: 100%;
+  margin: 0 auto;
+  max-width: 800px;
+}
 .grouped-bars-title {
   font-size: 1.5rem; /* Adjust font size as needed */
   font-weight: bold;
   color: #fff;
   margin-bottom: 0.5rem; /* Space between title and ticker section */
   transition: color 0.3s ease; /* Smooth transition for color change */
-  text-align: center;
+  text-align: center; /* Centers text within its container */
+  /* Remove justify-self: center; if not in a flexbox context */
 }
 
 .grouped-bars-title:hover {
