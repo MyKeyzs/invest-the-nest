@@ -7,7 +7,7 @@ import Watchlist from './components/Watchlist';
 import Portfolio from './components/Portfolio';
 import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
-import Sectors from './components/Sectors';
+import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   const handleLogoClick = () => {
     if (isLoggedIn) {
-      navigate('/home');
+      navigate('/dashboard');
     } else {
       navigate('/');
     }
@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
-    navigate('/home');
+    navigate('/dashboard');
   };
 
   const handleLogout = () => {
@@ -39,12 +39,12 @@ const App: React.FC = () => {
       <main className="content-container">
         <Routes>
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
-          <Route path="/home" element={<Dashboard isLoggedIn={isLoggedIn} />} />
+          <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} />} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />
           <Route path="/transactions" element={<Transactions />} />
-          <Route path="/sectors" element={<Sectors />} />
+          <Route path="/sectors" element={<SectorsPage />} />
         </Routes>
       </main>
     </div>
