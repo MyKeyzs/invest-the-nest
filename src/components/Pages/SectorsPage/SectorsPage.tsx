@@ -222,6 +222,7 @@ const SectorsPage: React.FC = () => {
                 ))}
             </div>
         </div>
+       
     );
 };
 

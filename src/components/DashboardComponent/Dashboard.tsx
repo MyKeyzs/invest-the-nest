@@ -9,11 +9,12 @@ import './Dashboard.css';
 
 interface DashboardProps {
   isLoggedIn: boolean;
+  isSidebarOpen: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
+const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
   const [selectedTicker, setSelectedTicker] = useState<string>('AAPL');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  //const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
 
   const handleSelectTicker = (ticker: string) => {
@@ -37,13 +38,13 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
     });
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  // const toggleSidebar = () => {
+  //   setIsSidebarOpen(!isSidebarOpen);
+  // };
 
   return (
     <div className="dashboard">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      {/* <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> */}
       <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
         <div className="widget ticker-container">
           <TopTickers />

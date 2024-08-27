@@ -8,9 +8,11 @@ import Portfolio from './components/Portfolio';
 import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
 import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
+import Sidebar from './components/SidebarComponent/Sidebar';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -20,6 +22,11 @@ const App: React.FC = () => {
       navigate('/');
     }
   };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -36,10 +43,11 @@ const App: React.FC = () => {
       <header className="navbar">
         <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} handleLogoClick={handleLogoClick} />
       </header>
+      {/* <div><Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /></div> */}
       <main className="content-container">
         <Routes>
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
-          <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} />} />
+          <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} isSidebarOpen={isSidebarOpen} />} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />
@@ -47,6 +55,7 @@ const App: React.FC = () => {
           <Route path="/sectors" element={<SectorsPage />} />
         </Routes>
       </main>
+      <div><Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /></div>
     </div>
   );
 };
