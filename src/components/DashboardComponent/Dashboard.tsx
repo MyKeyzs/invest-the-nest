@@ -61,11 +61,11 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn }) => {
               </div>
             </div>
             <div className="widget mt-6 flex">
-              <div className="w-1-3 mr-6"> {/* 1/3 width for GroupedBars */}
-                <GroupedBars onBarClick={handleBarClick} />
-              </div>
-              <div className="w-2-3"> {/* 2/3 width for Gainers and Losers */}
+              <div className="w-1-3 mr-2"> {/* Reduced right margin for Gainers and Losers */}
                 <GainersAndLosers onSelectTicker={handleSelectTicker} />
+              </div>
+              <div className="w-2-3"> {/* 2/3 width for GroupedBars */}
+                <GroupedBars onBarClick={handleBarClick} />
               </div>
             </div>
           </>

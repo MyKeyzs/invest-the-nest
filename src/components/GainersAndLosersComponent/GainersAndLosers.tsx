@@ -5,7 +5,7 @@ import './GainersAndLosers.css'; // Ensure you have this CSS file for styling
 interface StockData {
   ticker: string;
   todaysChange: number;
-  todaysChangePerc: number;
+  todaysChangePerc: number; // This is assumed to be a percentage in the format you've provided
   day: {
     c: number; // Current Price
   };
@@ -30,8 +30,16 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
           'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/losers?apiKey=w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'
         );
 
-        setGainers(gainersResponse.data.tickers.slice(0, 20));
-        setLosers(losersResponse.data.tickers.slice(0, 20));
+        const sortedGainers = gainersResponse.data.tickers
+          .slice(0, 20)
+          .sort((a: StockData, b: StockData) => b.todaysChangePerc - a.todaysChangePerc);
+
+        const sortedLosers = losersResponse.data.tickers
+          .slice(0, 20)
+          .sort((a: StockData, b: StockData) => a.todaysChangePerc - b.todaysChangePerc);
+
+        setGainers(sortedGainers);
+        setLosers(sortedLosers);
         setError(null);
       } catch (error) {
         console.error('Error fetching gainers and losers:', error);
@@ -41,6 +49,10 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
 
     fetchGainersAndLosers();
   }, []);
+
+  const formatPercentage = (percentage: number) => {
+    return (percentage).toFixed(2); // Move the decimal place two positions to the left and round to two decimal places
+  };
 
   return (
     <div className="gainers-losers-container">
@@ -60,7 +72,7 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
               </thead>
               <tbody>
                 {losers.map((stock) => {
-                  const changePercentage = (stock.todaysChange * 100).toFixed(2); // Convert to percentage and format to 2 decimal places
+                  const changePercentage = formatPercentage(stock.todaysChangePerc);
                   return (
                     <tr 
                       key={stock.ticker} 
@@ -69,7 +81,7 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
                     >
                       <td className="symbol-column">{stock.ticker}</td>
                       <td className="price-column">{stock.day?.c !== undefined ? stock.day.c : 'N/A'}</td> {/* Access nested price in day.c */}
-                      <td className="change-column">{stock.todaysChange !== undefined ? `${changePercentage}%` : 'N/A'}</td> {/* Display change as a percentage */}
+                      <td className="change-column">{stock.todaysChangePerc !== undefined ? `${changePercentage}%` : 'N/A'}</td> {/* Display change as a percentage */}
                     </tr>
                   );
                 })}
@@ -88,7 +100,7 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
               </thead>
               <tbody>
                 {gainers.map((stock) => {
-                  const changePercentage = (stock.todaysChange * 100).toFixed(2); // Convert to percentage and format to 2 decimal places
+                  const changePercentage = formatPercentage(stock.todaysChangePerc);
                   return (
                     <tr 
                       key={stock.ticker} 
@@ -97,7 +109,7 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
                     >
                       <td>{stock.ticker}</td>
                       <td>{stock.day?.c !== undefined ? stock.day.c : 'N/A'}</td> {/* Access nested price in day.c */}
-                      <td>{stock.todaysChange !== undefined ? `${changePercentage}%` : 'N/A'}</td> {/* Display change as a percentage */}
+                      <td>{stock.todaysChangePerc !== undefined ? `${changePercentage}%` : 'N/A'}</td> {/* Display change as a percentage */}
                     </tr>
                   );
                 })}

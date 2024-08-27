@@ -203,7 +203,7 @@ const SectorsPage: React.FC = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#1c1c1e', color: 'white', padding: '5px', height: '100vh' }}>
+        <div style={{ backgroundColor: '#1c1c1e', color: 'white', padding: '5px', height: 'calc(100vh - 60px)', marginTop: '75px' }}>
             <h1>Sectors Chart</h1>
             <div id="container" style={{ width: '90%', height: 'calc(100% - 220px)', marginBottom: '20px', position: 'relative' }} ref={chartContainerRef}></div>
             <div id="legend" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', color: 'white', padding: '10px', borderRadius: '5px', marginBottom: '10px' }} dangerouslySetInnerHTML={{ __html: legendHTML }} />
