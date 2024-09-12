@@ -1,10 +1,10 @@
 .positions-container {
   width: 100%;
   max-width: 1200px; /* Ensure it's not too wide */
-  margin: 20px auto; /* Add margin to separate from other components */
+ 
   padding: 20px;
   box-sizing: border-box;
-  background-color: #1a202c; /* Dark background similar to the chart */
+  background-color: #0d0d1b; /* Match the dark background */
   color: white; /* White text for visibility */
   border-radius: 8px; /* Rounded corners */
 }

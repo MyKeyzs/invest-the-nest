@@ -1,3 +1,6 @@
+.chart-container {
+  background-color: #0d0d1b; /* Match the dark background */
+}
 .chart-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -9,6 +12,7 @@
   width: 90%; /* Reduce width to 90% */
   margin: 0 auto; /* Center the component */
   max-width: 800px; /* Limit the maximum width */
+  margin-left: 0 auto;
 }
 
 .chart-title:hover {
@@ -134,9 +138,10 @@
 /* Crosshair styling */
 .graph-area {
   position: relative;
-  width: 100%;
+  width: relative;
   height: auto; /* Let the content dictate the height */
   margin-bottom: 1rem;
+  margin-left: 0 auto;
 }
 
 .chartjs-crosshair {

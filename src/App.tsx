@@ -9,6 +9,7 @@ import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
 import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
 import Sidebar from './components/SidebarComponent/Sidebar';
+import './App.css'; // Ensure to import your CSS file here
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +28,6 @@ const App: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     navigate('/dashboard');
@@ -39,11 +39,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="main-container">
+    <div className={`main-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'} ${!isLoggedIn ? 'no-sidebar' : ''}`}>
       <header className="navbar">
         <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} handleLogoClick={handleLogoClick} />
       </header>
-      {/* <div><Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /></div> */}
+      {isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
       <main className="content-container">
         <Routes>
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
@@ -55,7 +55,6 @@ const App: React.FC = () => {
           <Route path="/sectors" element={<SectorsPage />} />
         </Routes>
       </main>
-      <div><Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /></div>
     </div>
   );
 };

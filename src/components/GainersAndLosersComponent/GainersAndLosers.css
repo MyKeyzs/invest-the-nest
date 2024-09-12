@@ -1,9 +1,10 @@
 .gainers-losers-container {
   width: 100%; /* Ensure full width */
-  margin-right: 1rem; /* Space between gainers/losers and grouped bars */
-  background-color: #1f2937; /* Match the dark background */
+  margin-right: 0.5rem; /* Space between gainers/losers and grouped bars */
+  background-color: #0d0d1b; /* Match the dark background */
   padding: 1rem; /* Add some padding */
   border-radius: 8px; /* Rounded corners */
+  
 }
 
 .gainers-losers-tables {

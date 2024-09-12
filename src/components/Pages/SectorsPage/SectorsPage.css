@@ -4,11 +4,12 @@ body {
     overflow: hidden;
 }
 
-#container {
-    width: 100%;
-    height: calc(100% - 60px); /* Adjust height to account for navbar */
-    overflow-x: auto;  /* Make the container scrollable horizontally */
-    margin-top: 60px; /* Add margin to push content below the navbar */
+.sectors-page {
+    margin-left: 250px; /* Same width as your sidebar */
+    margin-top: 60px;   /* Same height as your navbar */
+    padding: 20px;      /* Optional padding for content */
+    box-sizing: border-box;
+    min-height: calc(100vh - 60px); /* Ensure full height minus navbar */
 }
 
 h1 {
@@ -19,4 +20,16 @@ h1 {
 
 #legend {
     margin-top: 10px; /* Adjust margin for better spacing */
+    padding: 10px;    /* Ensure enough space inside the legend box */
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#container {
+    width: 100%;
+    height: calc(100% - 60px); /* Adjust height to fit within the page */
+    margin-top: 60px; /* Ensure the chart starts below the navbar */
+    overflow-x: auto; /* Optional: Scroll horizontally if needed */
 }

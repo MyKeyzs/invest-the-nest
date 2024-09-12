@@ -5,6 +5,7 @@
   width: 100%;
   margin: 0 auto;
   max-width: 800px;
+  background-color: #0d0d1b; /* Match the dark background */
 }
 .grouped-bars-title {
   font-size: 1.5rem; /* Adjust font size as needed */

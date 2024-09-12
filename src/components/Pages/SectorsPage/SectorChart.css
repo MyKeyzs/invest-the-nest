@@ -1,0 +1,23 @@
+#container {
+    width: 100%;
+    height: calc(100% - 60px); /* Adjust height to fit within the page */
+    margin-top: 60px; /* Ensure the chart starts below the navbar */
+    overflow-x: auto; /* Optional: Scroll horizontally if needed */
+}
+
+#legend {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.sectors-page {
+    margin-left: 250px; /* Same width as your sidebar */
+    margin-top: 60px;   /* Same height as your navbar */
+    padding: 20px;      /* Optional padding for content */
+    box-sizing: border-box;
+    min-height: calc(100vh - 60px); /* Ensure full height minus navbar */
+}

@@ -206,7 +206,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
 
   return (
     <div
-      className="bg-gray-900 text-white p-4 rounded-md chart-container relative"
+      className="text-white p-4 rounded-md chart-container relative"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

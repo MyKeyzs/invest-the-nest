@@ -15,7 +15,6 @@ const TopTickers: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Function to fetch tickers data from the API
     const fetchTickers = async () => {
       try {
         const response = await axios.get('https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?include_otc=false', {
@@ -23,27 +22,28 @@ const TopTickers: React.FC = () => {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX',
           },
         });
-
-        // Process and sort the data by today's percentage change, filter by volume
+  
         const data = response.data.tickers
-          .filter((ticker: any) => ticker.day.v > 200000) // Filter tickers by volume
+          .filter((ticker: any) => ticker.day.v > 200000)
           .sort((a: any, b: any) => b.todaysChangePerc - a.todaysChangePerc)
-          .slice(0, 20) // Take the top 20 tickers
+          .slice(0, 20)
           .map((ticker: any) => ({
             ticker: ticker.ticker,
             percent_change: ticker.todaysChangePerc ?? 0,
           }));
-
-        setTickers(data); // Update the state with the fetched data
-        setError(null); // Clear any previous errors
+  
+        console.log(data); // Log the tickers to verify if data is being fetched
+        setTickers(data);
+        setError(null);
       } catch (error) {
         console.error('Error fetching ticker data:', error);
         setError('Error fetching ticker data. Please try again later.');
       }
     };
-
-    fetchTickers(); // Call the function to fetch tickers data on component mount
+  
+    fetchTickers();
   }, []);
+  
 
   return (
     <div className="ticker-container">

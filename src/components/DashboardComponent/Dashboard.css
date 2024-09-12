@@ -1,110 +1,48 @@
-/* Dashboard container styles */
-.dashboard {
-  background-color: #1f2937; /* Dark background */
-  color: #d1d5db; /* Light text */
-  display: flex; /* Use flexbox for layout */
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  flex-direction: column; /* Arrange items vertically */
+/* dashboard.css */
+.dashboard, .main-content {
+  display: flex;
+  flex-grow: 1;
+  height: 100vh; /* Take full viewport height */
+  width: 100%; /* Take full width */
+  flex-direction: column; /* Stack top ticker and grid layout vertically */
+  overflow: auto;
 }
 
-/* Main content area styles */
-.main-content {
-  flex-grow: 1; /* Allow the main content to grow and fill available space */
-  width: calc(100% - 250px); /* Default width assuming sidebar is closed */
-  transition: margin-left 0.3s; /* Smooth transition for margin change */
-  box-sizing: border-box; /* Ensure padding is included in the width */
-  padding-top: 60px; /* Adjust the padding to match the height of the navbar */
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack widgets vertically */
-}
-
-.main-content.sidebar-open {
-  width: calc(100% - 250px); /* Adjust width for when the sidebar is open */
-  margin-left: 250px; /* Shift content to the right when the sidebar is open */
-}
-
-.main-content.sidebar-closed {
-  width: calc(100% - 60px); /* Adjust width for when the sidebar is closed */
-  margin-left: 60px; /* Default margin-left */
-}
-
-/* Widget container styles */
 .widget {
-  background-color: #273444; /* Slightly lighter dark background */
-  color: #d1d5db; /* Light text */
-  padding: 16px; /* Padding inside the widget */
-  border-radius: 8px; /* Rounded corners */
-  margin-bottom: 16px; /* Space below each widget */
-  box-sizing: border-box; /* Ensure padding is included in the width */
+  background-color: #2d3748;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for better separation */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height for each widget */
+  width: 100%; /* Ensure the widgets take the full width of the grid */
 }
-
-/* Flexbox utility classes */
-.flex {
-  display: flex; /* Use flexbox for layout */
-}
-
-.flex-grow {
-  flex-grow: 1; /* Allow the element to grow and fill available space */
-}
-
-/* Margin utility classes */
-.ml-3 {
-  margin-left: 0.75rem; /* Margin left of 0.75rem */
-}
-
-/* Reduce or remove the right margin */
-.mr-2 {
-  margin-right: 0.5rem; /* Reduce margin right to 0.5rem */
-}
-
-/* Width utility classes */
-.w-1-3 {
-  width: 33.33%; /* Width of 33.33% */
-}
-
-.w-2-3 {
-  width: 66.67%; /* Width of 66.67% */
-}
-
-/* Margin-top utility class */
-.mt-6 {
-  margin-top: 1.5rem; /* Margin top of 1.5rem */
-}
-
-/* Padding utility class */
-.p-6 {
-  padding: 1.5rem; /* Padding of 1.5rem */
-}
-
-/* Background color utility class */
-.bg-gray-900 {
-  background-color: #1a202c; /* Dark gray background color */
-}
-
-/* Text color utility class */
-.text-white {
-  color: #ffffff; /* White text color */
-}
-
-/* Margin-bottom utility class */
-.mb-6 {
-  margin-bottom: 1.5rem; /* Margin bottom of 1.5rem */
-}
-
-/* Ticker container styles */
-.ticker-container {
-  display: flex; /* Use flexbox for layout */
-  justify-content: center; /* Center content horizontally */
+.Gains-losses-widget {
+  background-color: #2d3748;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for better separation */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full height for each widget */
+  width: 100%; /* Ensure the widgets take the full width of the grid */
 }
 
 .layout {
   display: flex;
-  flex-wrap: wrap;
+  flex-grow: 1;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
 }
 
-.widget {
-  background-color: #1f2937;
-  border-radius: 8px;
-  padding: 20px;
-  overflow: hidden;
+.top-ticker-widget {
+  width: 100%;
+  padding: 10px;
+  background-color: #2d3748;
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
