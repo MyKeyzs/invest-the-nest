@@ -50,18 +50,19 @@
 
 /* CSS styling for the Lock/ unlock button */ 
 .lock-button {
-  position: fixed; /* Fix the button on the screen */
-  top: 170px;       /* Adjust based on where you want it vertically, relative to the top */
-  left: 80px;      /* Align it closer to the left side */
-  z-index: 1000;   /* Ensure it stays above other elements */
-  background: none; /* Remove background */
-  border: none;    /* Remove border */
-  cursor: pointer;
-  color: white;
+  position: fixed; /* Keep the button fixed on the screen */
+  top: 80px;       /* Adjust this for vertical alignment */
+  left: 80px;      /* Adjust this value for when sidebar is closed */
+  z-index: 1000;   /* Ensure it's always visible */
+  transition: left 0.3s ease; /* Smooth transition when the sidebar opens/closes */
+}
+
+.sidebar-open .lock-button {
+  left: 260px;     /* Move the button when the sidebar is open (adjust as per your layout) */
 }
 
 .lock-button svg {
-  width: 24px;  /* Adjust size of the lock icon */
+  width: 24px;
   height: 24px;
 }
 

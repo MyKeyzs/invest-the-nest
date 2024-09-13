@@ -21,14 +21,14 @@ const generateLayout = (): Layout[] => {
   return [
     { i: 'positions', x: 0, y: 0, w: 3, h: 14.5 },
     { i: 'chart', x: 3, y: 0, w: 6, h: 15 },
-    { i: 'gainersLosers', x: 9, y: 0, w: 3, h: 23 },
-    { i: 'groupedBars', x: 5, y: 10, w: 4, h: 9 },
-    { i: 'indices', x: 0, y: 18, w: 4.5, h: 7 }, // Add the indices widget here
+    { i: 'gainersLosers', x: 9, y: 0, w: 3, h: 22.5 },
+    { i: 'groupedBars', x: 4, y: 10, w: 5, h: 11 },
+    { i: 'indices', x: 0, y: 18, w: 4, h: 6 }, // Add the indices widget here
   ];
 };
 
 const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
-  const [selectedTicker, setSelectedTicker] = useState<string>('AAPL');
+  const [selectedTicker, setSelectedTicker] = useState<string>('SPY');
   const [layout, setLayout] = useState<Layout[]>(generateLayout());
   const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
   const [compactType, setCompactType] = useState<"vertical" | "horizontal" | null>(null); // No compaction
@@ -68,12 +68,6 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
   return (
     <div className="dashboard">
       <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-        {/* Top Tickers */}
-        <div className="top-ticker-widget top-tickers-container">
-          <TopTickers />
-        </div>
-
-        {/* Lock/Unlock Button */}
         <button className="lock-button" onClick={toggleLock}>
           {isLocked ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-lock" viewBox="0 0 16 16">
