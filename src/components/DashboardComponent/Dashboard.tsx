@@ -5,6 +5,7 @@ import Positions from '../PositionsComponent/Positions';
 import ChartComponentWrapped from '../ChartComponent/Chart';
 import GroupedBars from '../GroupedBars/GroupedBars';
 import GainersAndLosers from '../GainersAndLosersComponent/GainersAndLosers';
+import Indices from '../IndicesComponent/Indices';
 import './Dashboard.css';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -18,10 +19,11 @@ interface DashboardProps {
 
 const generateLayout = (): Layout[] => {
   return [
-    { i: 'positions', x: 0, y: 0, w: 3, h: 16.5 },
-    { i: 'chart', x: 3, y: 0, w: 6, h: 16.5, static: true },
+    { i: 'positions', x: 0, y: 0, w: 3, h: 14.5 },
+    { i: 'chart', x: 3, y: 0, w: 6, h: 15 },
     { i: 'gainersLosers', x: 9, y: 0, w: 3, h: 23 },
-    { i: 'groupedBars', x: 0, y: 10, w: 3, h:  8 },
+    { i: 'groupedBars', x: 5, y: 10, w: 4, h: 9 },
+    { i: 'indices', x: 0, y: 18, w: 4.5, h: 7 }, // Add the indices widget here
   ];
 };
 
@@ -93,19 +95,19 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
 
         {isLoggedIn && (
           <ResponsiveReactGridLayout
-            className="layout"
-            layouts={{ lg: layout }}
-            onLayoutChange={onLayoutChange}
-            onBreakpointChange={onBreakpointChange}
-            compactType={null} // No compaction, free movement
-            preventCollision={true} // Prevent widgets from overlapping
-            breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-            cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-            rowHeight={30}
-            isDraggable={!isLocked} // Only draggable when unlocked
-            isResizable={false} // Not resizable
-          >
-            <div key="chart" className="widget" ref={chartRef} style={{ width: '100%', height: 'auto' }}>
+          className="layout"
+          layouts={{ lg: layout }}
+          onLayoutChange={onLayoutChange}
+          onBreakpointChange={onBreakpointChange}
+          compactType="vertical" // Allows widgets to move vertically when dragged
+          preventCollision={false} // Disable collision prevention, enabling auto-repositioning
+          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          rowHeight={30} 
+          isDraggable={!isLocked}
+          isResizable={false}
+        >
+            <div key="chart" className="widget" ref={chartRef} >
               <ChartComponentWrapped ticker={selectedTicker} />
             </div>
             <div key="positions" className="widget">
@@ -116,6 +118,9 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
             </div>
             <div key="groupedBars" className="widget">
               <GroupedBars onBarClick={handleBarClick} />
+            </div>
+            <div key="indices" className="widget">
+              <Indices />
             </div>
           </ResponsiveReactGridLayout>
         )}

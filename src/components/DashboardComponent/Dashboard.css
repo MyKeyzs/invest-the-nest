@@ -9,16 +9,16 @@
 }
 
 .widget {
-  background-color: #2d3748;
-  padding: 15px;
-  border-radius: 10px;
-  margin: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for better separation */
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full height for each widget */
-  width: 100%; /* Ensure the widgets take the full width of the grid */
+  height: 100%; /* Make the widget fill the height of the grid row */
 }
+
+.widget-content {
+  flex-grow: 1; /* Make the content inside the widget grow to fill available space */
+  overflow: auto; /* Handle overflow if content exceeds the height */
+}
+
 .Gains-losses-widget {
   background-color: #2d3748;
   padding: 15px;

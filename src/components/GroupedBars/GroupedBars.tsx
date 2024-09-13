@@ -37,6 +37,7 @@ interface GroupedBarsProps {
 const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
   const [bars, setBars] = useState<GroupedBarData[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null); // To track the hovered bar
 
   useEffect(() => {
     const fetchBars = async () => {
@@ -74,20 +75,31 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
     fetchBars();
   }, []);
 
+  // Build the chart data, changing the color dynamically
   const chartData = {
     labels: bars.map((bar) => bar.ticker),
     datasets: [
       {
         label: 'Volume',
         data: bars.map((bar) => bar.volume),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        backgroundColor: bars.map((_, index) =>
+          index === hoveredBarIndex ? 'rgba(0, 255, 0, 0.6)' : 'rgba(75, 192, 192, 0.6)'
+        ), // Green for hovered bar
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
   };
 
+  // Chart.js options
   const options = {
+    onHover: (event: any, elements: any) => {
+      if (elements.length > 0) {
+        setHoveredBarIndex(elements[0].index); // Set hovered bar index
+      } else {
+        setHoveredBarIndex(null); // Reset when not hovering
+      }
+    },
     onClick: (event: any, elements: any) => {
       if (elements.length > 0) {
         const index = elements[0].index;

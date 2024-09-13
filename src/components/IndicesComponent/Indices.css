@@ -1,0 +1,64 @@
+.indices-widget {
+    background-color: #0d0d1b;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;
+  }
+  
+  .indices-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .indices-table th,
+  .indices-table td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .indices-table th {
+    padding: 4px 8px; /* Reduce padding to shrink the header */
+    font-size: 12px;  /* Adjust font size to make it smaller */
+    text-align: left;
+    background-color: #3c4757;
+    color: #a0aec0;
+  }
+
+  .indices-table th:hover {
+    color: #00ff00; /* Change to green on hover */
+  }
+
+  
+  
+  .indices-table td {
+    padding: 6px 8px; /* Adjust padding for table cells if necessary */
+    font-size: 14px;  /* Adjust font size for table data */
+  }
+
+  .indices-table td:hover {
+    color: #00ff00; /* Change to green on hover */
+  }
+  
+  .indices-table tr:nth-child(even) {
+    background-color: #2d3748;
+  }
+
+  .indices-title {
+    font-size: 1.5rem; /* Adjust font size as needed */
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.5rem; /* Space between title and ticker section */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+    text-align: center; /* Centers text within its container */
+    /* Remove justify-self: center; if not in a flexbox context */
+  }
+  
+  .indices-title:hover {
+    color: #00ff00; /* Change to green on hover */
+  }
+  
