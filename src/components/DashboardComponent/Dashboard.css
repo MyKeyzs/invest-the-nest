@@ -46,3 +46,25 @@
   margin-bottom: 10px;
   box-sizing: border-box;
 }
+
+
+/* CSS styling for the Lock/ unlock button */ 
+.lock-button {
+  position: fixed; /* Fix the button on the screen */
+  top: 170px;       /* Adjust based on where you want it vertically, relative to the top */
+  left: 80px;      /* Align it closer to the left side */
+  z-index: 1000;   /* Ensure it stays above other elements */
+  background: none; /* Remove background */
+  border: none;    /* Remove border */
+  cursor: pointer;
+  color: white;
+}
+
+.lock-button svg {
+  width: 24px;  /* Adjust size of the lock icon */
+  height: 24px;
+}
+
+.lock-button span {
+  display: none;  /* Hide the text */
+}

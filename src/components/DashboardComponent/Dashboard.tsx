@@ -76,20 +76,14 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
         {/* Lock/Unlock Button */}
         <button className="lock-button" onClick={toggleLock}>
           {isLocked ? (
-            <>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-lock" viewBox="0 0 16 16">
-                <path d="M8 1a4 4 0 0 0-4 4v3H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-1V5a4 4 0 0 0-4-4zm-3 7V5a3 3 0 0 1 6 0v3H5zm0 4v3a1 1 0 1 0 2 0v-3a1 1 0 1 0-2 0z"/>
-              </svg>
-              Widgets are locked
-            </>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-lock" viewBox="0 0 16 16">
+              <path d="M8 1a4 4 0 0 0-4 4v3H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-1V5a4 4 0 0 0-4-4zm-3 7V5a3 3 0 0 1 6 0v3H5zm0 4v3a1 1 0 1 0 2 0v-3a1 1 0 1 0-2 0z"/>
+            </svg>
           ) : (
-            <>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-unlock" viewBox="0 0 16 16">
-                <path d="M11 1a2 2 0 0 1 2 2v3h-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2H5V3a2 2 0 0 1 2-2h4z"/>
-                <path d="M1 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8zm2-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H3z"/>
-              </svg>
-              Widgets are unlocked
-            </>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-unlock" viewBox="0 0 16 16">
+              <path d="M11 1a2 2 0 0 1 2 2v3h-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2H5V3a2 2 0 0 1 2-2h4z"/>
+              <path d="M1 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8zm2-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H3z"/>
+            </svg>
           )}
         </button>
 
@@ -105,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
           rowHeight={30} 
           isDraggable={!isLocked}
-          isResizable={false}
+          isResizable={!isLocked}
         >
             <div key="chart" className="widget" ref={chartRef} >
               <ChartComponentWrapped ticker={selectedTicker} />
