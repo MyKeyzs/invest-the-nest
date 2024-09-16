@@ -113,27 +113,36 @@ const NewsPage: React.FC = () => {
           </ul>
         )}
   
-        {selectedNews && (
-          <div className="news-modal" onClick={closeModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h3>{selectedNews.title}</h3>
-                <button onClick={closeModal}>&times;</button>
-              </div>
-              <div className="modal-body">
-                <p>{selectedNews.description}</p>
-                <div className="sentiment">
-                  <strong>Sentiment:</strong> {selectedNews.insights[0]?.sentiment}
+            {selectedNews && (
+            <div className="news-modal" onClick={closeModal}>
+                <div
+                className={`modal-content ${
+                    selectedNews?.insights?.[0]?.sentiment === 'positive'
+                    ? 'positive-sentiment'
+                    : selectedNews?.insights?.[0]?.sentiment === 'negative'
+                    ? 'negative-sentiment'
+                    : 'neutral-sentiment'
+                }`}
+                onClick={(e) => e.stopPropagation()}
+                >
+                <div className="modal-header">
+                    <h3>{selectedNews.title}</h3>
+                    <button onClick={closeModal}>&times;</button>
                 </div>
-              </div>
-              <div className="modal-footer">
-                <a href={selectedNews.article_url} target="_blank" rel="noopener noreferrer">
-                  Read full article
-                </a>
-              </div>
+                <div className="modal-body">
+                    <p>{selectedNews.description}</p>
+                    <div className="sentiment">
+                    <strong>Sentiment:</strong> {selectedNews.insights[0]?.sentiment}
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <a href={selectedNews.article_url} target="_blank" rel="noopener noreferrer">
+                    Read full article
+                    </a>
+                </div>
+                </div>
             </div>
-          </div>
-        )}
+            )}
       </div>
     );
   };

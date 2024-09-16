@@ -85,6 +85,7 @@
     padding: 20px;
     width: 400px;
     border-radius: 8px;
+    color: black;
   }
   
   .modal-header {
@@ -95,6 +96,7 @@
   
   .modal-header h3 {
     margin: 0;
+    color:black;
   }
   
   .modal-body {
@@ -117,3 +119,21 @@
     height: 20px;
   }
   
+/*Styling for the pop-out modal */
+  /* Positive sentiment styling */
+.modal-content.positive-sentiment {
+    background-color: #c8eed1; /* Light green background */
+    color: green; /* Text color */
+  }
+  
+  /* Negative sentiment styling */
+  .modal-content.negative-sentiment {
+    background-color: #f8d7da; /* Light red background */
+    color: red; /* Text color */
+  }
+  
+  /* Neutral sentiment styling */
+  .modal-content.neutral-sentiment {
+    background-color: #f0f0f0; /* Light grey background */
+    color: black; /* Neutral text color */
+  }
