@@ -1,0 +1,119 @@
+.news-page-container {
+    padding: 20px;
+  }
+  
+  .news-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .news-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    justify-content: space-between;
+  }
+  
+  /* Style for the input field */
+.ticker-input-container input {
+    color: black; /* Ensure the text is black */
+  }
+  .tickers-container {
+    display: flex;
+    flex-direction: column; /* Stack tickers vertically */
+  }
+  
+  .ticker-column {
+    font-size: 0.8em; /* Make tickers smaller */
+    margin-bottom: 5px; /* Add space between tickers */
+  }
+  .news-item-title {
+    flex: 1;
+    padding-left: 10px; /* Add space between the ticker and the title */
+  }
+  
+  .news-item img {
+    margin-right: 10px;
+  }
+  
+  .news-item.positive {
+    background-color: #c8eed1; /* Light green for positive sentiment */
+    color: green;
+  }
+  
+  .news-item.negative {
+    background-color: #f8d7da; /* Light red for negative sentiment */
+    color: black;
+  }
+  
+  .news-item.neutral {
+    background-color: #f0f0f0; /* Light grey for neutral sentiment */
+    color: black;
+  }
+/* Apply hover states specifically based on sentiment */
+.news-item.positive:hover {
+    background-color: green;
+    color: black;
+  }
+  
+  .news-item.negative:hover {
+    background-color: red;
+    color: black;
+  }
+  
+  .news-item.neutral:hover {
+    background-color: lightgray; /* Optional hover state for neutral items */
+    color: black;
+  }
+  .news-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: rgb(19, 13, 13);
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+  }
+  
+  .modal-body {
+    margin-top: 10px;
+  }
+  
+  .modal-footer {
+    margin-top: 20px;
+    text-align: right;
+  }
+  
+  .modal-footer a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .sentiment-icon {
+    width: 20px;
+    height: 20px;
+  }
+  

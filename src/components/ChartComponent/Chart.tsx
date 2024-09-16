@@ -150,7 +150,18 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   };
 
   const getEndDate = () => {
-    return new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+  
+    if (dayOfWeek === 6) {
+      // If it's Saturday, subtract one day to get Friday
+      today.setDate(today.getDate() - 1);
+    } else if (dayOfWeek === 0) {
+      // If it's Sunday, subtract two days to get Friday
+      today.setDate(today.getDate() - 2);
+    }
+  
+    return today.toISOString().split('T')[0]; // Return the date in the format YYYY-MM-DD
   };
 
   const handleMouseMove = (event: React.MouseEvent) => {

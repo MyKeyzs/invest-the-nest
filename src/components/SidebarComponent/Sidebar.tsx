@@ -25,6 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <nav className={`mt-4 ${isOpen ? 'block' : 'hidden'}`}>
         <ul className="space-y-2">
           <li><Link to="/dashboard" className="block p-4 border-l-4 border-transparent hover:border-green-500">Dashboard</Link></li>
+          <li><Link to="/news" className="block p-4 border-l-4 border-transparent hover:border-green-500">News</Link></li>
           <li><Link to="/portfolio" className="block p-4 border-l-4 border-transparent hover:border-green-500">Portfolio</Link></li>
           <li><Link to="/market-calendar" className="block p-4 border-l-4 border-transparent hover:border-green-500">Market Calendar</Link></li>
           <li><Link to="/transactions" className="block p-4 border-l-4 border-transparent hover:border-green-500">Transactions</Link></li>

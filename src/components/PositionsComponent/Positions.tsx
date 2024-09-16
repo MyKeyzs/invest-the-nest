@@ -33,40 +33,52 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const symbols = positions.map((position) => position.symbol).join(',');
-
-        const response = await axios.get('https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers', {
-          params: {
-            tickers: symbols,
-            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
-          },
-        });
-
-        if (response.data && response.data.tickers) {
-          const data = response.data.tickers.reduce((acc: Record<string, number>, ticker: any) => {
-            if (ticker && ticker.ticker && ticker.day && ticker.day.c) {
-              acc[ticker.ticker] = ticker.day.c;
-            }
-            return acc;
-          }, {});
-
-          setPositions((prevPositions) =>
-            prevPositions.map((position) => ({
-              ...position,
-              price: data[position.symbol] || 0,
-              total: (data[position.symbol] || 0) * position.shares,
-            }))
-          );
-          setError(null);
-        } else {
-          setError('Invalid data format received from API.');
-        }
+        const symbols = positions.map((position) => position.symbol);
+    
+        // Set the multiplier, timespan, from, and to parameters for the Aggregates API
+        const multiplier = 1; // You can adjust this based on your needs
+        const timespan = 'day'; // Timespan can be 'minute', 'hour', 'day', etc.
+    
+        // Set the date range, you can adjust this based on the user input
+        const fromDate = '2023-09-01'; // Example start date
+        const toDate = '2023-09-15'; // Example end date
+    
+        const fetchDataForSymbol = async (symbol: string) => {
+          const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${fromDate}/${toDate}`, {
+            params: {
+              adjusted: true,
+              apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
+            },
+          });
+    
+          if (response.data && response.data.results) {
+            const latestData = response.data.results[response.data.results.length - 1];
+            return {
+              symbol,
+              price: latestData.c, // Get the closing price
+              total: latestData.c * (positions.find((position) => position.symbol === symbol)?.shares || 0),
+            };
+          }
+          return { symbol, price: 0, total: 0 }; // Handle if no data is available
+        };
+    
+        const results = await Promise.all(symbols.map((symbol) => fetchDataForSymbol(symbol)));
+    
+        setPositions((prevPositions) =>
+          prevPositions.map((position) => {
+            const result = results.find((r) => r.symbol === position.symbol);
+            return result
+              ? { ...position, price: result.price, total: result.total }
+              : position;
+          })
+        );
+    
+        setError(null);
       } catch (error) {
         console.error('Error fetching stock prices:', error);
         setError('Error fetching stock prices. Please try again later.');
       }
     };
-
     fetchPrices(); // Fetch initial prices
 
     const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds

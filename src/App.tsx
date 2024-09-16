@@ -9,6 +9,7 @@ import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
 import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
 import Sidebar from './components/SidebarComponent/Sidebar';
+import NewsPage from './components/Pages/NewsPage/News';
 import './App.css'; // Ensure to import your CSS file here
 
 const App: React.FC = () => {
@@ -48,6 +49,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
           <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} isSidebarOpen={isSidebarOpen} />} />
+          <Route path="/news" element={<NewsPage/>} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />

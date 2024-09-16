@@ -37,14 +37,22 @@ interface GroupedBarsProps {
 const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
   const [bars, setBars] = useState<GroupedBarData[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null); // To track the hovered bar
 
   useEffect(() => {
     const fetchBars = async () => {
       try {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); // Subtract one day from the current date
-        const formattedDate = yesterday.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
+        let today = new Date();
+        let dayOfWeek = today.getDay();
+
+        // If it's Saturday (6), subtract one day to make it Friday
+        // If it's Sunday (0), subtract two days to make it Friday
+        if (dayOfWeek === 6) {
+          today.setDate(today.getDate() - 1); // Set to Friday
+        } else if (dayOfWeek === 0) {
+          today.setDate(today.getDate() - 2); // Set to Friday
+        }
+
+        const formattedDate = today.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
 
         const response = await axios.get(`https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/${formattedDate}`, {
           params: {
@@ -75,31 +83,20 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
     fetchBars();
   }, []);
 
-  // Build the chart data, changing the color dynamically
   const chartData = {
     labels: bars.map((bar) => bar.ticker),
     datasets: [
       {
         label: 'Volume',
         data: bars.map((bar) => bar.volume),
-        backgroundColor: bars.map((_, index) =>
-          index === hoveredBarIndex ? 'rgba(0, 255, 0, 0.6)' : 'rgba(75, 192, 192, 0.6)'
-        ), // Green for hovered bar
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
   };
 
-  // Chart.js options
   const options = {
-    onHover: (event: any, elements: any) => {
-      if (elements.length > 0) {
-        setHoveredBarIndex(elements[0].index); // Set hovered bar index
-      } else {
-        setHoveredBarIndex(null); // Reset when not hovering
-      }
-    },
     onClick: (event: any, elements: any) => {
       if (elements.length > 0) {
         const index = elements[0].index;
