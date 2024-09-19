@@ -79,7 +79,13 @@ const TvChart: React.FC<TvChartProps> = ({ ticker, interval, chartType }) => {
           },
           rightPriceScale: {
             borderColor: "#71649C",
-          },
+            
+            scaleMargins: {
+              top: 0.1,   // Adjust the top margin
+              bottom: 0.2 // Adjust the bottom margin
+              
+            },
+          }
         });
 
       if (chartType === 'candlestick') {
@@ -106,7 +112,7 @@ const TvChart: React.FC<TvChartProps> = ({ ticker, interval, chartType }) => {
   return (
     <div>
       <h4>TradingView Chart - {ticker}</h4>
-      <div ref={chartContainerRef} style={{ width: '700px', height: '400px' }} />
+      <div ref={chartContainerRef} style={{ width: '500px', height: '400px', paddingRight: '50px'}} />
     </div>
   );
 };
