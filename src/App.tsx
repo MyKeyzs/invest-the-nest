@@ -10,6 +10,7 @@ import Transactions from './components/Transactions';
 import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
 import Sidebar from './components/SidebarComponent/Sidebar';
 import NewsPage from './components/Pages/NewsPage/News';
+import TvDash from './components/Pages/ChartsPage/TvDash';
 import './App.css'; // Ensure to import your CSS file here
 
 const App: React.FC = () => {
@@ -53,7 +54,7 @@ const App: React.FC = () => {
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />
-          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/more-charts" element={<TvDash />} />
           <Route path="/sectors" element={<SectorsPage />} />
         </Routes>
       </main>

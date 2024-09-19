@@ -17,7 +17,7 @@ body, .main-container, .dashboard {
   align-items: stretch; /* Stretch across the width */
   overflow: auto;
   transition: margin-left 0.3s;
-  box-sizing: border-box;
+
 }
 
 .sidebar-open .main-content {
@@ -45,7 +45,7 @@ body, .main-container, .dashboard {
   justify-content: flex-start;
   overflow: auto;
   transition: margin-left 0.3s;
-  box-sizing: border-box;
+ 
 }
 
 .sidebar-open .content-container {

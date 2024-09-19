@@ -31,6 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           <li><Link to="/transactions" className="block p-4 border-l-4 border-transparent hover:border-green-500">Transactions</Link></li>
           <li><Link to="/sectors" className="block p-4 border-l-4 border-transparent hover:border-green-500">Sectors</Link></li>
           <li><Link to="/account" className="block p-4 border-l-4 border-transparent hover:border-green-500">Account</Link></li>
+          <li><Link to="/more-charts" className="block p-4 border-l-4 border-transparent hover:border-green-500">More Charts</Link></li> {/* Added More Charts Link */}
         </ul>
       </nav>
     </div>
