@@ -14,10 +14,10 @@ body, .main-container, .dashboard {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch; /* Stretch across the width */
+  align-items: stretch;
   overflow: auto;
   transition: margin-left 0.3s;
-
+  width: 100%; /* Ensure full width for the content */
 }
 
 .sidebar-open .main-content {
@@ -26,8 +26,8 @@ body, .main-container, .dashboard {
 }
 
 .sidebar-closed .main-content {
-  width: calc(100% - 20px);
-  margin-left: 20px;
+  width: calc(100% - 60px);
+  margin-left: 60px;
 }
 
 .navbar {
@@ -37,15 +37,16 @@ body, .main-container, .dashboard {
   top: 0;
   z-index: 1000;
 }
+
 .content-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch; /* Stretch the container to fill the width */
   justify-content: flex-start;
   overflow: auto;
   transition: margin-left 0.3s;
- 
+  width: 100%; /* Ensure the content container takes full width */
 }
 
 .sidebar-open .content-container {
@@ -55,11 +56,10 @@ body, .main-container, .dashboard {
 
 .sidebar-closed .content-container {
   width: calc(100% - 60px); /* Adjust width for when the sidebar is closed */
-  margin-left: 60px; /* Realistic value instead of 1200px */
+  margin-left: 60px;
 }
 
 .no-sidebar .content-container {
   width: 100%; /* Full width when there is no sidebar */
   margin-left: 0;
 }
-

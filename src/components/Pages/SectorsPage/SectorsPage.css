@@ -1,35 +1,67 @@
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
+/* Main page container */
 .sectors-page {
-    margin-left: 250px; /* Same width as your sidebar */
-    margin-top: 60px;   /* Same height as your navbar */
-    padding: 20px;      /* Optional padding for content */
-    box-sizing: border-box;
-    min-height: calc(100vh - 60px); /* Ensure full height minus navbar */
+    padding: 20px;
+    background-color: #1e1e1e; /* Background matches the dark theme */
+    color: white;
+    min-height: 100vh; /* Ensure full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between components */
+    width: 100%;
 }
 
+/* Header styling */
 h1 {
+    font-size: 28px;
+    color: #fff;
     text-align: center;
     margin-bottom: 20px;
-    padding-top: 20px; /* Ensure the title isn't too close to the navbar */
 }
 
-#legend {
-    margin-top: 10px; /* Adjust margin for better spacing */
-    padding: 10px;    /* Ensure enough space inside the legend box */
-    background-color: rgba(0, 0, 0, 0.5);
+/* Legend section */
+.legend-container {
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
+    padding: 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
+    width: 80%;
+    text-align: center;
 }
 
-#container {
-    width: 100%;
-    height: calc(100% - 60px); /* Adjust height to fit within the page */
-    margin-top: 60px; /* Ensure the chart starts below the navbar */
-    overflow-x: auto; /* Optional: Scroll horizontally if needed */
+/* Ticker checkboxes container */
+.ticker-checkboxes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.ticker-checkboxes label {
+    font-size: 14px;
+    color: white;
+}
+
+/* Time interval buttons */
+.interval-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.interval-buttons button {
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.interval-buttons button:hover {
+    background-color: #555; /* Lighter on hover */
 }

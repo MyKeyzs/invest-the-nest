@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import SectorChart from './SectorChart';
+import './SectorsPage.css';
 
 const SectorsPage: React.FC = () => {
-    const [currentInterval, setCurrentInterval] = useState<'1M' | '3M' | '6M' | '1Y'>('1M');
+    const [currentInterval, setCurrentInterval] = useState<'1W'| '1M' | '3M' | '6M' | '1Y'>('1W'); // Default to '1D'
     const [legendHTML, setLegendHTML] = useState<string>('');
     const [series, setSeries] = useState<{ [key: string]: any }>({});
 
@@ -21,7 +22,7 @@ const SectorsPage: React.FC = () => {
         { symbol: 'XLU', color: 'rgb(33, 150, 243)' },   // Light Blue
     ];
 
-    const toggleSeries = (ticker: string) => {
+    const toggleSeriesVisibility = (ticker: string) => {
         const lineSeries = series[ticker];
         if (lineSeries) {
             const isVisible = lineSeries.options().visible !== false;
@@ -39,17 +40,18 @@ const SectorsPage: React.FC = () => {
                 setSeries={setSeries} 
                 series={series} 
             />
-            <div id="legend" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', color: 'white', padding: '10px', borderRadius: '5px', marginBottom: '10px' }} dangerouslySetInnerHTML={{ __html: legendHTML }} />
-            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <div className="legend-container" dangerouslySetInnerHTML={{ __html: legendHTML }}></div>
+            <div className="ticker-checkboxes">
                 {tickers.map(ticker => (
                     <label key={ticker.symbol}>
-                        <input type="checkbox" defaultChecked onChange={() => toggleSeries(ticker.symbol)} /> {ticker.symbol}
+                        <input type="checkbox" defaultChecked onChange={() => toggleSeriesVisibility(ticker.symbol)} /> 
+                        {ticker.symbol}
                     </label>
                 ))}
             </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                {['1M', '3M', '6M', '1Y'].map(interval => (
-                    <button key={interval} onClick={() => setCurrentInterval(interval as '1M' | '3M' | '6M' | '1Y')}>
+            <div className="interval-buttons">
+                {['1W', '1M', '3M', '6M', '1Y'].map(interval => (
+                    <button key={interval} onClick={() => setCurrentInterval(interval as '1W' | '1M' | '3M' | '6M' | '1Y')}>
                         {interval}
                     </button>
                 ))}

@@ -1,23 +1,31 @@
-#container {
+/* Ensure the chart stretches to fill the available space */
+.chart-wrapper {
+    position: relative;
     width: 100%;
-    height: calc(100% - 60px); /* Adjust height to fit within the page */
-    margin-top: 60px; /* Ensure the chart starts below the navbar */
-    overflow-x: auto; /* Optional: Scroll horizontally if needed */
+    max-width: 100%; /* Full width across the screen */
+    margin: 0 auto;
+    padding: 20px 0;
 }
 
-#legend {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+.chart-container {
+    width: 99%;
+    height: 550px; /* Adjust height as needed */
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.chart-legend {
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    z-index: 1;
+    font-size: 14px;
+    font-family: sans-serif;
+    line-height: 18px;
+    font-weight: 300;
     color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px;
     border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.sectors-page {
-    margin-left: 250px; /* Same width as your sidebar */
-    margin-top: 60px;   /* Same height as your navbar */
-    padding: 20px;      /* Optional padding for content */
-    box-sizing: border-box;
-    min-height: calc(100vh - 60px); /* Ensure full height minus navbar */
 }
