@@ -42,36 +42,50 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
   useEffect(() => {
     const fetchBars = async () => {
       try {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); // Subtract one day from the current date
-        const formattedDate = yesterday.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
-
+        let date = new Date();
+        const dayOfWeek = date.getDay(); // Get current day of the week (0 for Sunday, 6 for Saturday)
+  
+        // If it's Saturday or Sunday, use Friday's date instead
+        if (dayOfWeek === 6) { // If it's Saturday
+          date.setDate(date.getDate() - 1); // Move back to Friday
+        } else if (dayOfWeek === 0) { // If it's Sunday
+          date.setDate(date.getDate() - 2); // Move back to Friday
+        }
+  
+        const formattedDate = date.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
+  
         const response = await axios.get(`https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/${formattedDate}`, {
           params: {
             apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
           },
         });
-
-        const data = response.data.results
-          .map((bar: any) => ({
-            ticker: bar.T,
-            volume: bar.v,
-            close: bar.c,
-            open: bar.o,
-            high: bar.h,
-            low: bar.l,
-          }))
-          .sort((a: GroupedBarData, b: GroupedBarData) => b.volume - a.volume)
-          .slice(0, 20);
-
-        setBars(data);
-        setError(null); // Clear any previous errors
+  
+        // Check if response.data.results exists and is an array
+        if (response.data && Array.isArray(response.data.results)) {
+          const data = response.data.results
+            .map((bar: any) => ({
+              ticker: bar.T,
+              volume: bar.v,
+              close: bar.c,
+              open: bar.o,
+              high: bar.h,
+              low: bar.l,
+            }))
+            .sort((a: GroupedBarData, b: GroupedBarData) => b.volume - a.volume)
+            .slice(0, 20);
+  
+          setBars(data);
+          setError(null); // Clear any previous errors
+        } else {
+          // Handle cases where results is undefined or not an array
+          setError('No data available for the selected date.');
+        }
       } catch (error) {
         console.error('Error fetching grouped bars data:', error);
         setError('Error fetching grouped bars data. Please try again later.');
       }
     };
-
+  
     fetchBars();
   }, []);
 

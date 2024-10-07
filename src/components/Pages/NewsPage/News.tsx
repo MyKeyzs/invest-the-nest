@@ -46,11 +46,11 @@ const NewsPage: React.FC = () => {
   
     const getSentimentIcon = (article: any) => {
       const sentimentInsight = article?.insights?.[0]; // Safely access the first insight in the array
-  
+    
       if (sentimentInsight?.sentiment === 'positive') {
-        return <img src={BullIcon} alt="Bull Icon" className="sentiment-icon" />;
+        return <img src={BullIcon} alt="Bull Icon" className="sentiment-icon bull-icon" />;
       } else if (sentimentInsight?.sentiment === 'negative') {
-        return <img src={BearIcon} alt="Bear Icon" className="sentiment-icon" />;
+        return <img src={BearIcon} alt="Bear Icon" className="sentiment-icon bear-icon" />;
       } else {
         return null; // For neutral or undefined sentiment
       }

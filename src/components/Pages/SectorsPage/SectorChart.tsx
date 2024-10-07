@@ -99,6 +99,7 @@ const SectorChart: React.FC<SectorChartProps> = ({ tickers, currentInterval, set
                 const data = await fetchData(ticker, from, to);
                 lineSeries.setData(data);
                 setSeries(prev => ({ ...prev, [ticker]: lineSeries }));
+                chart.timeScale().fitContent();
             };
 
             tickers.forEach(ticker => addSeriesToChart(ticker.symbol, ticker.color));
@@ -113,7 +114,7 @@ const SectorChart: React.FC<SectorChartProps> = ({ tickers, currentInterval, set
         <div className="chart-wrapper">
             <div className="chart-container" ref={chartContainerRef}></div>
             <div className="chart-legend" />
-        </div>
+            </div>
     );
 };
 

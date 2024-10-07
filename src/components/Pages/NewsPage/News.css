@@ -137,3 +137,20 @@
     background-color: #f0f0f0; /* Light grey background */
     color: black; /* Neutral text color */
   }
+
+  .sentiment-icon {
+    width: 24px;  /* Adjust the size as needed */
+    height: 24px;
+    display: inline-block;
+  }
+
+  .sentiment-icon.bull-icon {
+    width: 32px;  /* Slightly larger size for the bull */
+    height: 32px;
+  }
+  
+  .sentiment-icon.bear-icon {
+    width: 24px;  /* Keep the bear at 24px */
+    height: 24px;
+  }
+  
