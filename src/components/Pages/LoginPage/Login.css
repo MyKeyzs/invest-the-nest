@@ -113,3 +113,77 @@
   outline: none; /* focus:outline-none */
   box-shadow: 0 0 0 3px rgba(219, 68, 55, 0.5); /* focus:ring-red-500 */
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background-color: #2d3748;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal h3 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.cancel-button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: #e53e3e; /* Red for cancel */
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #c53030; /* Darker red */
+}
+
+.create-account-button {
+  width: 100%; /* Match the width */
+  padding: 0.5rem 1rem; /* Match the padding */
+  border: none; /* No border */
+  border-radius: 0.375rem; /* Match the border radius */
+  font-size: 0.875rem; /* Match the font size */
+  font-weight: 500; /* Match the font weight */
+  color: #fff; /* Match the text color */
+  background-color: #6b46c1; /* Purple background color */
+  cursor: pointer;
+  margin-top: 1rem; /* Add some space from other elements */
+  
+}
+
+.create-account-button:hover {
+  background-color:  #6b46c1; /* Same hover effect as the login button */
+}
+
+.create-account-button:focus {
+  outline: none; /* No outline */
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Same focus effect */
+}
+
+.error-message {
+  color: #e53e3e; /* Red color for error */
+  font-size: 0.875rem; /* Adjust size as needed */
+  text-align: center;
+  margin-top: 1rem; /* Space above */
+}

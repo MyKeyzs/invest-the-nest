@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './components/Pages/LoginPage/Login';
 import Dashboard from './components/DashboardComponent/Dashboard';
+import './components/DashboardComponent/Dashboard.css';
 import Watchlist from './components/Watchlist';
 import Portfolio from './components/Portfolio';
 import MarketCalendar from './components/MarketCalendar';
@@ -50,7 +51,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
           <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} isSidebarOpen={isSidebarOpen} />} />
-          <Route path="/news" element={<NewsPage/>} />
+          <Route path="/news" element={<NewsPage />} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />

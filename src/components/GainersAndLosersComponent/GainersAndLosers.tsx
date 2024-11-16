@@ -24,17 +24,19 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
     const fetchGainersAndLosers = async () => {
       try {
         const gainersResponse = await axios.get(
-          'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?apiKey=w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'
+          'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?include_otc=false&apiKey=w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'
         );
         const losersResponse = await axios.get(
-          'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/losers?apiKey=w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'
+          'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/losers?include_otc=false&apiKey=w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'
         );
 
         const sortedGainers = gainersResponse.data.tickers
+          .filter((stock: StockData) => stock.day?.c > 0.25) // Filter out stocks with price below or equal to $1.00
           .slice(0, 20)
           .sort((a: StockData, b: StockData) => b.todaysChangePerc - a.todaysChangePerc);
 
         const sortedLosers = losersResponse.data.tickers
+          .filter((stock: StockData) => stock.day?.c > 0.25) // Filter out stocks with price below or equal to $1.00
           .slice(0, 20)
           .sort((a: StockData, b: StockData) => a.todaysChangePerc - b.todaysChangePerc);
 
@@ -51,7 +53,7 @@ const GainersAndLosers: React.FC<GainersAndLosersProps> = ({ onSelectTicker }) =
   }, []);
 
   const formatPercentage = (percentage: number) => {
-    return (percentage).toFixed(2); // Move the decimal place two positions to the left and round to two decimal places
+    return percentage.toFixed(2); // Round to two decimal places
   };
 
   return (

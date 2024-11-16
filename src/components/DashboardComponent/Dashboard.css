@@ -8,10 +8,24 @@
   overflow: auto;
 }
 
-.widget {
+.main-content{
   display: flex;
-  flex-direction: column;
-  height: 100%; /* Make the widget fill the height of the grid row */
+  flex-direction: row; /* or column based on your layout */
+  flex-grow: 1;
+}
+
+
+.chart-container {
+  flex-grow: 1; /* Allow the chart container to expand */
+  flex-basis: auto;
+}
+
+.widget {
+  display: block; /* Change to block to let the chart take the full space */
+  width: 100%; /* Ensure full width */
+  height: 100%; /* Ensure full height */
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove padding */
 }
 
 .widget-content {
@@ -34,7 +48,7 @@
 .layout {
   display: flex;
   flex-grow: 1;
-  padding: 20px;
+  padding: 10px;
   height: 100%;
   width: 100%;
 }
@@ -68,4 +82,15 @@
 
 .lock-button span {
   display: none;  /* Hide the text */
+}
+
+td {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+/* Ensure this selector is specific enough to override the existing styles */
+table {
+  table-layout: auto !important;
 }

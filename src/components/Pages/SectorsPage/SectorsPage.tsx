@@ -3,10 +3,12 @@ import SectorChart from './SectorChart';
 import './SectorsPage.css';
 
 const SectorsPage: React.FC = () => {
-    const [currentInterval, setCurrentInterval] = useState<'1W'| '1M' | '3M' | '6M' | '1Y'>('1W'); // Default to '1D'
-    const [legendHTML, setLegendHTML] = useState<string>('');
-    const [series, setSeries] = useState<{ [key: string]: any }>({});
+    // Manage the state for current interval and the legend content
+    const [currentInterval, setCurrentInterval] = useState<'1W'| '1M' | '3M' | '6M' | '1Y'>('1W'); // Default to '1W'
+    const [legendHTML, setLegendHTML] = useState<string>(''); // Store the legend HTML content
+    const [series, setSeries] = useState<{ [key: string]: any }>({}); // Store the series data
 
+    // Define the tickers and their colors
     const tickers = [
         { symbol: 'SPY', color: 'rgb(44, 130, 201)' },   // Blue
         { symbol: 'XLC', color: 'rgb(239, 83, 80)' },    // Red
@@ -22,6 +24,7 @@ const SectorsPage: React.FC = () => {
         { symbol: 'XLU', color: 'rgb(33, 150, 243)' },   // Light Blue
     ];
 
+    // Toggle the visibility of each ticker series
     const toggleSeriesVisibility = (ticker: string) => {
         const lineSeries = series[ticker];
         if (lineSeries) {
@@ -33,14 +36,17 @@ const SectorsPage: React.FC = () => {
     return (
         <div className="sectors-page">
             <h1>Sectors Chart</h1>
+            {/* Pass the necessary props to the SectorChart component */}
             <SectorChart 
                 tickers={tickers} 
                 currentInterval={currentInterval} 
-                setLegendHTML={setLegendHTML} 
+                setLegendHTML={setLegendHTML} // Pass setLegendHTML as a prop
                 setSeries={setSeries} 
                 series={series} 
             />
+            {/* Render the dynamically updated legend */}
             <div className="legend-container" dangerouslySetInnerHTML={{ __html: legendHTML }}></div>
+            {/* Render checkboxes to toggle series visibility */}
             <div className="ticker-checkboxes">
                 {tickers.map(ticker => (
                     <label key={ticker.symbol}>
@@ -49,6 +55,7 @@ const SectorsPage: React.FC = () => {
                     </label>
                 ))}
             </div>
+            {/* Render buttons to switch between intervals */}
             <div className="interval-buttons">
                 {['1W', '1M', '3M', '6M', '1Y'].map(interval => (
                     <button key={interval} onClick={() => setCurrentInterval(interval as '1W' | '1M' | '3M' | '6M' | '1Y')}>

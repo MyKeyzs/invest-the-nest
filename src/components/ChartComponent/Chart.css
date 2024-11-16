@@ -1,181 +1,46 @@
 .chart-container {
-  background-color: #0d0d1b; /* Match the dark background */
-}
-.chart-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  width: 90%; /* Reduce width to 90% */
-  margin: 0 auto; /* Center the component */
-  max-width: 800px; /* Limit the maximum width */
-  margin-left: 0 auto;
+  width: 100%; /* Full width of parent */
+  height: 100%; /* Full height of parent */
+  background-color: #0d0d1b; /* Ensure this matches your desired color */
+  padding: 0; /* Remove any extra padding */
+  margin: 0; /* Remove any extra margin */
+  box-sizing: border-box; /* Ensure padding doesn't affect size */
 }
 
-.chart-title:hover {
-  color: #00ff00;
-}
 
-.chart-title.editing {
-  text-align: left;
-}
-
-.chart-text {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-}
-
-.chart-input,
-.chart-save-button,
-.chart-cancel-button {
-  display: none;
-}
-
-.chart-title.editing .chart-text {
-  display: none;
-}
-
-.chart-title.editing .chart-input,
-.chart-title.editing .chart-save-button,
-.chart-title.editing .chart-cancel-button {
-  display: inline-block;
-}
-
-.chart-input {
-  font-size: 1.5rem;
-  text-align: center;
-  color: #fff;
-  background-color: #333;
-  border: none;
-  border-bottom: 2px solid #3182ce;
-  outline: none;
-  margin-right: 1rem;
-}
-
-.chart-save-button,
-.chart-cancel-button {
-  padding: 0.3rem 0.6rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
-
-.chart-save-button {
-  background-color: #3182ce;
-  color: #fff;
-}
-
-.chart-save-button::after {
-  visibility: hidden;
-}
-
-.chart-cancel-button {
-  background-color: #555;
-  color: #fff;
-  margin-left: 0.5rem;
-}
-.chart-cancel-button::after {
-  visibility: hidden;
+.chart-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  pointer-events: none; /* Ensures that the chart remains interactive */
 }
 
 .timeframes-container {
   display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-  justify-content: center; /* This will center the buttons horizontally */
+  margin-right: 15px;
+  pointer-events: all; /* Enables interaction with buttons */
 }
 
 .timeframe-button {
-  padding: 0.3rem 0.6rem;
-  margin-right: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  margin-right: 0.3rem;
   border-radius: 0.25rem;
   background-color: #4a5568;
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-  align-items: center;
+  font-size: 0.8rem;
 }
 
 .timeframe-button.active {
   background-color: #3182ce;
 }
 
-.timeframe-button:hover {
-  background-color: #2b6cb0;
-}
-
-.chart-type-toggle {
-  margin-bottom: 1rem;
-  display: flex;
-}
-
-.toggle-button {
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: #4a5568;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.toggle-button.active {
-  background-color: #3182ce;
-}
-
-.toggle-button:hover {
-  background-color: #2b6cb0;
-}
-
-/* Crosshair styling */
-.graph-area {
-  position: relative;
-  width: relative;
-  height: auto; /* Let the content dictate the height */
-  margin-bottom: 1rem;
-  margin-left: 0 auto;
-}
-
-.chartjs-crosshair {
-  position: absolute;
-  pointer-events: none;
-  border-color: white !important;
-  border-width: 1px !important;
-  border-style: dashed !important;
-  z-index: 10;
-}
-
-.chartjs-crosshair.horizontal {
-  height: 1px;
-  width: 100%;
-}
-
-.chartjs-crosshair.vertical {
-  width: 1px;
-  height: 100%;
-}
-
-.chart-tooltip {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 5px;
-  border-radius: 3px;
-  font-size: 12px;
-  pointer-events: none;
-  z-index: 10;
-  align-items: center;
-  display: inline-block;
-}
-
-.tooltip-label {
-  font-weight: bold;
+.ticker-title {
+  font-size: 1rem;
+  color: #ffffff;
+  margin-left: 10px;
 }

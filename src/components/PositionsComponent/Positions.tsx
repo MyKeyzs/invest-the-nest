@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebaseConfig'; // Adjust the path as necessary
 import './Positions.css';
 
 interface PositionData {
@@ -9,69 +11,96 @@ interface PositionData {
   total?: number;
 }
 
+// Define the TickerResult type for type safety
+interface TickerResult {
+  symbol: string;
+  price: number;
+  total: number;
+}
+
 interface PositionsProps {
-  onSelectTicker: (symbol: string) => void; // Correctly type the onSelectTicker prop
+  onSelectTicker: (symbol: string) => void;
 }
 
 const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
-  const [positions, setPositions] = useState<PositionData[]>(() => {
-    const savedPositions = localStorage.getItem('positions');
-    return savedPositions
-      ? JSON.parse(savedPositions)
-      : [
-          { symbol: 'AAPL', shares: 10 },
-          { symbol: 'GOOGL', shares: 5 },
-          { symbol: 'MSFT', shares: 20 },
-          { symbol: 'AMZN', shares: 2 },
-          { symbol: 'TSLA', shares: 7 },
-        ];
-  });
-
+  const [positions, setPositions] = useState<PositionData[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [newTicker, setNewTicker] = useState<string>(''); // State to handle new ticker input
+  const [newTicker, setNewTicker] = useState<string>('');
 
+  // Fetch user's positions from Firestore on component mount
+  useEffect(() => {
+    const fetchUserPositions = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userDocRef = doc(db, 'Users', user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData?.stocksOwned) {
+              setPositions(userData.stocksOwned);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user positions:', error);
+        setError('Error fetching user data. Please try again later.');
+      }
+    };
+
+    fetchUserPositions();
+  }, []);
+
+  // Fetch the latest prices for the stocks owned
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const symbols = positions.map((position) => position.symbol);
+        console.log('Positions array:', positions);
     
-        // Set the multiplier, timespan, from, and to parameters for the Aggregates API
-        const multiplier = 1; // You can adjust this based on your needs
-        const timespan = 'day'; // Timespan can be 'minute', 'hour', 'day', etc.
+        const symbols = positions.map((position) => position.symbol).join(',');
+        console.log('Fetching prices for symbols:', symbols);
     
-        // Set the date range, you can adjust this based on the user input
-        const fromDate = '2023-09-01'; // Example start date
-        const toDate = '2023-09-15'; // Example end date
+        if (!symbols) {
+          console.log('No symbols found, exiting fetchPrices.');
+          return;
+        }
     
-        const fetchDataForSymbol = async (symbol: string) => {
-          const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${fromDate}/${toDate}`, {
-            params: {
-              adjusted: true,
-              apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
-            },
-          });
+        const response = await axios.get(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers`, {
+          params: {
+            tickers: symbols,
+            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
+          },
+        });
     
-          if (response.data && response.data.results) {
-            const latestData = response.data.results[response.data.results.length - 1];
+        console.log('API Response:', response.data);
+    
+        if (response.data && response.data.tickers) {
+          const results: TickerResult[] = response.data.tickers.map((tickerData: any) => {
+            const symbol = tickerData.ticker;
+            // Use the closing price from the 'day' object if the market is closed
+            const price = tickerData.day && tickerData.day.c ? tickerData.day.c : (tickerData.lastQuote && tickerData.lastQuote.p ? tickerData.lastQuote.p : 0);
+            const shares = positions.find((position) => position.symbol === symbol)?.shares || 0;
+    
             return {
               symbol,
-              price: latestData.c, // Get the closing price
-              total: latestData.c * (positions.find((position) => position.symbol === symbol)?.shares || 0),
+              price,
+              total: price * shares,
             };
-          }
-          return { symbol, price: 0, total: 0 }; // Handle if no data is available
-        };
+          });
     
-        const results = await Promise.all(symbols.map((symbol) => fetchDataForSymbol(symbol)));
+          console.log('Parsed Results:', results);
     
-        setPositions((prevPositions) =>
-          prevPositions.map((position) => {
-            const result = results.find((r) => r.symbol === position.symbol);
-            return result
-              ? { ...position, price: result.price, total: result.total }
-              : position;
-          })
-        );
+          setPositions((prevPositions) =>
+            prevPositions.map((position) => {
+              const result = results.find((r: TickerResult) => r.symbol === position.symbol);
+              return result ? { ...position, price: result.price, total: result.total } : position;
+            })
+          );
+    
+          console.log('Updated positions:', positions);
+        } else {
+          console.log('No tickers found in the API response.');
+        }
     
         setError(null);
       } catch (error) {
@@ -79,17 +108,32 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
         setError('Error fetching stock prices. Please try again later.');
       }
     };
-    fetchPrices(); // Fetch initial prices
+    
 
-    const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds
+    if (positions.length > 0) {
+      fetchPrices(); // Fetch initial prices
+      const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds
+      return () => clearInterval(interval); // Cleanup on component unmount
+    }
+  }, [positions]); // Dependency on `positions` to refetch when the array changes
 
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, []); // Empty dependency array means this useEffect runs only once on mount
-
-  // Save positions to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('positions', JSON.stringify(positions));
-  }, [positions]);
+  // Save positions to Firestore when the "Save" button is clicked
+  const handleSavePositions = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userDocRef = doc(db, 'Users', user.uid);
+        await updateDoc(userDocRef, { stocksOwned: positions });
+        console.log('Positions saved successfully!');
+        alert('Portfolio updated successfully!');
+      } else {
+        console.log('No user is logged in.');
+      }
+    } catch (error) {
+      console.error('Error saving positions to Firestore:', error);
+      setError('Error saving positions. Please try again later.');
+    }
+  };
 
   const handleSharesChange = (symbol: string, shares: number) => {
     setPositions((prevPositions) =>
@@ -104,7 +148,7 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   const handleAddTicker = () => {
     if (newTicker && !positions.some((position) => position.symbol === newTicker.toUpperCase())) {
       setPositions([...positions, { symbol: newTicker.toUpperCase(), shares: 0 }]);
-      setNewTicker(''); // Clear the input after adding
+      setNewTicker('');
     }
   };
 
@@ -117,7 +161,7 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   };
 
   const handleClickTicker = (symbol: string) => {
-    console.log(`Ticker clicked: ${symbol}`); // Log when a ticker is clicked
+    console.log(`Ticker clicked: ${symbol}`);
     onSelectTicker(symbol);
   };
 
@@ -142,8 +186,8 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
                 </span>
                 <span
                   className="item-symbol"
-                  onClick={() => handleClickTicker(position.symbol)} // Handle the click event
-                  style={{ cursor: 'pointer', color: 'lightblue' }} // Styling for clickable items
+                  onClick={() => handleClickTicker(position.symbol)}
+                  style={{ cursor: 'pointer', color: 'lightblue' }}
                 >
                   {position.symbol}
                 </span>
@@ -178,6 +222,9 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
               + Add Ticker
             </button>
           </div>
+          <button onClick={handleSavePositions} className="save-button">
+            Save Portfolio
+          </button>
         </div>
       )}
     </div>

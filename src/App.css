@@ -1,5 +1,5 @@
 body, .main-container, .dashboard {
-  background-color: #1f2937; /* Restore your background color */
+  background-color: #0d0d1b; /* Ensure this matches your desired color */
   color: #ffffff; /* Optional: set the text color to white */
 }
 
@@ -47,6 +47,8 @@ body, .main-container, .dashboard {
   overflow: auto;
   transition: margin-left 0.3s;
   width: 100%; /* Ensure the content container takes full width */
+  border: 2px solid;
+  border-color: azure;
 }
 
 .sidebar-open .content-container {
@@ -62,4 +64,16 @@ body, .main-container, .dashboard {
 .no-sidebar .content-container {
   width: 100%; /* Full width when there is no sidebar */
   margin-left: 0;
+}
+
+/* Global CSS file (e.g., App.css or index.css) */
+td {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+table {
+  border-spacing: 0 !important;
+  border-collapse: collapse !important;
 }

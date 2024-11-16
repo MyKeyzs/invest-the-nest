@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import RGL, { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import TopTickers from '../TopTickersComponent/TopTickers';
 import Positions from '../PositionsComponent/Positions';
-import ChartComponentWrapped from '../ChartComponent/Chart';
+import Chart from '../ChartComponent/Chart';
 import GroupedBars from '../GroupedBars/GroupedBars';
 import GainersAndLosers from '../GainersAndLosersComponent/GainersAndLosers';
 import Indices from '../IndicesComponent/Indices';
@@ -20,10 +20,10 @@ interface DashboardProps {
 const generateLayout = (): Layout[] => {
   return [
     { i: 'positions', x: 0, y: 0, w: 3, h: 14.5 },
-    { i: 'chart', x: 3, y: 0, w: 6, h: 15 },
+    { i: 'chart', x: 3, y: 0, w: 5, h: 15 }, // Adjust 'w' and 'h' as needed
     { i: 'gainersLosers', x: 9, y: 0, w: 3, h: 22.5 },
     { i: 'groupedBars', x: 4, y: 10, w: 5, h: 11 },
-    { i: 'indices', x: 0, y: 18, w: 4, h: 6 }, // Add the indices widget here
+    { i: 'indices', x: 0, y: 18, w: 4, h: 6 },
   ];
 };
 
@@ -96,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
           isResizable={!isLocked}
         >
             <div key="chart" className="widget" ref={chartRef} >
-              <ChartComponentWrapped ticker={selectedTicker} />
+              <Chart ticker={selectedTicker} />
             </div>
             <div key="positions" className="widget">
               <Positions onSelectTicker={handleSelectTicker} />
