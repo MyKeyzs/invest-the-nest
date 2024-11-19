@@ -54,7 +54,7 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
         width: chartContainerRef.current.clientWidth,
         height: chartContainerRef.current.clientHeight,
         layout: {
-          background: { color: "#0d0d1b" },
+          background: { color: "#ffffff" },
           textColor: "#C3BCDB",
           fontFamily: "'Roboto', sans-serif",
         },

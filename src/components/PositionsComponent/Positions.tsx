@@ -111,8 +111,9 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
     
 
     if (positions.length > 0) {
-      fetchPrices(); // Fetch initial prices
+      
       const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds
+      fetchPrices(); // Fetch initial prices
       return () => clearInterval(interval); // Cleanup on component unmount
     }
   }, [positions]); // Dependency on `positions` to refetch when the array changes

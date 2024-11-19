@@ -52,7 +52,7 @@ const TvChart: React.FC<TvChartProps> = ({ ticker, interval, chartType }) => {
     // If chart container exists and chart is not yet initialized
     if (chartContainerRef.current && !chartRef.current) {
       chartRef.current = createChart(chartContainerRef.current, {
-        width: chartContainerRef.current.clientWidth,
+        //width: chartContainerRef.current.clientWidth,
         height: 400,
         layout: {
             background: { color: "#222" },

@@ -30,7 +30,7 @@
 
 .widget-content {
   flex-grow: 1; /* Make the content inside the widget grow to fill available space */
-  overflow: auto; /* Handle overflow if content exceeds the height */
+  overflow: hidden;
 }
 
 .Gains-losses-widget {
