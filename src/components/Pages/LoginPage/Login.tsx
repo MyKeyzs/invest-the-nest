@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
+import { GoogleLogin } from '@react-oauth/google';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider
+} from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, query, getDocs, where } from 'firebase/firestore';
 import './Login.css';
 
 interface LoginProps {
@@ -10,7 +15,7 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onSuccess }) => {
-  const [email, setEmail] = useState('');
+  const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -21,27 +26,45 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      let userEmail = emailOrUsername; // Start with the assumption that the input is an email
+  
+      // Check if the input is not an email (assume it's a username)
+      if (!/\S+@\S+\.\S+/.test(emailOrUsername)) {
+        // Query Firestore to find the user by username
+        const usersRef = collection(db, 'Users'); // Reference to the Users collection
+        const q = query(usersRef, where('username', '==', emailOrUsername));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          // If a matching document is found, use its email
+          userEmail = querySnapshot.docs[0].data().email;
+        } else {
+          throw new Error('Username not found. Please check your input.');
+        }
+      }
+  
+      // Proceed to sign in with the obtained email and password
+      const userCredential = await signInWithEmailAndPassword(auth, userEmail, password);
       console.log('User logged in:', userCredential.user);
       setErrorMessage('');
       onSuccess();
     } catch (error) {
-      setErrorMessage('Invalid email or password. Please try again.');
+      setErrorMessage('Invalid username/email or password. Please try again.');
       console.error('Error logging in:', error);
     }
   };
-
+  
   const handleSignUp = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, newEmail, newPassword);
       const user = userCredential.user;
 
       // Add user details to Firestore
-      await setDoc(doc(db, 'Users', user.uid), {
+      await setDoc(doc(db, 'Users', newUsername), {
         username: newUsername,
         email: newEmail,
         createdAt: new Date(),
-        stocksOwned: []
+        stocksOwned: [],
       });
 
       console.log('User created and saved in Firestore!');
@@ -59,20 +82,20 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
+
       if (user) {
         const userDocRef = doc(db, 'Users', user.uid);
         const userDoc = await getDoc(userDocRef);
-  
+
         if (!userDoc.exists()) {
           await setDoc(userDocRef, {
             username: user.displayName || 'Anonymous',
             email: user.email,
             createdAt: new Date(),
-            stocksOwned: []
+            stocksOwned: [],
           });
         }
-  
+
         console.log('Google login successful:', user);
         onSuccess(); // Ensure this updates state or redirects
       }
@@ -94,16 +117,16 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form className="login-form">
           <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
+            <label htmlFor="emailOrUsername" className="form-label">
+              Email or Username
             </label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="emailOrUsername"
               className="form-input"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email or username"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
             />
           </div>
           <div className="form-group">
@@ -125,11 +148,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
             </button>
           </div>
           <div className="form-group">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleFailure}
-              ux_mode="popup"
-            />
+            <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleFailure} ux_mode="popup" />
           </div>
           <div className="form-group">
             <button type="button" className="create-account-button" onClick={() => setShowModal(true)}>
@@ -178,7 +197,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
                 Cancel
               </button>
             </div>
-            {signUpErrorMessage && <p className="error-message">{signUpErrorMessage}</p>} {/* Display error message */}
+            {signUpErrorMessage && <p className="error-message">{signUpErrorMessage}</p>}
           </div>
         </div>
       )}
