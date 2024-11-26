@@ -13,6 +13,7 @@ import Sidebar from './components/SidebarComponent/Sidebar';
 import NewsPage from './components/Pages/NewsPage/News';
 import TvDash from './components/Pages/ChartsPage/TvDash';
 import './App.css'; // Ensure to import your CSS file here
+import CustomSectorsPage from './components/Pages/CustomSectors/CustomSectorsPage';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,6 +58,7 @@ const App: React.FC = () => {
           <Route path="/market-calendar" element={<MarketCalendar />} />
           <Route path="/more-charts" element={<TvDash />} />
           <Route path="/sectors" element={<SectorsPage />} />
+          <Route path="/custom-sectors" element={<CustomSectorsPage />} />
         </Routes>
       </main>
     </div>
