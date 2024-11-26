@@ -3,7 +3,10 @@
   margin-right: 0.5rem; /* Space between gainers/losers and grouped bars */
   background-color: #0d0d1b; /* Match the dark background */
   padding: 1rem; /* Add some padding */
-  border-radius: 8px; /* Rounded corners */
+  
+  border-radius: 10px;
+  
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   
 }
 

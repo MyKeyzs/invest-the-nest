@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebaseConfig'; // Adjust the path as necessary
@@ -11,7 +11,6 @@ interface PositionData {
   total?: number;
 }
 
-// Define the TickerResult type for type safety
 interface TickerResult {
   symbol: string;
   price: number;
@@ -26,6 +25,7 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   const [positions, setPositions] = useState<PositionData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [newTicker, setNewTicker] = useState<string>('');
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch user's positions from Firestore on component mount
   useEffect(() => {
@@ -51,84 +51,67 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
     fetchUserPositions();
   }, []);
 
-  // Fetch the latest prices for the stocks owned
-  useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        console.log('Positions array:', positions);
-    
-        const symbols = positions.map((position) => position.symbol).join(',');
-        console.log('Fetching prices for symbols:', symbols);
-    
-        if (!symbols) {
-          console.log('No symbols found, exiting fetchPrices.');
-          return;
-        }
-    
-        const response = await axios.get(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers`, {
-          params: {
-            tickers: symbols,
-            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
-          },
+  // Function to fetch stock prices
+  const fetchPrices = async () => {
+    try {
+      if (positions.length === 0) {
+        console.log('No positions to fetch prices for.');
+        return;
+      }
+
+      const symbols = positions.map((position) => position.symbol).join(',');
+      const response = await axios.get(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers`, {
+        params: {
+          tickers: symbols,
+          apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
+        },
+      });
+
+      if (response.data && response.data.tickers) {
+        const results: TickerResult[] = response.data.tickers.map((tickerData: any) => {
+          const symbol = tickerData.ticker;
+          const price = tickerData.day?.c || tickerData.lastQuote?.p || 0;
+          const shares = positions.find((position) => position.symbol === symbol)?.shares || 0;
+          return { symbol, price, total: price * shares };
         });
-    
-        console.log('API Response:', response.data);
-    
-        if (response.data && response.data.tickers) {
-          const results: TickerResult[] = response.data.tickers.map((tickerData: any) => {
-            const symbol = tickerData.ticker;
-            // Use the closing price from the 'day' object if the market is closed
-            const price = tickerData.day && tickerData.day.c ? tickerData.day.c : (tickerData.lastQuote && tickerData.lastQuote.p ? tickerData.lastQuote.p : 0);
-            const shares = positions.find((position) => position.symbol === symbol)?.shares || 0;
-    
-            return {
-              symbol,
-              price,
-              total: price * shares,
-            };
-          });
-    
-          console.log('Parsed Results:', results);
-    
-          setPositions((prevPositions) =>
-            prevPositions.map((position) => {
-              const result = results.find((r: TickerResult) => r.symbol === position.symbol);
-              return result ? { ...position, price: result.price, total: result.total } : position;
-            })
-          );
-    
-          console.log('Updated positions:', positions);
-        } else {
-          console.log('No tickers found in the API response.');
-        }
-    
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching stock prices:', error);
-        setError('Error fetching stock prices. Please try again later.');
+
+        setPositions((prevPositions) =>
+          prevPositions.map((position) => {
+            const result = results.find((r) => r.symbol === position.symbol);
+            return result ? { ...position, price: result.price, total: result.total } : position;
+          })
+        );
+      }
+
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching stock prices:', error);
+      setError('Error fetching stock prices. Please try again later.');
+    }
+  };
+
+  // Set up a single interval for fetching prices
+  useEffect(() => {
+    if (!intervalRef.current) {
+      fetchPrices(); // Fetch immediately on mount
+      intervalRef.current = setInterval(fetchPrices, 30000); // Fetch every 30 seconds
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-    
+  }, []); // Run only on mount
 
-    if (positions.length > 0) {
-      
-      const interval = setInterval(fetchPrices, 60000); // Poll every 60 seconds
-      fetchPrices(); // Fetch initial prices
-      return () => clearInterval(interval); // Cleanup on component unmount
-    }
-  }, [positions]); // Dependency on `positions` to refetch when the array changes
-
-  // Save positions to Firestore when the "Save" button is clicked
   const handleSavePositions = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
         const userDocRef = doc(db, 'Users', user.uid);
         await updateDoc(userDocRef, { stocksOwned: positions });
-        console.log('Positions saved successfully!');
         alert('Portfolio updated successfully!');
-      } else {
-        console.log('No user is logged in.');
       }
     } catch (error) {
       console.error('Error saving positions to Firestore:', error);
@@ -162,7 +145,6 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   };
 
   const handleClickTicker = (symbol: string) => {
-    console.log(`Ticker clicked: ${symbol}`);
     onSelectTicker(symbol);
   };
 

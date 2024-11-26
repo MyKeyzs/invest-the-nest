@@ -1,7 +1,7 @@
 .chart-container {
   width: 100%; /* Full width of parent */
   height: 100%; /* Full height of parent */
-  /*background-color: #0d0d1b; /* Ensure this matches your desired color */
+  background-color: #0d0d1b; /* Ensure this matches your desired color */
   padding: 0; /* Remove any extra padding */
   margin: 0; /* Remove any extra margin */
   box-sizing: border-box; /* Ensure padding doesn't affect size */
