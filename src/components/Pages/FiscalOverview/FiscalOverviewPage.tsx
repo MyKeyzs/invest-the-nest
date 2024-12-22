@@ -14,11 +14,11 @@ const FiscalOverviewPage: React.FC = () => {
     lg: [
       { i: "chart", x: 0, y: 0, w: 12, h: 4, static: true },
       { i: "cell1", x: 0, y: 1, w: 4, h: 4.1 },
-      { i: "cell2", x: 4, y: 1, w: 4, h: 5 },
-      { i: "cell3", x: 8, y: 1, w: 4, h: 5 },
-      { i: "cell4", x: 0, y: 2, w: 4, h: 5 },
-      { i: "cell5", x: 4, y: 2, w: 4, h: 5 },
-      { i: "cell6", x: 8, y: 2, w: 4, h: 5 },
+      { i: "cell2", x: 4, y: 1, w: 4, h: 4.1 },
+      { i: "cell3", x: 8, y: 1, w: 4, h: 4.1 },
+      { i: "cell4", x: 0, y: 2, w: 4, h: 4.1 },
+      { i: "cell5", x: 4, y: 2, w: 4, h: 4.1 },
+      { i: "cell6", x: 8, y: 2, w: 4, h: 4.1 },
     ],
   };
 
