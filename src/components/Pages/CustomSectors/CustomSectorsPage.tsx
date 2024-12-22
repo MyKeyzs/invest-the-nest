@@ -3,9 +3,11 @@ import CustomSectors from './CustomSectors';
 
 const CustomSectorsPage: React.FC = () => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', height: '100vh', width: '100%', overflow: 'auto' }}>
       <h1 style={{ color: '#FFF', textAlign: 'center' }}>Custom Sectors</h1>
-      <CustomSectors />
+      <div style={{ height: '100%' }}>
+        <CustomSectors />
+      </div>
     </div>
   );
 };

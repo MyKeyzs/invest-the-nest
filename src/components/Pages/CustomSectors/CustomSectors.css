@@ -1,50 +1,75 @@
-/* General Grid Styling */
-.ag-theme-alpine {
-    --ag-background-color: #1f2836; /* Grid background */
-    --ag-header-background-color: #2c2f33; /* Header background */
-    --ag-row-hover-color: #2c313a; /* Hover row background */
-    --ag-border-color: #444; /* Gridline color */
-}
+/* CustomSectors.css */
 
-/* Row Styling */
-.ag-row:nth-child(even) .ag-cell {
-    background-color: #252a31; /* Slightly lighter than grid background */
-}
-
-.ag-row:nth-child(odd) .ag-cell {
-    background-color: #2c313a; /* Slight contrast */
-}
-
-/* Cell Styling */
-.ag-cell {
-    color: #ccc;
-    font-family: 'Arial', sans-serif;
-    font-size: 14px;
-    border-right: 1px solid var(--ag-border-color); /* Add visible gridlines */
-}
-
-/* Header Styling */
-.ag-header {
-    color: #fff;
-    font-weight: bold;
+/* Container Styling */
+.table-container {
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead {
+    background-color: #2d3748;
     text-transform: uppercase;
-    border-bottom: 1px solid var(--ag-border-color);
-}
-
-/* Child Grid Styling */
-.ag-detail-grid .ag-row:nth-child(even) .ag-cell {
-    background-color: #2c313a;
-}
-
-.ag-detail-grid .ag-row:nth-child(odd) .ag-cell {
-    background-color: #252a31;
-}
-
-.ag-detail-grid .ag-cell {
-    border-right: 1px solid var(--ag-border-color);
-}
-
-/* Gridline Visibility */
-.ag-root-wrapper {
-    border: 1px solid var(--ag-border-color);
-}
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  
+  thead th {
+    padding: 10px;
+    color: #a0aec0;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #252a31; /* Slightly lighter background for alternating rows */
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: #1f2937; /* Base background color for odd rows */
+  }
+  
+  tbody tr:hover {
+    background-color: #3b4757; /* Highlight row on hover */
+  }
+  
+  tbody td {
+    padding: 10px;
+    font-size: 0.9rem;
+    text-align: left;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Highlight Positive and Negative Changes */
+  .net-change-positive {
+    color: #4caf50; /* Green for positive values */
+    font-weight: bold;
+  }
+  
+  .net-change-negative {
+    color: #4caf50; /* Red for negative values */
+    font-weight: bold;
+  }
+  
+  /* Header Styling */
+  .header {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #1a202c;
+    color: #ffffff;
+    border-bottom: 1px solid #2d3748;
+  }
+  

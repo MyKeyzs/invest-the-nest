@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './output.css'; // Import the generated Tailwind CSS
+//import './output.css'; // Import the generated Tailwind CSS
 import App from './App';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter } from 'react-router-dom';
