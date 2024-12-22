@@ -109,10 +109,11 @@ const CustomSectors: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: "20px", color: "#fff" }}>
-      <h1 style={{ textAlign: "center" }}>Custom Sectors</h1>
-      <CompactTable columns={COLUMNS} data={data} theme={theme} tree={tree} />
-    </div>
+    <div className="custom-sectors-table-container">
+      <table className="custom-sectors-table">
+        <CompactTable columns={COLUMNS} data={data} theme={theme} tree={tree} />
+        </table>
+      </div>
   );
 };
 

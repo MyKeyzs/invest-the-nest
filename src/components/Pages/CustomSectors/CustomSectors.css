@@ -1,75 +1,85 @@
-/* CustomSectors.css */
+/* CustomSectorsComponent.css */
 
 /* Container Styling */
-.table-container {
-    margin: 20px auto;
-    max-width: 800px;
-    background-color: #1f2937;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Table Styling */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  thead {
-    background-color: #2d3748;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-  }
-  
-  thead th {
-    padding: 10px;
-    color: #a0aec0;
-    font-weight: bold;
-    text-align: left;
-  }
-  
-  tbody tr:nth-child(even) {
-    background-color: #252a31; /* Slightly lighter background for alternating rows */
-  }
-  
-  tbody tr:nth-child(odd) {
-    background-color: #1f2937; /* Base background color for odd rows */
-  }
-  
-  tbody tr:hover {
-    background-color: #3b4757; /* Highlight row on hover */
-  }
-  
-  tbody td {
-    padding: 10px;
-    font-size: 0.9rem;
-    text-align: left;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Highlight Positive and Negative Changes */
-  .net-change-positive {
-    color: #4caf50; /* Green for positive values */
-    font-weight: bold;
-  }
-  
-  .net-change-negative {
-    color: #4caf50; /* Red for negative values */
-    font-weight: bold;
-  }
-  
-  /* Header Styling */
-  .header {
-    text-align: center;
-    padding: 20px 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-    background-color: #1a202c;
-    color: #ffffff;
-    border-bottom: 1px solid #2d3748;
-  }
-  
+.custom-sectors-table-container {
+  margin: 500px left;
+  max-width: 800px;
+  background-color: #1f2937;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  color: rgba(20,20,20,1);
+  font-family: Arial, sans-serif;
+
+}
+/*
+.custom-sectors .header-tools {
+ /* border-bottom: solid 1px var(--dt-border-color);
+  padding: var(--dt-padding);
+  padding-left: 0;
+  display: flex;
+  align-items: baseline;
+}
+*/
+/* Table Styling */
+.custom-sectors-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-sectors-table thead {
+  background-color: #2d3748;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.custom-sectors-table thead th {
+  padding: 10px;
+  color: #FFF;
+  font-weight: bold;
+  text-align: left;
+  background-color: #1a202c;
+}
+
+.custom-sectors-table tbody tr:nth-child(even) {
+  background-color: #252a31; /* Slightly lighter background for alternating rows */
+}
+
+.custom-sectors-table tbody tr:nth-child(odd) {
+  background-color: #1f2937; /* Base background color for odd rows */
+}
+
+.custom-sectors-table tbody tr:hover {
+  background-color: #3b4757; /* Highlight row on hover */
+}
+
+.custom-sectors-table tbody td {
+  padding: 10px;
+  font-size: 0.9rem;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  color: #fff;
+}
+
+/* Highlight Positive and Negative Changes */
+.custom-sectors-net-change-positive {
+  color: #4caf50; /* Green for positive values */
+  font-weight: bold;
+}
+
+.custom-sectors-net-change-negative {
+  color: #f44336; /* Red for negative values */
+  font-weight: bold;
+}
+
+/* Header Styling */
+.custom-sectors-header {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #1a202c;
+  color: rgba(20,20,20,1);
+  border-bottom: none;
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "bank": "Federal Reserve (FED)",
+    "rate": "4.50%",
+    "nextMeeting": "2025-01-29",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/US.svg"
+  },
+  {
+    "bank": "European Central Bank (ECB)",
+    "rate": "3.15%",
+    "nextMeeting": "2025-01-30",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/EU.svg"
+  },
+  {
+    "bank": "People's Bank of China (PBOC)",
+    "rate": "3.1%",
+    "nextMeeting": "2025-02-06",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/CN.svg"
+  },
+  {
+    "bank": "Bank of England (BOE)",
+    "rate": "4.75%",
+    "nextMeeting": "2025-02-06",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/GB.svg"
+  },
+  {
+    "bank": "Swiss National Bank (SNB)",
+    "rate": "0.50%",
+    "nextMeeting": "2025-03-20",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/CH.svg"
+  },
+  {
+    "bank": "Reserve Bank of Australia (RBA)",
+    "rate": "4.35%",
+    "nextMeeting": "2025-02-18",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/AU.svg"
+  },
+  {
+    "bank": "Bank of Canada (BOC)",
+    "rate": "3.25%",
+    "nextMeeting": "2025-01-29",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/CA.svg"
+  },
+  {
+    "bank": "Reserve Bank of New Zealand (RBNZ)",
+    "rate": "4.25%",
+    "nextMeeting": "2025-02-19",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/NZ.svg"
+  },
+  {
+    "bank": "Bank of Japan (BOJ)",
+    "rate": "-0.1%",
+    "nextMeeting": "2024-12-19",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/JP.svg"
+  },
+  {
+    "bank": "Central Bank of Brazil (BCB)",
+    "rate": "12.25%",
+    "nextMeeting": "2025-01-29",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/BR.svg"
+  },
+  {
+    "bank": "Central Bank of the Russian Federation (CBR)",
+    "rate": "21%",
+    "nextMeeting": "2024-12-20",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/RU.svg"
+  },
+  {
+    "bank": "Reserve Bank of India (RBI)",
+    "rate": "6.50%",
+    "nextMeeting": "2025-02-07",
+    "flag": "https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/IN.svg"
+  }
+]

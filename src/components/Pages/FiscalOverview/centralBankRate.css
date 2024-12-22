@@ -1,0 +1,57 @@
+.central-bank-rate-container {
+    padding: 20px;
+    background-color: #0d0d1b;
+    color: #ffffff;
+    border-radius: 8px;
+  }
+ add padding to the first column */
+.central-bank-rate-table td:first-child {
+    text-align: center;
+    padding-left: 10px; /* Adjust this value to shift the flag */
+  }
+  .central-bank-rate-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .central-bank-rate-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .central-bank-rate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1c1e26;
+    color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .central-bank-rate-table th,
+  .central-bank-rate-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #2d3748;
+  }
+  
+  .central-bank-rate-table th {
+    background-color: #2d3748;
+  }
+  
+  .central-bank-rate-table tr:hover {
+    background-color: #3b3f51;
+  }
+  
+
+  .central-bank-rate-table tbody tr:nth-child(even) {
+    background-color: #252a31; /* Slightly lighter background for alternating rows */
+  }
+  
+  .central-bank-rate-table tbody tr:nth-child(odd) {
+    background-color: #1f2937; /* Base background color for odd rows */
+  }
+  
+  .central-bank-rate-table tbody tr:hover {
+    background-color: #3b4757; /* Highlight row on hover */
+  }

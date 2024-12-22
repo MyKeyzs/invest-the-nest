@@ -27,7 +27,7 @@ h3 {
 }
 
 h3:hover {
-  color: rgba(255, 0, 0, 0.8)
+  color: rgba(20, 155, 20, 0.8)
 }
 
 h4 {
@@ -58,9 +58,10 @@ th {
   overflow: hidden; /* Hide overflow */
   text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
 }
+/*
 th:hover {
-  color: rgba(255, 0, 0, 0.8)
-}
+  color: rgba(255, 255, 255, 0.678)
+}*/
 
 .symbol-column {
   width: 10%; /* Ensure the symbol column is wider */

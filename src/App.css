@@ -19,6 +19,7 @@ body, .main-container, .dashboard {
   overflow: auto;
   transition: none;
   width: 100%; /* Ensure full width for the content */
+  background-color: #0d0d1b;
 }
 
 .sidebar-open .main-content {

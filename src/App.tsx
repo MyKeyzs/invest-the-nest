@@ -14,6 +14,7 @@ import NewsPage from './components/Pages/NewsPage/News';
 import TvDash from './components/Pages/ChartsPage/TvDash';
 import './App.css'; // Ensure to import your CSS file here
 import CustomSectorsPage from './components/Pages/CustomSectors/CustomSectorsPage';
+import FiscalOverviewPage from './components/Pages/FiscalOverview/FiscalOverviewPage';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,7 +54,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Login onSuccess={handleLoginSuccess} />} />
           <Route path="/dashboard" element={<Dashboard isLoggedIn={isLoggedIn} isSidebarOpen={isSidebarOpen} />} />
           <Route path="/news" element={<NewsPage />} />
-          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/fiscal-overview" element={<FiscalOverviewPage />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />
           <Route path="/more-charts" element={<TvDash />} />
