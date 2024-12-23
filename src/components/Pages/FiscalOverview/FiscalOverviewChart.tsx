@@ -4,7 +4,6 @@ import {
   IChartApi,
   ISeriesApi,
   LineData,
-  HistogramData,
 } from "lightweight-charts";
 import axios from "axios";
 
@@ -13,30 +12,41 @@ const FiscalOverviewChart: React.FC = () => {
   const legendContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [chartInstance, setChartInstance] = useState<IChartApi | null>(null);
-  const [spySeries, setSpySeries] = useState<ISeriesApi<"Line"> | null>(null);
-  const [qqqSeries, setQqqSeries] = useState<ISeriesApi<"Line"> | null>(null);
-  const [diaSeries, setDiaSeries] = useState<ISeriesApi<"Line"> | null>(null);
-  const [volumeSeries, setVolumeSeries] = useState<ISeriesApi<"Histogram"> | null>(null);
+  const seriesRefs = useRef<{ [key: string]: ISeriesApi<"Line"> }>({});
+  const latestData = useRef<{ [key: string]: { value: number; time: number } }>(
+    {}
+  );
 
-  const API_KEY = "w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX"; // Replace with your Polygon API Key
-  const SPY_TICKER = "SPY";
-  const QQQ_TICKER = "QQQ";
-  const DIA_TICKER = "DIA";
+  const API_KEY = "w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX";
 
-  const fetchWeeklyData = async (
+  const tickers = [
+    { symbol: "XLC", color: "rgb(239, 83, 80)", sector: "Communications Services" },
+    { symbol: "XLY", color: "rgb(124, 179, 66)", sector: "Consumer Discretionary" },
+    { symbol: "XLP", color: "rgb(255, 202, 40)", sector: "Consumer Staples" },
+    { symbol: "XLE", color: "rgb(126, 87, 194)", sector: "Energy" },
+    { symbol: "XLF", color: "rgb(0, 188, 212)", sector: "Financials" },
+    { symbol: "XLV", color: "rgb(255, 87, 34)", sector: "Health Care" },
+    { symbol: "XLI", color: "rgb(171, 71, 188)", sector: "Industrials" },
+    { symbol: "XLB", color: "rgb(76, 175, 80)", sector: "Materials" },
+    { symbol: "XLRE", color: "rgb(156, 39, 176)", sector: "Real Estate" },
+    { symbol: "XLK", color: "rgb(255, 235, 59)", sector: "Technology" },
+    { symbol: "XLU", color: "rgb(33, 150, 243)", sector: "Utilities" },
+  ];
+
+  const fetchTickerData = async (
     ticker: string,
-    lineSeries: ISeriesApi<"Line"> | null
+    lineSeries: ISeriesApi<"Line">
   ) => {
     try {
       const today = new Date();
       const oneYearAgo = new Date();
-      oneYearAgo.setDate(today.getDate() - 365);
+      oneYearAgo.setFullYear(today.getFullYear() - 1);
 
       const formattedToday = today.toISOString().split("T")[0];
-      const formattedoneYearAgo = oneYearAgo.toISOString().split("T")[0];
+      const formattedOneYearAgo = oneYearAgo.toISOString().split("T")[0];
 
       const response = await axios.get(
-        `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${formattedoneYearAgo }/${formattedToday}`,
+        `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${formattedOneYearAgo}/${formattedToday}`,
         {
           params: {
             adjusted: "true",
@@ -47,30 +57,28 @@ const FiscalOverviewChart: React.FC = () => {
         }
       );
 
-      const lineData: LineData[] = response.data.results.map((item: any) => ({
-        time: item.t / 1000, // Convert timestamp to seconds
-        value: item.c, // Closing price
+      const results = response.data.results;
+
+      if (!results || results.length === 0) return;
+
+      const firstValue = results[0].c;
+      const lineData: LineData[] = results.map((item: any) => ({
+        time: item.t / 1000,
+        value: ((item.c - firstValue) / firstValue) * 100,
       }));
 
-      if (lineSeries) {
-        lineSeries.setData(lineData);
-      }
+      lineSeries.setData(lineData);
+
+      // Save the latest data
+      const lastItem = results[results.length - 1];
+      latestData.current[ticker] = {
+        value: ((lastItem.c - firstValue) / firstValue) * 100,
+        time: lastItem.t / 1000,
+      };
     } catch (error) {
-      console.error(`Error fetching weekly data for ${ticker}:`, error);
+      console.error(`Error fetching data for ${ticker}:`, error);
     }
   };
-
-  useEffect(() => {
-    if (spySeries) {
-      fetchWeeklyData(SPY_TICKER, spySeries);
-    }
-    if (qqqSeries) {
-      fetchWeeklyData(QQQ_TICKER, qqqSeries);
-    }
-    if (diaSeries) {
-      fetchWeeklyData(DIA_TICKER, diaSeries);
-    }
-  }, [spySeries, qqqSeries, diaSeries]);
 
   useEffect(() => {
     if (chartContainerRef.current) {
@@ -83,46 +91,35 @@ const FiscalOverviewChart: React.FC = () => {
           vertLines: { color: "#2d3748" },
           horzLines: { color: "#2d3748" },
         },
+        rightPriceScale: {
+          borderColor: "#485c7b",
+          scaleMargins: {
+            top: 0.1,
+            bottom: 0.2,
+          },
+        },
+        timeScale: {
+          borderColor: "#485c7b",
+        },
         width: chartContainerRef.current.offsetWidth,
         height: chartContainerRef.current.offsetHeight,
       });
 
-      const spy = chart.addLineSeries({
-        color: "#4caf50", // Green for SPY
-        lineWidth: 2,
-      });
+      tickers.forEach(({ symbol, color }) => {
+        const lineSeries = chart.addLineSeries({
+          color,
+          lineWidth: 2,
+          priceFormat: {
+            type: "custom",
+            formatter: (price: number) => `${price.toFixed(2)}%`,
+          },
+        });
 
-      const qqq = chart.addLineSeries({
-        color: "#ffd700", // Yellow for QQQ
-        lineWidth: 2,
-      });
-
-      const dia = chart.addLineSeries({
-        color: "#007bff", // Blue for DIA
-        lineWidth: 2,
-      });
-
-      const volume = chart.addHistogramSeries({
-        color: "#26a69a", // Default color for volume bars
-        priceFormat: {
-          type: "volume",
-        },
-        priceScaleId: "",
-      });
-
-      volume.priceScale().applyOptions({
-        scaleMargins: {
-          top: 0.1, // Leave space for the legend
-          bottom: 0.05,
-        },
+        fetchTickerData(symbol, lineSeries);
+        seriesRefs.current[symbol] = lineSeries;
       });
 
       setChartInstance(chart);
-      setSpySeries(spy);
-      setQqqSeries(qqq);
-      setDiaSeries(dia);
-      setVolumeSeries(volume);
-      chart.timeScale().fitContent();
 
       const handleResize = () => {
         if (chartContainerRef.current) {
@@ -142,41 +139,51 @@ const FiscalOverviewChart: React.FC = () => {
     }
   }, []);
 
-  // Legend setup
+  useEffect(() => {
+    if (chartInstance) {
+      setTimeout(() => {
+        chartInstance.timeScale().fitContent();
+      }, 500); // Ensure data is loaded before adjustment
+    }
+  }, [chartInstance]);
+
   useEffect(() => {
     if (chartInstance && legendContainerRef.current) {
       const legendElement = legendContainerRef.current;
 
       const updateLegend = (param: any) => {
-        const validCrosshairPoint = !(
-          param === undefined ||
-          param.time === undefined ||
-          param.point.x < 0 ||
-          param.point.y < 0
-        );
+        if (param.time) {
+          // When hovering
+          const time = new Date((param.time as number) * 1000).toLocaleDateString(
+            "en-US"
+          );
 
-        const spyBar = validCrosshairPoint ? param.seriesData.get(spySeries) : null;
-        const qqqBar = validCrosshairPoint ? param.seriesData.get(qqqSeries) : null;
-        const diaBar = validCrosshairPoint ? param.seriesData.get(diaSeries) : null;
+          let legendHTML = `<div style="font-size: 12px; margin-bottom: 8px;">Date: ${time}</div>`;
 
-        const time = validCrosshairPoint ? param.time : null;
+          tickers.forEach(({ symbol, color, sector }) => {
+            const seriesData = param.seriesData.get(seriesRefs.current[symbol]);
+            if (seriesData && typeof seriesData.value === "number") {
+              legendHTML += `<div style="color: ${color}; font-size: 12px;">
+                              ${symbol} (${sector}): ${seriesData.value.toFixed(2)}%
+                            </div>`;
+            }
+          });
 
-        const formattedDate = time
-          ? new Date(time * 1000).toLocaleDateString("en-US")
-          : "No Date";
+          legendElement.innerHTML = legendHTML;
+        } else {
+          // When not hovering, show the latest data
+          let latestHTML = `<div style="font-size: 12px; margin-bottom: 8px;">Latest Data</div>`;
+          Object.entries(latestData.current).forEach(([symbol, { value, time }]) => {
+            const date = new Date(time * 1000).toLocaleDateString("en-US");
+            const sector = tickers.find((t) => t.symbol === symbol)?.sector || "";
+            const color = tickers.find((t) => t.symbol === symbol)?.color || "white";
 
-        const spyPrice = spyBar ? `$${spyBar.value.toFixed(2)}` : "No Price";
-        const qqqPrice = qqqBar ? `$${qqqBar.value.toFixed(2)}` : "No Price";
-        const diaPrice = diaBar ? `$${diaBar.value.toFixed(2)}` : "No Price";
-
-        legendElement.innerHTML = `
-          <div style="font-size: 14px; color: #4caf50;">${SPY_TICKER}: ${spyPrice}</div>
-          <div style="font-size: 14px; color: #ffd700;">${QQQ_TICKER}: ${qqqPrice}</div>
-          <div style="font-size: 14px; color: #007bff;">${DIA_TICKER}: ${diaPrice}</div>
-          <div style="font-size: 12px; margin-top: 4px;">
-            ${formattedDate}
-          </div>
-        `;
+            latestHTML += `<div style="color: ${color}; font-size: 12px;">
+                            ${symbol} (${sector}): ${value.toFixed(2)}% 
+                          </div>`;
+          });
+          legendElement.innerHTML = latestHTML;
+        }
       };
 
       chartInstance.subscribeCrosshairMove(updateLegend);
@@ -185,7 +192,7 @@ const FiscalOverviewChart: React.FC = () => {
         chartInstance.unsubscribeCrosshairMove(updateLegend);
       };
     }
-  }, [chartInstance, spySeries, qqqSeries, diaSeries]);
+  }, [chartInstance]);
 
   return (
     <div

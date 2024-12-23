@@ -7,7 +7,7 @@ body, .main-container, .dashboard {
 .main-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  width: 100%;
 }
 
 .main-content {
@@ -49,8 +49,8 @@ body, .main-container, .dashboard {
   overflow: auto;
   transition: none;
   width: 100%; /* Ensure the content container takes full width */
-  border: 2px solid;
-  border-color: azure;
+  /*border: 2px solid;
+  border-color: azure;*/
 }
 
 .sidebar-open .content-container {

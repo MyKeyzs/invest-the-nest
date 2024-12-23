@@ -1,13 +1,13 @@
 .central-bank-rate-container {
-    padding: 20px;
+    padding: 0px;
     background-color: #0d0d1b;
     color: #ffffff;
-    border-radius: 8px;
+    
   }
  add padding to the first column */
 .central-bank-rate-table td:first-child {
     text-align: center;
-    padding-left: 10px; /* Adjust this value to shift the flag */
+    padding-right: 100px; /* Adjust this value to shift the flag */
   }
   .central-bank-rate-title {
     font-size: 1.5rem;

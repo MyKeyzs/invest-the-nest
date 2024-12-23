@@ -34,7 +34,7 @@ const FiscalOverviewPage: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <h1 style={{ textAlign: "center", padding: "20px" }}>Fiscal Overview</h1>
+        <h1 style={{ textAlign: "center", padding: "20px", marginLeft: "200px" }}>Fiscal Overview</h1>
         <ResponsiveGridLayout
           className="layout"
           layouts={layouts}
@@ -46,12 +46,12 @@ const FiscalOverviewPage: React.FC = () => {
         >
           <div key="chart" style={{ backgroundColor: "#2d3748" }}>
             <FiscalOverviewChart/></div>
-          <div key="cell1" style={{ backgroundColor: "#131336" }}><CentralBankRate/></div>
-          <div key="cell2" style={{ backgroundColor: "#131336" }}>Cell 2</div>
-          <div key="cell3" style={{ backgroundColor: "#131336" }}>Cell 3</div>
-          <div key="cell4" style={{ backgroundColor: "#131336" }}>Cell 4</div>
-          <div key="cell5" style={{ backgroundColor: "#131336" }}>Cell 5</div>
-          <div key="cell6" style={{ backgroundColor: "#131336" }}>Cell 6</div>
+          <div key="cell1" style={{ color: "#fff" }}><CentralBankRate/></div>
+          <div key="cell2" style={{ color: "#fff" }}>Cell 2</div>
+          <div key="cell3" style={{ color: "#fff" }}>Cell 3</div>
+          <div key="cell4" style={{ color: "#fff" }}>Cell 4</div>
+          <div key="cell5" style={{ color: "#fff" }}>Cell 5</div>
+          <div key="cell6" style={{ color: "#fff" }}>Cell 6</div>
         </ResponsiveGridLayout>
       </div>
     </div>

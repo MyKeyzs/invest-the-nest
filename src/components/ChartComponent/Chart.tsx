@@ -16,15 +16,71 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   const [data, setData] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // Helper function to calculate the start date based on the timeframe
+  const calculateStartDate = (): string => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 for Sunday, 6 for Saturday
+
+    // Adjust for weekends: Use Friday's date if today is Saturday or Sunday
+    if (dayOfWeek === 6) {
+      today.setDate(today.getDate() - 1); // Saturday -> Friday
+    } else if (dayOfWeek === 0) {
+      today.setDate(today.getDate() - 2); // Sunday -> Friday
+    }
+
+    switch (timeframe) {
+      case '1D':
+        today.setDate(today.getDate() - 1);
+        break;
+      case '1W':
+        today.setDate(today.getDate() - 7);
+        break;
+      case '1M':
+        today.setMonth(today.getMonth() - 1);
+        break;
+      case '3M':
+        today.setMonth(today.getMonth() - 3);
+        break;
+      case '6M':
+        today.setMonth(today.getMonth() - 6);
+        break;
+      case '1Y':
+        today.setFullYear(today.getFullYear() - 1);
+        break;
+      case 'YTD':
+        today.setMonth(0, 1); // January 1st of the current year
+        break;
+      default:
+        today.setMonth(today.getMonth() - 1); // Default to 1M
+    }
+
+    return today.toISOString().split('T')[0];
+  };
+
+  // Determine API endpoint based on timeframe
+  const determineApiUrl = (startDate: string, endDate: string): string => {
+    const apiKey = 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX';
+    if (timeframe === '1D') {
+      return `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/5/minute/${startDate}/${endDate}?apiKey=${apiKey}`;
+    } else if (timeframe === '1W') {
+      return `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/30/minute/${startDate}/${endDate}?apiKey=${apiKey}`;
+    } else if (timeframe === '1M') {
+      return `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/4/hour/${startDate}/${endDate}?apiKey=${apiKey}`;
+    } else {
+      return `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${startDate}/${endDate}?apiKey=${apiKey}`;
+    }
+  };
+
   // Fetch data from Polygon API
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const today = new Date().toISOString().split('T')[0];
-        const apiKey = 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX';
-        const baseURL = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/2023-01-01/${today}?apiKey=${apiKey}`;
+        const today = new Date();
+        const endDate = today.toISOString().split('T')[0];
+        const startDate = calculateStartDate();
+        const apiUrl = determineApiUrl(startDate, endDate);
 
-        const response = await axios.get(baseURL);
+        const response = await axios.get(apiUrl);
         const result = response.data.results;
 
         if (chartType === 'candlestick') {
@@ -58,7 +114,6 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
-    // Initialize chart
     if (!chartRef.current) {
       chartRef.current = createChart(chartContainerRef.current, {
         width: chartContainerRef.current.clientWidth,
@@ -96,23 +151,23 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
       });
     }
 
-    // Remove the previous series
     if (seriesRef.current) {
       chartRef.current?.removeSeries(seriesRef.current);
     }
 
-    // Add a new series based on the chart type
     if (chartType === 'candlestick') {
       seriesRef.current = chartRef.current.addCandlestickSeries();
     } else {
       seriesRef.current = chartRef.current.addLineSeries();
     }
 
-    // Update the chart data
     if (seriesRef.current) {
       seriesRef.current.setData(data);
     }
-  }, [chartType, data]);
+
+    // Fit the content to the full width of the container
+    chartRef.current.timeScale().fitContent();
+    }, [chartType, data]);
 
   return (
     <div className="chart-container">
@@ -133,13 +188,13 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
             className={`chart-type-button ${chartType === 'line' ? 'active' : ''}`}
             onClick={() => setChartType('line')}
           >
-            Line
+            
           </button>
           <button
             className={`chart-type-button ${chartType === 'candlestick' ? 'active' : ''}`}
             onClick={() => setChartType('candlestick')}
           >
-            Candlestick
+            
           </button>
         </div>
         <span className="ticker-title">{`${ticker}`}</span>
@@ -154,3 +209,8 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
 };
 
 export default Chart;
+
+
+
+
+

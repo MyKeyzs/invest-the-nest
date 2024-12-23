@@ -8,7 +8,6 @@ import Watchlist from './components/Watchlist';
 import Portfolio from './components/Portfolio';
 import MarketCalendar from './components/MarketCalendar';
 import Transactions from './components/Transactions';
-import SectorsPage from './components/Pages/SectorsPage/SectorsPage';
 import Sidebar from './components/SidebarComponent/Sidebar';
 import NewsPage from './components/Pages/NewsPage/News';
 import TvDash from './components/Pages/ChartsPage/TvDash';
@@ -58,7 +57,6 @@ const App: React.FC = () => {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/market-calendar" element={<MarketCalendar />} />
           <Route path="/more-charts" element={<TvDash />} />
-          <Route path="/sectors" element={<SectorsPage />} />
           <Route path="/custom-sectors" element={<CustomSectorsPage />} />
         </Routes>
       </main>
