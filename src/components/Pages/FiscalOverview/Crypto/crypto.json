@@ -1,0 +1,75 @@
+[
+    {
+      "name": "Bitcoin (BTC)",
+      "price": 29235.00,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/532401/bitcoin-circle.svg"
+    },
+    {
+      "name": "Ethereum (ETH)",
+      "price": 1842.00,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/521649/ethereum.svg"
+    },
+    {
+      "name": "Binance Coin (BNB)",
+      "price": 245.00,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/504151/binance.svg"
+    },
+    {
+      "name": "XRP (XRP)",
+      "price": 0.7421,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/470342/xrp.svg"
+    },
+    {
+      "name": "Cardano (ADA)",
+      "price": 0.2934,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/367326/ada.svg"
+    },
+    {
+      "name": "Dogecoin (DOGE)",
+      "price": 0.0681,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/367439/doge.svg"
+    },
+    {
+      "name": "Polygon (MATIC)",
+      "price": 0.6522,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/367557/matic.svg"
+    },
+    {
+      "name": "Litecoin (LTC)",
+      "price": 83.00,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/510044/litecoin.svg"
+    },
+    {
+      "name": "Polkadot (DOT)",
+      "price": 5.23,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/469516/polkadot.svg"
+    },
+    {
+      "name": "Shiba Inu (SHIB)",
+      "price": 0.000007,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/481237/shiba-inu-illustration.svg"
+    },
+    {
+      "name": "Solana (SOL)",
+      "price": 23.45,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/470684/solana.svg"
+    },
+    {
+      "name": "Stellar (XLM)",
+      "price": 12.22,
+      "unit": "USD",
+      "icon": "https://www.svgrepo.com/show/469872/stellar.svg"
+    }
+  ]
+  

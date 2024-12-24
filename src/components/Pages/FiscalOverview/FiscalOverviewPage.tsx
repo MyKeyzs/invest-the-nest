@@ -4,8 +4,9 @@ import Sidebar from "../../SidebarComponent/Sidebar"; // Import your Sidebar com
 import FiscalOverviewChart from "./FiscalOverviewChart";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import CentralBankRate from "./CentralBankRate";
-import Commodities from "./Commodities";
+import CentralBankRate from "./CentralBankRate/CentralBankRate";
+import Commodities from "./Commodities/Commodities";
+import Crypto from "./Crypto/Crypto";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -16,7 +17,7 @@ const FiscalOverviewPage: React.FC = () => {
       { i: "chart", x: 0, y: 0, w: 12, h: 4, static: true },
       { i: "centralBankRates", x: 0, y: 1, w: 4, h: 4.1 },
       { i: "commodities", x: 4, y: 1, w: 4, h: 4.1 },
-      { i: "cell3", x: 8, y: 1, w: 4, h: 4.1 },
+      { i: "crypto", x: 8, y: 1, w: 4, h: 4.1 },
       { i: "cell4", x: 0, y: 2, w: 4, h: 4.1 },
       { i: "cell5", x: 4, y: 2, w: 4, h: 4.1 },
       { i: "cell6", x: 8, y: 2, w: 4, h: 4.1 },
@@ -49,7 +50,7 @@ const FiscalOverviewPage: React.FC = () => {
             <FiscalOverviewChart/></div>
           <div key="centralBankRates" style={{ color: "#fff" }}><CentralBankRate/></div>
           <div key="commodities" style={{ color: "#fff" }}><Commodities/></div>
-          <div key="cell3" style={{ color: "#fff" }}>Cell 3</div>
+          <div key="crypto" style={{ color: "#fff" }}><Crypto/></div>
           <div key="cell4" style={{ color: "#fff" }}>Cell 4</div>
           <div key="cell5" style={{ color: "#fff" }}>Cell 5</div>
           <div key="cell6" style={{ color: "#fff" }}>Cell 6</div>
