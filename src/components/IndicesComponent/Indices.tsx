@@ -20,7 +20,7 @@ const Indices: React.FC = () => {
   useEffect(() => {
     // Function to fetch data for multiple indices
     const fetchIndicesData = async () => {
-      const tickers = ['DJI', 'SPY', 'QQQ', 'NDAQ', 'IWM']; // Example tickers
+      const tickers = ['DIA', 'SPY', 'QQQ', 'NDAQ', 'IWM']; // Example tickers
       const results = await Promise.all(
         tickers.map(async (ticker) => {
           try {

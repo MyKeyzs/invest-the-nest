@@ -5,6 +5,7 @@ import FiscalOverviewChart from "./FiscalOverviewChart";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import CentralBankRate from "./CentralBankRate";
+import Commodities from "./Commodities";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -13,8 +14,8 @@ const FiscalOverviewPage: React.FC = () => {
   const layouts = {
     lg: [
       { i: "chart", x: 0, y: 0, w: 12, h: 4, static: true },
-      { i: "cell1", x: 0, y: 1, w: 4, h: 4.1 },
-      { i: "cell2", x: 4, y: 1, w: 4, h: 4.1 },
+      { i: "centralBankRates", x: 0, y: 1, w: 4, h: 4.1 },
+      { i: "commodities", x: 4, y: 1, w: 4, h: 4.1 },
       { i: "cell3", x: 8, y: 1, w: 4, h: 4.1 },
       { i: "cell4", x: 0, y: 2, w: 4, h: 4.1 },
       { i: "cell5", x: 4, y: 2, w: 4, h: 4.1 },
@@ -46,8 +47,8 @@ const FiscalOverviewPage: React.FC = () => {
         >
           <div key="chart" style={{ backgroundColor: "#2d3748" }}>
             <FiscalOverviewChart/></div>
-          <div key="cell1" style={{ color: "#fff" }}><CentralBankRate/></div>
-          <div key="cell2" style={{ color: "#fff" }}>Cell 2</div>
+          <div key="centralBankRates" style={{ color: "#fff" }}><CentralBankRate/></div>
+          <div key="commodities" style={{ color: "#fff" }}><Commodities/></div>
           <div key="cell3" style={{ color: "#fff" }}>Cell 3</div>
           <div key="cell4" style={{ color: "#fff" }}>Cell 4</div>
           <div key="cell5" style={{ color: "#fff" }}>Cell 5</div>

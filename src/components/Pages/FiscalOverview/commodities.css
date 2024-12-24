@@ -1,0 +1,59 @@
+.commodities-container {
+    padding: 0px;
+    background-color: #0d0d1b;
+    color: #ffffff;
+  }
+  
+  .commodities-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .commodities-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .commodities-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1c1e26;
+    color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .commodities-table th,
+  .commodities-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #2d3748;
+  }
+  
+  .commodities-table th {
+    background-color: #2d3748;
+  }
+  
+  .commodities-table tr:hover {
+    background-color: #3b3f51;
+  }
+  
+  .commodities-table tbody tr:nth-child(even) {
+    background-color: #252a31;
+  }
+  
+  .commodities-table tbody tr:nth-child(odd) {
+    background-color: #1f2937;
+  }
+  
+  .commodities-table tbody tr:hover {
+    background-color: #3b4757;
+  }
+  
+  .commodity-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  

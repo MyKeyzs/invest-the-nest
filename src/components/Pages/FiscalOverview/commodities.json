@@ -1,0 +1,75 @@
+[
+    {
+      "name": "Gold",
+      "price": 1925.50,
+      "unit": "USD/oz",
+      "icon": "https://www.svgrepo.com/show/452215/gold-medal.svg"
+    },
+    {
+      "name": "Silver",
+      "price": 24.15,
+      "unit": "USD/oz",
+      "icon": "https://www.svgrepo.com/show/452101/silver-medal.svg"
+    },
+    {
+      "name": "Copper",
+      "price": 3.85,
+      "unit": "USD/lb",
+      "icon": "https://www.svgrepo.com/show/422996/medal-bronze-prize.svg"
+    },
+    {
+      "name": "Brent Crude Oil",
+      "price": 85.60,
+      "unit": "USD/barrel",
+      "icon": "https://www.svgrepo.com/show/533527/oil-well.svg"
+    },
+    {
+      "name": "Natural Gas",
+      "price": 2.90,
+      "unit": "USD/MMBtu",
+      "icon": "https://www.svgrepo.com/show/490765/gas-stove.svg"
+    },
+    {
+      "name": "Uranium",
+      "price": 72.25,
+      "unit": "USD/Lbs",
+      "icon": "https://www.svgrepo.com/show/274758/atomic-industry.svg"
+    },
+    {
+      "name": "Corn",
+      "price": 447.50,
+      "unit": "USD/bu",
+      "icon": "https://www.svgrepo.com/show/475188/corn.svg"
+    },
+    {
+      "name": "Wheat",
+      "price": 537.75,
+      "unit": "USD/bu",
+      "icon": "https://www.svgrepo.com/show/212060/wheat-barley.svg"
+    },
+    {
+      "name": "Cocoa",
+      "price": 11746.00,
+      "unit": "USD/MT",
+      "icon": "https://www.svgrepo.com/show/231974/hot-drink-cocoa.svg"
+    },
+    {
+      "name": "Live Cattle",
+      "price": 187.45,
+      "unit": "USD/lb",
+      "icon": "https://www.svgrepo.com/show/481392/cow-2.svg"
+    },
+    {
+      "name": "Lumber",
+      "price": 571.20,
+      "unit": "USD/1000 board feet",
+      "icon": "https://www.svgrepo.com/show/399129/wood.svg"
+    },
+    {
+      "name": "Orange Juice",
+      "price": 502.68,
+      "unit": "USd/Lbs",
+      "icon": "https://www.svgrepo.com/show/474519/orange.svg"
+    }
+  ]
+  
