@@ -12,14 +12,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface GroupedBarData {
   ticker: string;
@@ -37,30 +30,43 @@ interface GroupedBarsProps {
 const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
   const [bars, setBars] = useState<GroupedBarData[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null); // To track the hovered bar
+  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
 
+  const getFormattedDate = (): string => {
+    const date = new Date();
+    const dayOfWeek = date.getDay(); // Get current day of the week (0 for Sunday, 6 for Saturday)
+  
+    // Adjust to the previous Friday if it's a weekend
+    if (dayOfWeek === 6) {
+      date.setDate(date.getDate() - 1); // Saturday -> Friday
+    } else if (dayOfWeek === 0) {
+      date.setDate(date.getDate() - 2); // Sunday -> Friday
+    }
+  
+    // Ensure the date is formatted in local time instead of UTC
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
   useEffect(() => {
     const fetchBars = async () => {
+      const formattedDate = getFormattedDate();
+      console.log('Formatted Date for API:', formattedDate); // Log the formatted date
+
       try {
-        let date = new Date();
-        const dayOfWeek = date.getDay(); // Get current day of the week (0 for Sunday, 6 for Saturday)
-  
-        // If it's Saturday or Sunday, use Friday's date instead
-        if (dayOfWeek === 6) { // If it's Saturday
-          date.setDate(date.getDate() - 1); // Move back to Friday
-        } else if (dayOfWeek === 0) { // If it's Sunday
-          date.setDate(date.getDate() - 2); // Move back to Friday
-        }
-  
-        const formattedDate = date.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
-  
-        const response = await axios.get(`https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/${formattedDate}`, {
-          params: {
-            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
-          },
-        });
-  
-        // Check if response.data.results exists and is an array
+        const response = await axios.get(
+          `https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/${formattedDate}`,
+          {
+            params: {
+              apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your Polygon API key
+            },
+          }
+        );
+
+        console.log('API Response:', response); // Log the API response
+
         if (response.data && Array.isArray(response.data.results)) {
           const data = response.data.results
             .map((bar: any) => ({
@@ -73,11 +79,10 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
             }))
             .sort((a: GroupedBarData, b: GroupedBarData) => b.volume - a.volume)
             .slice(0, 20);
-  
+
           setBars(data);
           setError(null); // Clear any previous errors
         } else {
-          // Handle cases where results is undefined or not an array
           setError('No data available for the selected date.');
         }
       } catch (error) {
@@ -85,11 +90,10 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
         setError('Error fetching grouped bars data. Please try again later.');
       }
     };
-  
+
     fetchBars();
   }, []);
 
-  // Build the chart data, changing the color dynamically
   const chartData = {
     labels: bars.map((bar) => bar.ticker),
     datasets: [
@@ -98,27 +102,26 @@ const GroupedBars: React.FC<GroupedBarsProps> = ({ onBarClick }) => {
         data: bars.map((bar) => bar.volume),
         backgroundColor: bars.map((_, index) =>
           index === hoveredBarIndex ? 'rgba(0, 255, 0, 0.6)' : 'rgba(75, 192, 192, 0.6)'
-        ), // Green for hovered bar
+        ),
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
   };
 
-  // Chart.js options
   const options = {
     onHover: (event: any, elements: any) => {
       if (elements.length > 0) {
-        setHoveredBarIndex(elements[0].index); // Set hovered bar index
+        setHoveredBarIndex(elements[0].index);
       } else {
-        setHoveredBarIndex(null); // Reset when not hovering
+        setHoveredBarIndex(null);
       }
     },
     onClick: (event: any, elements: any) => {
       if (elements.length > 0) {
         const index = elements[0].index;
         const selectedTicker = bars[index].ticker;
-        onBarClick(selectedTicker); // Call the callback function with the selected ticker
+        onBarClick(selectedTicker);
       }
     },
     scales: {
