@@ -51,9 +51,6 @@ const FiscalOverviewPage: React.FC = () => {
           <div key="centralBankRates" style={{ color: "#fff" }}><CentralBankRate/></div>
           <div key="commodities" style={{ color: "#fff" }}><Commodities/></div>
           <div key="crypto" style={{ color: "#fff" }}><Crypto/></div>
-          <div key="cell4" style={{ color: "#fff" }}>Cell 4</div>
-          <div key="cell5" style={{ color: "#fff" }}>Cell 5</div>
-          <div key="cell6" style={{ color: "#fff" }}>Cell 6</div>
         </ResponsiveGridLayout>
       </div>
     </div>

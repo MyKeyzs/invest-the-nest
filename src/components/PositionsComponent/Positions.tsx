@@ -170,7 +170,6 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
                 <span
                   className="item-symbol"
                   onClick={() => handleClickTicker(position.symbol)}
-                  style={{ cursor: 'pointer', color: 'lightblue' }}
                 >
                   {position.symbol}
                 </span>
@@ -183,7 +182,11 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
                 <span className="item-price">
                   {position.price ? position.price.toFixed(2) : 'N/A'}
                 </span>
-                <span className={`item-total ${position.total && position.total < 0 ? 'negative' : 'positive'}`}>
+                <span
+                  className={`item-total ${
+                    position.total && position.total < 0 ? 'negative' : 'positive'
+                  }`}
+                >
                   {position.total ? position.total.toFixed(2) : 'N/A'}
                 </span>
               </li>
