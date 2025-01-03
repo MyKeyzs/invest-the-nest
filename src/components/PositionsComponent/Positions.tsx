@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../../firebaseConfig'; // Adjust the path as necessary
 import './Positions.css';
 
@@ -27,28 +27,25 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
   const [newTicker, setNewTicker] = useState<string>('');
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fetch user's positions from Firestore on component mount
+  // Real-time listener for user positions
   useEffect(() => {
-    const fetchUserPositions = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          const userDocRef = doc(db, 'Users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userDocRef = doc(db, 'Users', user.uid);
+        const unsubscribeFirestore = onSnapshot(userDocRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.data();
             if (userData?.stocksOwned) {
               setPositions(userData.stocksOwned);
             }
           }
-        }
-      } catch (error) {
-        console.error('Error fetching user positions:', error);
-        setError('Error fetching user data. Please try again later.');
-      }
-    };
+        });
 
-    fetchUserPositions();
+        return () => unsubscribeFirestore();
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   // Function to fetch stock prices
@@ -63,7 +60,7 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
       const response = await axios.get(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers`, {
         params: {
           tickers: symbols,
-          apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX', // Replace with your actual API key
+          apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX',
         },
       });
 
@@ -78,7 +75,9 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
         setPositions((prevPositions) =>
           prevPositions.map((position) => {
             const result = results.find((r) => r.symbol === position.symbol);
-            return result ? { ...position, price: result.price, total: result.total } : position;
+            return result
+              ? { ...position, price: result.price, total: result.total }
+              : position;
           })
         );
       }
@@ -103,7 +102,7 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
         intervalRef.current = null;
       }
     };
-  }, []); // Run only on mount
+  }, [positions]); // Re-run if positions change
 
   const handleSavePositions = async () => {
     try {
@@ -129,9 +128,34 @@ const Positions: React.FC<PositionsProps> = ({ onSelectTicker }) => {
     );
   };
 
-  const handleAddTicker = () => {
+  const handleAddTicker = async () => {
     if (newTicker && !positions.some((position) => position.symbol === newTicker.toUpperCase())) {
-      setPositions([...positions, { symbol: newTicker.toUpperCase(), shares: 0 }]);
+      const upperTicker = newTicker.toUpperCase();
+
+      try {
+        const response = await axios.get(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers`, {
+          params: {
+            tickers: upperTicker,
+            apiKey: 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX',
+          },
+        });
+
+        const tickerData = response.data?.tickers?.[0];
+        if (tickerData) {
+          const price = tickerData.day?.c || tickerData.lastQuote?.p || 0;
+
+          setPositions((prevPositions) => [
+            ...prevPositions,
+            { symbol: upperTicker, shares: 0, price, total: 0 },
+          ]);
+        } else {
+          alert('Unable to fetch data for the ticker.');
+        }
+      } catch (error) {
+        console.error('Error fetching ticker data:', error);
+        alert('Error fetching data for the ticker.');
+      }
+
       setNewTicker('');
     }
   };

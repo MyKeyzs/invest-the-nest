@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './QuickNews.css'; // Ensure this contains styles for the condensed component
-import BearIcon from '../../assets/Mama-Bear_10.svg'; // Adjust paths as needed
-import BullIcon from '../../assets/bull-icon.svg';
+import './QuickNews.css';
 
 interface QuickNewsProps {
-  ticker: string; // Ticker tied to the chart
+  ticker: string;
 }
 
 const QuickNews: React.FC<QuickNewsProps> = ({ ticker }) => {
@@ -26,43 +24,49 @@ const QuickNews: React.FC<QuickNewsProps> = ({ ticker }) => {
         setNews(response.data.results);
         setError(null);
       } catch (err) {
-        setError('Failed to fetch news.');
+        console.error('Error fetching news:', err);
+        setError('Failed to fetch news. Please try again.');
       }
     };
 
-    if (ticker) {
-      fetchNews();
-    }
+    fetchNews();
   }, [ticker]);
 
-  const getSentimentClass = (sentiment: string | undefined) => {
-    if (sentiment === 'positive') return 'positive';
-    if (sentiment === 'negative') return 'negative';
-    return 'neutral';
+  const getItemClass = (sentiment: string | undefined) => {
+    if (sentiment === 'positive') return 'news-item positive';
+    if (sentiment === 'negative') return 'news-item negative';
+    return 'news-item neutral';
   };
 
-  const getSentimentIcon = (sentiment: string | undefined) => {
-    if (sentiment === 'positive') return <img src={BullIcon} alt="Bull" className="icon" />;
-    if (sentiment === 'negative') return <img src={BearIcon} alt="Bear" className="icon" />;
-    return null;
+  const openArticleInNewTab = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
     <div className="quick-news-container">
-      <h3>Quick News</h3>
-      {error ? (
-        <p>{error}</p>
-      ) : (
-        <ul className="quick-news-list">
-          {news.map((article) => (
-            <li key={article.id} className={`news-item ${getSentimentClass(article?.insights?.[0]?.sentiment)}`}>
-              {getSentimentIcon(article?.insights?.[0]?.sentiment)}
-              <span className="title">{article.title}</span>
-              <span className="date">{new Date(article.published_utc).toLocaleDateString()}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="quick-news-header">
+        <h3>Quick News: {ticker}</h3>
+      </div>
+      <div className="quick-news-content">
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <>
+            {news.map((article) => (
+              <div
+                key={article.id}
+                className={getItemClass(article?.insights?.[0]?.sentiment)}
+                onClick={() => openArticleInNewTab(article.article_url)}
+              >
+                <span className="news-item-title">{article.title}</span>
+                <span className="news-item-date">
+                  {new Date(article.published_utc).toLocaleDateString()}
+                </span>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };

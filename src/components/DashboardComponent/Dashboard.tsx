@@ -22,10 +22,10 @@ const generateLayout = (): Layout[] => {
   return [
     { i: 'positions', x: 0, y: 0, w: 3, h: 15 },
     { i: 'chart-1', x: 3, y: 0, w: 4, h: 15, isResizable: false }, // Adjust 'w' and 'h' as needed
-    { i: 'gainersLosers', x: 7, y: 0, w: 3, h: 10.5 },
-    {i: 'quickNews', x:7, y: 0, w:3, h:4},
+    { i: 'gainersLosers', x: 7, y: 0, w: 3, h: 8.5 },
+    {i: 'quickNews', x:7, y: 0, w:3, h:7.5},
     { i: 'groupedBars', x: 4, y: 10, w: 5, h: 11 },
-    { i: 'indices', x: 0, y: 18, w: 4, h: 4 },
+    { i: 'indices', x: 0, y: 18, w: 4, h: 6 },
   ];
 };
 
