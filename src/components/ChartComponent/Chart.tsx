@@ -165,9 +165,27 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
       seriesRef.current.setData(data);
     }
 
-    // Fit the content to the full width of the container
-    chartRef.current.timeScale().fitContent();
-    }, [chartType, data]);
+   // Fit the content to the full width of the container
+   chartRef.current.timeScale().fitContent();
+  }, [chartType, data]);
+
+  // Handle resizing
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current && chartContainerRef.current) {
+        chartRef.current.resize(
+          chartContainerRef.current.clientWidth,
+          chartContainerRef.current.clientHeight
+        );
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div className="chart-container">
@@ -184,20 +202,20 @@ const Chart: React.FC<ChartProps> = ({ ticker }) => {
           ))}
         </div>
         <div className="chart-type-container">
-          <button
+        <span className="ticker-title">{`${ticker}`}</span>
+        <button
             className={`chart-type-button ${chartType === 'line' ? 'active' : ''}`}
             onClick={() => setChartType('line')}
           >
-            
+            L
           </button>
           <button
             className={`chart-type-button ${chartType === 'candlestick' ? 'active' : ''}`}
             onClick={() => setChartType('candlestick')}
           >
-            
+            C
           </button>
         </div>
-        <span className="ticker-title">{`${ticker}`}</span>
       </div>
       {error ? (
         <p>{error}</p>

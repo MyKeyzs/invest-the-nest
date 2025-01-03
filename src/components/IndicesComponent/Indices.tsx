@@ -18,9 +18,8 @@ const Indices: React.FC = () => {
   const apiKey = 'w5oD4IbuQ0ZbZ1akQjZOX70ZqohjeoTX'; // Replace with your Polygon API key
 
   useEffect(() => {
-    // Function to fetch data for multiple indices
     const fetchIndicesData = async () => {
-      const tickers = ['DIA', 'SPY', 'QQQ', 'NDAQ', 'IWM']; // Example tickers
+      const tickers = ['DIA', 'SPY', 'QQQ', 'NDAQ', 'IWM'];
       const results = await Promise.all(
         tickers.map(async (ticker) => {
           try {
@@ -29,21 +28,19 @@ const Indices: React.FC = () => {
             return {
               ticker,
               name: getIndexName(ticker),
-              value: data.c || 0, // Use 0 as fallback
+              value: data.c || 0,
               netChange: data.c && data.o ? data.c - data.o : 0,
               percentChange: data.c && data.o ? ((data.c - data.o) / data.o) * 100 : 0,
-              oneMonth: calculateChange(data.c || 0, 30), // Handle missing values
+              oneMonth: calculateChange(data.c || 0, 30),
               oneYear: calculateChange(data.c || 0, 365),
               time: data.t ? new Date(data.t).toLocaleTimeString() : 'N/A',
             };
           } catch (error) {
             console.error(`Error fetching data for ticker: ${ticker}`, error);
-            return null; // Return null for invalid entries
+            return null;
           }
         })
       );
-
-      // Filter out any null results (failed requests)
       const formattedData = results.filter((item): item is IndexData => item !== null);
       setIndicesData(formattedData);
     };
@@ -51,10 +48,9 @@ const Indices: React.FC = () => {
     fetchIndicesData();
   }, []);
 
-  // Helper function to get the index name based on the ticker
   const getIndexName = (ticker: string) => {
     switch (ticker) {
-      case 'DJI':
+      case 'DIA':
         return 'Dow Jones';
       case 'SPY':
         return 'S&P 500';
@@ -69,9 +65,7 @@ const Indices: React.FC = () => {
     }
   };
 
-  // Helper function to calculate changes (Placeholder for actual logic)
   const calculateChange = (currentValue: number, days: number): number => {
-    // Placeholder for real calculations
     return parseFloat((Math.random() * 5).toFixed(2));
   };
 

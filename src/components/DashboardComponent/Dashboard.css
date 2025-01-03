@@ -6,6 +6,7 @@
   width: 100%; /* Take full width */
   flex-direction: column; /* Stack top ticker and grid layout vertically */
   overflow: auto;
+  background-image: linear-gradient(black, darkgray);
 }
 
 .main-content{

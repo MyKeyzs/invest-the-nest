@@ -6,6 +6,7 @@ import Chart from '../ChartComponent/Chart';
 import GroupedBars from '../GroupedBars/GroupedBars';
 import GainersAndLosers from '../GainersAndLosersComponent/GainersAndLosers';
 import Indices from '../IndicesComponent/Indices';
+import QuickNews from '../QuickNews/QuickNews';
 import './Dashboard.css';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -19,11 +20,12 @@ interface DashboardProps {
 
 const generateLayout = (): Layout[] => {
   return [
-    { i: 'positions', x: 0, y: 0, w: 3, h: 14.5 },
-    { i: 'chart', x: 3, y: 0, w: 5, h: 15 }, // Adjust 'w' and 'h' as needed
-    { i: 'gainersLosers', x: 9, y: 0, w: 3, h: 22.5 },
+    { i: 'positions', x: 0, y: 0, w: 3, h: 15 },
+    { i: 'chart-1', x: 3, y: 0, w: 4, h: 15, isResizable: false }, // Adjust 'w' and 'h' as needed
+    { i: 'gainersLosers', x: 7, y: 0, w: 3, h: 10.5 },
+    {i: 'quickNews', x:7, y: 0, w:3, h:4},
     { i: 'groupedBars', x: 4, y: 10, w: 5, h: 11 },
-    { i: 'indices', x: 0, y: 18, w: 4, h: 6 },
+    { i: 'indices', x: 0, y: 18, w: 4, h: 4 },
   ];
 };
 
@@ -95,7 +97,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
           isDraggable={!isLocked}
           isResizable={!isLocked}
         >
-            <div key="chart" className="widget" ref={chartRef} >
+            <div key="chart-1" className="widget" ref={chartRef} >
               <Chart ticker={selectedTicker} />
             </div>
             <div key="positions" className="widget">
@@ -103,6 +105,9 @@ const Dashboard: React.FC<DashboardProps> = ({ isLoggedIn, isSidebarOpen }) => {
             </div>
             <div key="gainersLosers" className="widget">
               <GainersAndLosers onSelectTicker={handleSelectTicker} />
+            </div>
+            <div key="quickNews" className="widget">
+             <QuickNews ticker={selectedTicker} />
             </div>
             <div key="groupedBars" className="widget">
               <GroupedBars onBarClick={handleBarClick} />

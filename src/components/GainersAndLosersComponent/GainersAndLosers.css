@@ -13,6 +13,8 @@
 .gainers-losers-tables {
   display: flex; /* Side by side tables */
   justify-content: space-between;
+  overflow-y: auto;
+  max-height: 300px;
 }
 
 .losers, .gainers {
@@ -51,7 +53,7 @@ table {
 th {
 
   text-align: left; /* Align text to the left */
- 
+ position: sticky;
   color: #ffffff;
   font-size: 0.9rem; /* Adjust font size */
   white-space: nowrap; /* Prevent text from wrapping */

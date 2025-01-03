@@ -8,17 +8,26 @@
     flex-direction: column;
     width: 100%;
     color: white;
+   
+      max-width: 100%; /* Prevent exceeding parent container width */
+      min-width: 300px; /* Avoid shrinking too small */
+      margin: 0 auto; /* Center the widget */
+      overflow-x: auto; /* Enable horizontal scroll if necessary */
   }
   
   .indices-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* fixed rows extending beyond container*/
   }
   
   .indices-table th,
   .indices-table td {
     padding: 8px;
     text-align: left;
+    white-space: nowrap; /*prevent wrapping*/
+    overflow: hidden; /*hide overflow text*/
+    text-overflow: ellipsis; /* for truncated text*/
   }
   
   .indices-table th {

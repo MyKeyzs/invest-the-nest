@@ -14,6 +14,7 @@ import TvDash from './components/Pages/ChartsPage/TvDash';
 import './App.css'; // Ensure to import your CSS file here
 import CustomSectorsPage from './components/Pages/CustomSectors/CustomSectorsPage';
 import FiscalOverviewPage from './components/Pages/FiscalOverview/FiscalOverviewPage';
+import QuickNews from './components/QuickNews/QuickNews';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
