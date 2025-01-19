@@ -75,24 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               Market Calendar
             </Link>
           </li>
-          <li>
-            <Link
-              to="/transactions"
-              className="block p-4 border-l-4 border-transparent hover:border-green-500"
-              onClick={handleLinkClick}
-            >
-              Transactions
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/sectors"
-              className="block p-4 border-l-4 border-transparent hover:border-green-500"
-              onClick={handleLinkClick}
-            >
-              Sectors
-            </Link>
-          </li>
+          
           <li>
             <Link
               to="/custom-sectors"

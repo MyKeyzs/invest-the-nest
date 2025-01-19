@@ -2,6 +2,7 @@
     padding: 0px;
     background-color: #0d0d1b;
     color: #ffffff;
+    overflow-x: auto;
   }
   
   .crypto-title {

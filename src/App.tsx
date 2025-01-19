@@ -6,7 +6,7 @@ import Dashboard from './components/DashboardComponent/Dashboard';
 import './components/DashboardComponent/Dashboard.css';
 import Watchlist from './components/Watchlist';
 import Portfolio from './components/Portfolio';
-import MarketCalendar from './components/MarketCalendar';
+import MarketCalendar from './components/Pages/MarketCalendarPage/MarketCalendar';
 import Transactions from './components/Transactions';
 import Sidebar from './components/SidebarComponent/Sidebar';
 import NewsPage from './components/Pages/NewsPage/News';

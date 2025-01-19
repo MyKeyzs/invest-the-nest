@@ -1,0 +1,52 @@
+[
+    {
+      "date": "Monday, January 20",
+      "premarket": [],
+      "afterhours": []
+    },
+    {
+      "date": "Tuesday, January 21",
+      "premarket": [
+        { "name": "Schwab", "ticker": "SCHW", "logo": "https://logo.com/schw.png" },
+        { "name": "3M", "ticker": "MMM", "logo": "https://logo.com/mmm.png" }
+      ],
+      "afterhours": [
+        { "name": "United Airlines", "ticker": "UAL", "logo": "https://logo.com/ual.png" },
+        { "name": "Netflix", "ticker": "NFLX", "logo": "https://logo.com/nflx.png" }
+      ]
+    },
+    {
+        "date": "Wednesday, January 22",
+        "premarket": [
+          { "name": "Johnson & Johnson", "ticker": "JNJ", "logo": "https://logo.com/schw.png" },
+          { "name": "Halliburton", "ticker": "HAL", "logo": "https://logo.com/mmm.png" }
+        ],
+        "afterhours": [
+          { "name": "Kinder Morgan", "ticker": "KMI", "logo": "https://logo.com/ual.png" },
+          { "name": "Alcoa", "ticker": "AA", "logo": "https://logo.com/nflx.png" }
+        ]
+      },
+      {
+        "date": "Thursday, January 23",
+        "premarket": [
+          { "name": "American Airlines", "ticker": "AAL", "logo": "https://logo.com/schw.png" },
+          { "name": "Freeport-McMoran", "ticker": "FCX", "logo": "https://logo.com/mmm.png" }
+        ],
+        "afterhours": [
+          { "name": "Texas Instruments", "ticker": "TXN", "logo": "https://logo.com/ual.png" },
+          { "name": "CSX", "ticker": "CSX", "logo": "https://logo.com/nflx.png" }
+        ]
+      },
+      {
+        "date": "Friday, January 24",
+        "premarket": [
+          { "name": "Schwab", "ticker": "SCHW", "logo": "https://logo.com/schw.png" },
+          { "name": "3M", "ticker": "MMM", "logo": "https://logo.com/mmm.png" }
+        ],
+        "afterhours": [
+          { "name": "United Airlines", "ticker": "UAL", "logo": "https://logo.com/ual.png" },
+          { "name": "Netflix", "ticker": "NFLX", "logo": "https://logo.com/nflx.png" }
+        ]
+      }
+  ]
+  
